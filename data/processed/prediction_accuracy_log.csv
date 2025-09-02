@@ -1,0 +1,7 @@
+date,game_date,home_team,away_team,predicted_winner,actual_winner,correct_prediction,win_probability,bet_placed,bet_amount,profit_loss
+2025-08-30,2025-08-30,LAD,SF,LAD,LAD,1,0.65,1,100,85.5
+2025-08-30,2025-08-30,NYY,BOS,NYY,BOS,0,0.58,1,75,-75.0
+2025-08-30,2025-08-30,ATL,PHI,ATL,ATL,1,0.61,1,90,72.3
+2025-08-31,2025-08-31,HOU,TEX,HOU,HOU,1,0.67,1,120,96.8
+2025-08-31,2025-08-31,TB,TOR,TB,TOR,0,0.55,0,0,0.0
+2025-08-31,2025-08-31,CLE,DET,CLE,CLE,1,0.72,1,150,108.0

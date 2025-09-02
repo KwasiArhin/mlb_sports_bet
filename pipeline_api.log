@@ -1,0 +1,617 @@
+
+    🔌 MLB Pipeline API Server Starting
+    
+    📡 API URL: http://localhost:5001
+    🔗 Health Check: http://localhost:5001/api/health
+    
+    Available Endpoints:
+    - POST /api/pipeline/trigger : Trigger daily pipeline
+    - GET  /api/pipeline/status  : Get pipeline status
+    - GET  /api/pipeline/history : Get run history
+    - POST /api/pipeline/stop    : Stop running pipeline
+    - GET  /api/games/today      : Get today's games
+    
+    Integration with Dashboard:
+    The dashboard can call these APIs to trigger and monitor the pipeline.
+    
+    Press Ctrl+C to stop the server
+    
+ * Serving Flask app 'pipeline_api'
+ * Debug mode: on
+2025-08-31 14:28:35,711 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.1.76:5001
+2025-08-31 14:28:35,711 - INFO - [33mPress CTRL+C to quit[0m
+2025-08-31 14:28:35,719 - INFO -  * Restarting with watchdog (fsevents)
+2025-08-31 14:28:36,210 - WARNING -  * Debugger is active!
+2025-08-31 14:28:36,219 - INFO -  * Debugger PIN: 143-179-072
+2025-08-31 14:28:50,022 - INFO - 127.0.0.1 - - [31/Aug/2025 14:28:50] "GET /api/health HTTP/1.1" 200 -
+2025-08-31 14:28:57,549 - INFO - Starting background pipeline for 2025-08-31
+2025-08-31 14:28:57,549 - INFO - Initializing daily pipeline for 2025-08-31 with $1,000.00 bankroll
+2025-08-31 14:28:57,550 - INFO - 127.0.0.1 - - [31/Aug/2025 14:28:57] "POST /api/pipeline/trigger HTTP/1.1" 200 -
+2025-08-31 14:28:57,550 - INFO - 🚀 Starting complete daily pipeline for 2025-08-31
+2025-08-31 14:28:57,552 - INFO - 🔄 Starting: fetch_games - Getting today's MLB schedule
+2025-08-31 14:28:57,552 - INFO - Fetching games for 2025-08-31
+2025-08-31 14:28:57,552 - INFO - Fetching games from MLB API for 2025-08-31
+2025-08-31 14:28:57,801 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:28:57,801 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:28:57,801 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:28:57,802 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:28:57,802 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:28:57,802 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:28:57,802 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:28:57,802 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:28:57,802 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:28:57,802 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:28:57,802 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:28:57,802 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:28:57,802 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:28:57,802 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:28:57,802 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:28:57,802 - INFO - Successfully fetched 0 games from MLB API
+2025-08-31 14:28:57,802 - WARNING - MLB API failed, trying ESPN API
+2025-08-31 14:28:57,803 - INFO - Fetching games from ESPN API for 2025-08-31
+2025-08-31 14:28:58,082 - INFO - Successfully fetched 15 games from ESPN API
+2025-08-31 14:28:58,082 - INFO - Successfully fetched 15 games for 2025-08-31
+2025-08-31 14:28:58,090 - INFO - ✅ Completed: fetch_games - Found 15 games, saved to /Users/karhin/Desktop/mlb-sports-betting-predictions-main/data/raw/mlb_games_2025-08-31.csv
+2025-08-31 14:28:58,090 - INFO - 🔄 Starting: feature_engineering - Generating features for today's games
+2025-08-31 14:28:58,676 - ERROR - ❌ Failed: feature_engineering - Feature engineering failed: 2025-08-31 14:28:58,633 - INFO - Loaded matchups: 15 rows from /Users/karhin/Desktop/mlb-sports-betting-predictions-main/data/raw/mlb_probable_pitchers_2025-08-31.csv
+Traceback (most recent call last):
+  File "/Users/karhin/Desktop/mlb-sports-betting-predictions-main/features/main_features.py", line 108, in <module>
+    build_main_features(matchup_path, pitcher_path, batter_path)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/karhin/Desktop/mlb-sports-betting-predictions-main/features/main_features.py", line 45, in build_main_features
+    pitchers = pd.read_csv(pitcher_path)
+  File "/opt/anaconda3/lib/python3.13/site-packages/pandas/io/parsers/readers.py", line 1026, in read_csv
+    return _read(filepath_or_buffer, kwds)
+  File "/opt/anaconda3/lib/python3.13/site-packages/pandas/io/parsers/readers.py", line 620, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+  File "/opt/anaconda3/lib/python3.13/site-packages/pandas/io/parsers/readers.py", line 1620, in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/pandas/io/parsers/readers.py", line 1880, in _make_engine
+    self.handles = get_handle(
+                   ~~~~~~~~~~^
+        f,
+        ^^
+    ...<6 lines>...
+        storage_options=self.options.get("storage_options", None),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/lib/python3.13/site-packages/pandas/io/common.py", line 873, in get_handle
+    handle = open(
+        handle,
+    ...<3 lines>...
+        newline="",
+    )
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/karhin/Desktop/mlb-sports-betting-predictions-main/data/processed/pitcher_stat_features_2025-08-31.csv'
+
+2025-08-31 14:28:58,676 - ERROR - 💥 Pipeline failed after 1.1 seconds: Feature engineering failed: Feature engineering failed: 2025-08-31 14:28:58,633 - INFO - Loaded matchups: 15 rows from /Users/karhin/Desktop/mlb-sports-betting-predictions-main/data/raw/mlb_probable_pitchers_2025-08-31.csv
+Traceback (most recent call last):
+  File "/Users/karhin/Desktop/mlb-sports-betting-predictions-main/features/main_features.py", line 108, in <module>
+    build_main_features(matchup_path, pitcher_path, batter_path)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/karhin/Desktop/mlb-sports-betting-predictions-main/features/main_features.py", line 45, in build_main_features
+    pitchers = pd.read_csv(pitcher_path)
+  File "/opt/anaconda3/lib/python3.13/site-packages/pandas/io/parsers/readers.py", line 1026, in read_csv
+    return _read(filepath_or_buffer, kwds)
+  File "/opt/anaconda3/lib/python3.13/site-packages/pandas/io/parsers/readers.py", line 620, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+  File "/opt/anaconda3/lib/python3.13/site-packages/pandas/io/parsers/readers.py", line 1620, in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/pandas/io/parsers/readers.py", line 1880, in _make_engine
+    self.handles = get_handle(
+                   ~~~~~~~~~~^
+        f,
+        ^^
+    ...<6 lines>...
+        storage_options=self.options.get("storage_options", None),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/lib/python3.13/site-packages/pandas/io/common.py", line 873, in get_handle
+    handle = open(
+        handle,
+    ...<3 lines>...
+        newline="",
+    )
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/karhin/Desktop/mlb-sports-betting-predictions-main/data/processed/pitcher_stat_features_2025-08-31.csv'
+
+2025-08-31 14:28:58,676 - ERROR - 📊 Completed steps: 1
+2025-08-31 14:28:58,676 - ERROR - 📊 Failed steps: 1
+2025-08-31 14:28:58,676 - INFO - Background pipeline completed with status: failed
+2025-08-31 14:29:05,357 - INFO - 127.0.0.1 - - [31/Aug/2025 14:29:05] "GET /api/pipeline/status HTTP/1.1" 200 -
+2025-08-31 14:31:12,028 - INFO - 127.0.0.1 - - [31/Aug/2025 14:31:12] "[33mGET / HTTP/1.1[0m" 404 -
+2025-08-31 14:31:12,514 - INFO - 127.0.0.1 - - [31/Aug/2025 14:31:12] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-08-31 14:31:40,216 - INFO - 127.0.0.1 - - [31/Aug/2025 14:31:40] "HEAD /api/health HTTP/1.1" 200 -
+2025-08-31 14:32:03,080 - INFO - 127.0.0.1 - - [31/Aug/2025 14:32:03] "GET /api/health HTTP/1.1" 200 -
+2025-08-31 14:34:09,098 - INFO - Fetching games for 2025-08-31
+2025-08-31 14:34:09,099 - INFO - Fetching games from MLB API for 2025-08-31
+2025-08-31 14:34:09,251 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:34:09,251 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:34:09,251 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:34:09,251 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:34:09,251 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:34:09,251 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:34:09,251 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:34:09,251 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:34:09,251 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:34:09,251 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:34:09,251 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:34:09,251 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:34:09,251 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:34:09,251 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:34:09,251 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:34:09,251 - INFO - Successfully fetched 0 games from MLB API
+2025-08-31 14:34:09,251 - WARNING - MLB API failed, trying ESPN API
+2025-08-31 14:34:09,251 - INFO - Fetching games from ESPN API for 2025-08-31
+2025-08-31 14:34:09,561 - INFO - Successfully fetched 15 games from ESPN API
+2025-08-31 14:34:09,561 - INFO - Successfully fetched 15 games for 2025-08-31
+2025-08-31 14:34:09,562 - INFO - 127.0.0.1 - - [31/Aug/2025 14:34:09] "GET /api/games/today HTTP/1.1" 200 -
+2025-08-31 14:34:21,087 - INFO -  * Detected change in '/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/app.py.tmp.83778.1756665261070', reloading
+2025-08-31 14:34:21,088 - INFO -  * Detected change in '/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/app.py', reloading
+
+    🔌 MLB Pipeline API Server Starting
+    
+    📡 API URL: http://localhost:5001
+    🔗 Health Check: http://localhost:5001/api/health
+    
+    Available Endpoints:
+    - POST /api/pipeline/trigger : Trigger daily pipeline
+    - GET  /api/pipeline/status  : Get pipeline status
+    - GET  /api/pipeline/history : Get run history
+    - POST /api/pipeline/stop    : Stop running pipeline
+    - GET  /api/games/today      : Get today's games
+    
+    Integration with Dashboard:
+    The dashboard can call these APIs to trigger and monitor the pipeline.
+    
+    Press Ctrl+C to stop the server
+    
+2025-08-31 14:34:21,386 - INFO -  * Restarting with watchdog (fsevents)
+2025-08-31 14:34:22,187 - WARNING -  * Debugger is active!
+2025-08-31 14:34:22,204 - INFO -  * Debugger PIN: 143-179-072
+2025-08-31 14:34:39,314 - INFO -  * Detected change in '/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/app.py.tmp.83778.1756665279292', reloading
+2025-08-31 14:34:39,314 - INFO -  * Detected change in '/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/app.py', reloading
+
+    🔌 MLB Pipeline API Server Starting
+    
+    📡 API URL: http://localhost:5001
+    🔗 Health Check: http://localhost:5001/api/health
+    
+    Available Endpoints:
+    - POST /api/pipeline/trigger : Trigger daily pipeline
+    - GET  /api/pipeline/status  : Get pipeline status
+    - GET  /api/pipeline/history : Get run history
+    - POST /api/pipeline/stop    : Stop running pipeline
+    - GET  /api/games/today      : Get today's games
+    
+    Integration with Dashboard:
+    The dashboard can call these APIs to trigger and monitor the pipeline.
+    
+    Press Ctrl+C to stop the server
+    
+2025-08-31 14:34:40,379 - INFO -  * Restarting with watchdog (fsevents)
+2025-08-31 14:34:40,909 - WARNING -  * Debugger is active!
+2025-08-31 14:34:40,922 - INFO -  * Debugger PIN: 143-179-072
+2025-08-31 14:36:06,928 - INFO - Fetching games for 2025-08-31
+2025-08-31 14:36:06,928 - INFO - Fetching games from MLB API for 2025-08-31
+2025-08-31 14:36:07,079 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:07,079 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:07,079 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:07,079 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:07,079 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:07,079 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:07,079 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:07,079 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:07,079 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:07,079 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:07,079 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:07,079 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:07,079 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:07,079 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:07,079 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:07,079 - INFO - Successfully fetched 0 games from MLB API
+2025-08-31 14:36:07,079 - WARNING - MLB API failed, trying ESPN API
+2025-08-31 14:36:07,080 - INFO - Fetching games from ESPN API for 2025-08-31
+2025-08-31 14:36:07,364 - INFO - Successfully fetched 15 games from ESPN API
+2025-08-31 14:36:07,365 - INFO - Successfully fetched 15 games for 2025-08-31
+2025-08-31 14:36:07,366 - INFO - 127.0.0.1 - - [31/Aug/2025 14:36:07] "GET /api/games/today?date=2025-08-31 HTTP/1.1" 200 -
+2025-08-31 14:36:48,937 - INFO - Fetching games for 2025-08-31
+2025-08-31 14:36:48,937 - INFO - Fetching games from MLB API for 2025-08-31
+2025-08-31 14:36:49,063 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:49,063 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:49,063 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:49,063 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:49,064 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:49,064 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:49,064 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:49,064 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:49,064 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:49,064 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:49,064 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:49,064 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:49,064 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:49,064 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:49,064 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:36:49,064 - INFO - Successfully fetched 0 games from MLB API
+2025-08-31 14:36:49,064 - WARNING - MLB API failed, trying ESPN API
+2025-08-31 14:36:49,064 - INFO - Fetching games from ESPN API for 2025-08-31
+2025-08-31 14:36:49,357 - INFO - Successfully fetched 15 games from ESPN API
+2025-08-31 14:36:49,357 - INFO - Successfully fetched 15 games for 2025-08-31
+2025-08-31 14:36:49,357 - INFO - 127.0.0.1 - - [31/Aug/2025 14:36:49] "GET /api/games/today?date=2025-08-31 HTTP/1.1" 200 -
+2025-08-31 14:39:26,655 - INFO - Fetching games for 2025-08-31
+2025-08-31 14:39:26,655 - INFO - Fetching games from MLB API for 2025-08-31
+2025-08-31 14:39:26,812 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:26,812 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:26,812 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:26,812 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:26,812 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:26,812 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:26,812 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:26,812 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:26,812 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:26,812 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:26,812 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:26,812 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:26,812 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:26,812 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:26,812 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:26,812 - INFO - Successfully fetched 0 games from MLB API
+2025-08-31 14:39:26,812 - WARNING - MLB API failed, trying ESPN API
+2025-08-31 14:39:26,812 - INFO - Fetching games from ESPN API for 2025-08-31
+2025-08-31 14:39:27,143 - INFO - Successfully fetched 15 games from ESPN API
+2025-08-31 14:39:27,143 - INFO - Successfully fetched 15 games for 2025-08-31
+2025-08-31 14:39:27,144 - INFO - 127.0.0.1 - - [31/Aug/2025 14:39:27] "GET /api/games/today HTTP/1.1" 200 -
+2025-08-31 14:39:40,018 - INFO -  * Detected change in '/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/app.py.tmp.83778.1756665579980', reloading
+2025-08-31 14:39:40,018 - INFO -  * Detected change in '/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/app.py', reloading
+
+    🔌 MLB Pipeline API Server Starting
+    
+    📡 API URL: http://localhost:5001
+    🔗 Health Check: http://localhost:5001/api/health
+    
+    Available Endpoints:
+    - POST /api/pipeline/trigger : Trigger daily pipeline
+    - GET  /api/pipeline/status  : Get pipeline status
+    - GET  /api/pipeline/history : Get run history
+    - POST /api/pipeline/stop    : Stop running pipeline
+    - GET  /api/games/today      : Get today's games
+    
+    Integration with Dashboard:
+    The dashboard can call these APIs to trigger and monitor the pipeline.
+    
+    Press Ctrl+C to stop the server
+    
+2025-08-31 14:39:40,318 - INFO -  * Restarting with watchdog (fsevents)
+2025-08-31 14:39:41,002 - WARNING -  * Debugger is active!
+2025-08-31 14:39:41,011 - INFO -  * Debugger PIN: 143-179-072
+2025-08-31 14:39:54,654 - INFO - Fetching games for 2025-08-31
+2025-08-31 14:39:54,654 - INFO - Fetching games from MLB API for 2025-08-31
+2025-08-31 14:39:54,755 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:54,756 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:54,756 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:54,756 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:54,756 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:54,756 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:54,756 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:54,756 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:54,756 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:54,756 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:54,756 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:54,756 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:54,756 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:54,756 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:54,756 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:39:54,756 - INFO - Successfully fetched 0 games from MLB API
+2025-08-31 14:39:54,756 - WARNING - MLB API failed, trying ESPN API
+2025-08-31 14:39:54,756 - INFO - Fetching games from ESPN API for 2025-08-31
+2025-08-31 14:39:55,071 - INFO - Successfully fetched 15 games from ESPN API
+2025-08-31 14:39:55,072 - INFO - Successfully fetched 15 games for 2025-08-31
+2025-08-31 14:39:55,072 - INFO - 127.0.0.1 - - [31/Aug/2025 14:39:55] "GET /api/games/today?date=2025-08-31 HTTP/1.1" 200 -
+2025-08-31 14:40:14,327 - INFO - Fetching games for 2025-08-31
+2025-08-31 14:40:14,327 - INFO - Fetching games from MLB API for 2025-08-31
+2025-08-31 14:40:14,427 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:14,427 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:14,427 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:14,427 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:14,427 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:14,427 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:14,427 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:14,427 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:14,427 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:14,427 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:14,427 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:14,427 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:14,427 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:14,427 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:14,427 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:14,427 - INFO - Successfully fetched 0 games from MLB API
+2025-08-31 14:40:14,427 - WARNING - MLB API failed, trying ESPN API
+2025-08-31 14:40:14,427 - INFO - Fetching games from ESPN API for 2025-08-31
+2025-08-31 14:40:14,555 - INFO - Successfully fetched 15 games from ESPN API
+2025-08-31 14:40:14,556 - INFO - Successfully fetched 15 games for 2025-08-31
+2025-08-31 14:40:14,556 - INFO - 127.0.0.1 - - [31/Aug/2025 14:40:14] "GET /api/games/today?date=2025-08-31 HTTP/1.1" 200 -
+2025-08-31 14:40:22,226 - INFO - Fetching games for 2025-08-31
+2025-08-31 14:40:22,227 - INFO - Fetching games from MLB API for 2025-08-31
+2025-08-31 14:40:22,343 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:22,343 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:22,343 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:22,343 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:22,343 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:22,343 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:22,343 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:22,343 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:22,343 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:22,343 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:22,343 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:22,343 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:22,343 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:22,343 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:22,343 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:22,343 - INFO - Successfully fetched 0 games from MLB API
+2025-08-31 14:40:22,343 - WARNING - MLB API failed, trying ESPN API
+2025-08-31 14:40:22,343 - INFO - Fetching games from ESPN API for 2025-08-31
+2025-08-31 14:40:22,490 - INFO - Successfully fetched 15 games from ESPN API
+2025-08-31 14:40:22,491 - INFO - Successfully fetched 15 games for 2025-08-31
+2025-08-31 14:40:22,491 - INFO - 127.0.0.1 - - [31/Aug/2025 14:40:22] "GET /api/games/today?date=2025-08-31 HTTP/1.1" 200 -
+2025-08-31 14:40:55,404 - INFO - Fetching games for 2025-08-31
+2025-08-31 14:40:55,404 - INFO - Fetching games from MLB API for 2025-08-31
+2025-08-31 14:40:55,679 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:55,679 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:55,679 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:55,679 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:55,679 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:55,679 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:55,679 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:55,679 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:55,679 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:55,680 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:55,680 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:55,680 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:55,680 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:55,680 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:55,680 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:40:55,680 - INFO - Successfully fetched 0 games from MLB API
+2025-08-31 14:40:55,680 - WARNING - MLB API failed, trying ESPN API
+2025-08-31 14:40:55,680 - INFO - Fetching games from ESPN API for 2025-08-31
+2025-08-31 14:40:55,982 - INFO - Successfully fetched 15 games from ESPN API
+2025-08-31 14:40:55,985 - INFO - Successfully fetched 15 games for 2025-08-31
+2025-08-31 14:40:55,986 - INFO - 127.0.0.1 - - [31/Aug/2025 14:40:55] "GET /api/games/today?date=2025-08-31 HTTP/1.1" 200 -
+2025-08-31 14:42:41,621 - INFO - Fetching games for 2025-08-31
+2025-08-31 14:42:41,621 - INFO - Fetching games from MLB API for 2025-08-31
+2025-08-31 14:42:41,807 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:42:41,807 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:42:41,807 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:42:41,807 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:42:41,807 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:42:41,807 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:42:41,807 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:42:41,807 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:42:41,807 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:42:41,807 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:42:41,807 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:42:41,807 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:42:41,807 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:42:41,807 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:42:41,808 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:42:41,808 - INFO - Successfully fetched 0 games from MLB API
+2025-08-31 14:42:41,808 - WARNING - MLB API failed, trying ESPN API
+2025-08-31 14:42:41,810 - INFO - Fetching games from ESPN API for 2025-08-31
+2025-08-31 14:42:42,126 - INFO - Successfully fetched 15 games from ESPN API
+2025-08-31 14:42:42,128 - INFO - Successfully fetched 15 games for 2025-08-31
+2025-08-31 14:42:42,129 - INFO - 127.0.0.1 - - [31/Aug/2025 14:42:42] "GET /api/games/today?date=2025-08-31 HTTP/1.1" 200 -
+2025-08-31 14:43:01,374 - INFO - Fetching games for 2025-08-31
+2025-08-31 14:43:01,374 - INFO - Fetching games from MLB API for 2025-08-31
+2025-08-31 14:43:01,496 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:43:01,497 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:43:01,497 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:43:01,497 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:43:01,497 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:43:01,497 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:43:01,497 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:43:01,497 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:43:01,497 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:43:01,497 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:43:01,497 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:43:01,498 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:43:01,498 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:43:01,498 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:43:01,498 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 14:43:01,498 - INFO - Successfully fetched 0 games from MLB API
+2025-08-31 14:43:01,498 - WARNING - MLB API failed, trying ESPN API
+2025-08-31 14:43:01,499 - INFO - Fetching games from ESPN API for 2025-08-31
+2025-08-31 14:43:01,687 - INFO - Successfully fetched 15 games from ESPN API
+2025-08-31 14:43:01,689 - INFO - Successfully fetched 15 games for 2025-08-31
+2025-08-31 14:43:01,691 - INFO - 127.0.0.1 - - [31/Aug/2025 14:43:01] "GET /api/games/today?date=2025-08-31 HTTP/1.1" 200 -
+2025-08-31 17:20:10,568 - INFO - Fetching games for 2025-08-31
+2025-08-31 17:20:10,569 - INFO - Fetching games from MLB API for 2025-08-31
+2025-08-31 17:20:10,727 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:10,727 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:10,727 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:10,727 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:10,727 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:10,727 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:10,727 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:10,727 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:10,727 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:10,727 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:10,727 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:10,727 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:10,727 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:10,727 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:10,727 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:10,727 - INFO - Successfully fetched 0 games from MLB API
+2025-08-31 17:20:10,728 - WARNING - MLB API failed, trying ESPN API
+2025-08-31 17:20:10,728 - INFO - Fetching games from ESPN API for 2025-08-31
+2025-08-31 17:20:11,075 - INFO - Successfully fetched 15 games from ESPN API
+2025-08-31 17:20:11,078 - INFO - Successfully fetched 15 games for 2025-08-31
+2025-08-31 17:20:11,080 - INFO - 127.0.0.1 - - [31/Aug/2025 17:20:11] "GET /api/games/today?date=2025-08-31 HTTP/1.1" 200 -
+2025-08-31 17:20:13,693 - INFO - Fetching games for 2025-08-31
+2025-08-31 17:20:13,693 - INFO - Fetching games from MLB API for 2025-08-31
+2025-08-31 17:20:13,791 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:13,791 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:13,791 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:13,791 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:13,791 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:13,791 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:13,791 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:13,791 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:13,791 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:13,791 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:13,791 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:13,791 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:13,791 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:13,791 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:13,791 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:13,791 - INFO - Successfully fetched 0 games from MLB API
+2025-08-31 17:20:13,792 - WARNING - MLB API failed, trying ESPN API
+2025-08-31 17:20:13,792 - INFO - Fetching games from ESPN API for 2025-08-31
+2025-08-31 17:20:13,963 - INFO - Successfully fetched 15 games from ESPN API
+2025-08-31 17:20:13,965 - INFO - Successfully fetched 15 games for 2025-08-31
+2025-08-31 17:20:13,965 - INFO - 127.0.0.1 - - [31/Aug/2025 17:20:13] "GET /api/games/today?date=2025-08-31 HTTP/1.1" 200 -
+2025-08-31 17:20:33,062 - INFO - Fetching games for 2025-08-31
+2025-08-31 17:20:33,063 - INFO - Fetching games from MLB API for 2025-08-31
+2025-08-31 17:20:33,173 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:33,174 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:33,174 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:33,174 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:33,174 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:33,174 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:33,174 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:33,174 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:33,174 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:33,174 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:33,174 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:33,174 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:33,175 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:33,175 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:33,175 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:33,175 - INFO - Successfully fetched 0 games from MLB API
+2025-08-31 17:20:33,180 - WARNING - MLB API failed, trying ESPN API
+2025-08-31 17:20:33,180 - INFO - Fetching games from ESPN API for 2025-08-31
+2025-08-31 17:20:33,452 - INFO - Successfully fetched 15 games from ESPN API
+2025-08-31 17:20:33,453 - INFO - Successfully fetched 15 games for 2025-08-31
+2025-08-31 17:20:33,454 - INFO - 127.0.0.1 - - [31/Aug/2025 17:20:33] "GET /api/games/today?date=2025-08-31 HTTP/1.1" 200 -
+2025-08-31 17:20:34,298 - INFO - Fetching games for 2025-08-31
+2025-08-31 17:20:34,299 - INFO - Fetching games from MLB API for 2025-08-31
+2025-08-31 17:20:34,394 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:34,394 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:34,395 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:34,395 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:34,395 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:34,395 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:34,395 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:34,395 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:34,395 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:34,395 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:34,396 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:34,396 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:34,396 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:34,396 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:34,396 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:34,396 - INFO - Successfully fetched 0 games from MLB API
+2025-08-31 17:20:34,396 - WARNING - MLB API failed, trying ESPN API
+2025-08-31 17:20:34,396 - INFO - Fetching games from ESPN API for 2025-08-31
+2025-08-31 17:20:34,466 - INFO - Successfully fetched 15 games from ESPN API
+2025-08-31 17:20:34,470 - INFO - Successfully fetched 15 games for 2025-08-31
+2025-08-31 17:20:34,470 - INFO - 127.0.0.1 - - [31/Aug/2025 17:20:34] "GET /api/games/today?date=2025-08-31 HTTP/1.1" 200 -
+2025-08-31 17:20:39,907 - INFO - Fetching games for 2025-08-31
+2025-08-31 17:20:39,907 - INFO - Fetching games from MLB API for 2025-08-31
+2025-08-31 17:20:40,052 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:40,054 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:40,054 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:40,054 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:40,054 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:40,054 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:40,054 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:40,054 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:40,054 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:40,055 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:40,055 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:40,055 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:40,055 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:40,055 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:40,055 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:20:40,055 - INFO - Successfully fetched 0 games from MLB API
+2025-08-31 17:20:40,058 - WARNING - MLB API failed, trying ESPN API
+2025-08-31 17:20:40,059 - INFO - Fetching games from ESPN API for 2025-08-31
+2025-08-31 17:20:40,226 - INFO - Successfully fetched 15 games from ESPN API
+2025-08-31 17:20:40,228 - INFO - Successfully fetched 15 games for 2025-08-31
+2025-08-31 17:20:40,230 - INFO - 127.0.0.1 - - [31/Aug/2025 17:20:40] "GET /api/games/today?date=2025-08-31 HTTP/1.1" 200 -
+2025-08-31 17:22:19,297 - INFO - 127.0.0.1 - - [31/Aug/2025 17:22:19] "[33mGET / HTTP/1.1[0m" 404 -
+2025-08-31 17:22:46,996 - INFO - Fetching games for 2025-08-31
+2025-08-31 17:22:46,996 - INFO - Fetching games from MLB API for 2025-08-31
+2025-08-31 17:22:47,129 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:22:47,130 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:22:47,130 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:22:47,130 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:22:47,130 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:22:47,130 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:22:47,130 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:22:47,130 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:22:47,130 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:22:47,130 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:22:47,130 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:22:47,130 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:22:47,130 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:22:47,130 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:22:47,130 - WARNING - Missing key in game data: 'abbreviation'
+2025-08-31 17:22:47,130 - INFO - Successfully fetched 0 games from MLB API
+2025-08-31 17:22:47,131 - WARNING - MLB API failed, trying ESPN API
+2025-08-31 17:22:47,132 - INFO - Fetching games from ESPN API for 2025-08-31
+2025-08-31 17:22:47,440 - INFO - Successfully fetched 15 games from ESPN API
+2025-08-31 17:22:47,441 - INFO - Successfully fetched 15 games for 2025-08-31
+2025-08-31 17:22:47,442 - INFO - 127.0.0.1 - - [31/Aug/2025 17:22:47] "GET /api/games/today?date=2025-08-31 HTTP/1.1" 200 -
+2025-08-31 17:23:30,600 - INFO -  * Detected change in '/Users/karhin/Desktop/mlb-sports-betting-predictions-main/modeling/prediction_service.py.tmp.83778.1756675410569', reloading
+
+    🔌 MLB Pipeline API Server Starting
+    
+    📡 API URL: http://localhost:5001
+    🔗 Health Check: http://localhost:5001/api/health
+    
+    Available Endpoints:
+    - POST /api/pipeline/trigger : Trigger daily pipeline
+    - GET  /api/pipeline/status  : Get pipeline status
+    - GET  /api/pipeline/history : Get run history
+    - POST /api/pipeline/stop    : Stop running pipeline
+    - GET  /api/games/today      : Get today's games
+    
+    Integration with Dashboard:
+    The dashboard can call these APIs to trigger and monitor the pipeline.
+    
+    Press Ctrl+C to stop the server
+    
+2025-08-31 17:23:31,379 - INFO -  * Restarting with watchdog (fsevents)
+2025-08-31 17:23:32,329 - WARNING -  * Debugger is active!
+2025-08-31 17:23:32,344 - INFO -  * Debugger PIN: 143-179-072
+2025-08-31 17:23:41,282 - INFO -  * Detected change in '/Users/karhin/Desktop/mlb-sports-betting-predictions-main/integrations/pipeline_api.py.tmp.83778.1756675421269', reloading
+2025-08-31 17:23:41,282 - INFO -  * Detected change in '/Users/karhin/Desktop/mlb-sports-betting-predictions-main/integrations/pipeline_api.py', reloading
+
+    🔌 MLB Pipeline API Server Starting
+    
+    📡 API URL: http://localhost:5001
+    🔗 Health Check: http://localhost:5001/api/health
+    
+    Available Endpoints:
+    - POST /api/pipeline/trigger : Trigger daily pipeline
+    - GET  /api/pipeline/status  : Get pipeline status
+    - GET  /api/pipeline/history : Get run history
+    - POST /api/pipeline/stop    : Stop running pipeline
+    - GET  /api/games/today      : Get today's games
+    
+    Integration with Dashboard:
+    The dashboard can call these APIs to trigger and monitor the pipeline.
+    
+    Press Ctrl+C to stop the server
+    
+2025-08-31 17:23:41,500 - INFO -  * Restarting with watchdog (fsevents)
+Traceback (most recent call last):
+  File "/Users/karhin/Desktop/mlb-sports-betting-predictions-main/integrations/pipeline_api.py", line 25, in <module>
+    from modeling.prediction_service import MLBPredictionService
+  File "/Users/karhin/Desktop/mlb-sports-betting-predictions-main/modeling/prediction_service.py", line 19, in <module>
+    from kelly_criterion import calculate_kelly_for_predictions
+ModuleNotFoundError: No module named 'kelly_criterion'

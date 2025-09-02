@@ -1,0 +1,282 @@
+{% extends "base.html" %}
+
+{% block title %}Pipeline Status - MLB Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">
+        <i class="fas fa-cogs me-2 text-primary"></i>
+        Data Pipeline Status
+    </h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.reload()">
+                <i class="fas fa-sync-alt"></i> Refresh Status
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Pipeline Overview -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-database fa-2x {{ 'text-success' if status.data_freshness == 'Fresh' else 'text-warning' }} mb-2"></i>
+                <h5 class="card-title">Data Freshness</h5>
+                <span class="status-badge status-{{ 'fresh' if status.data_freshness == 'Fresh' else 'stale' }}">
+                    {{ status.data_freshness }}
+                </span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-brain fa-2x {{ 'text-success' if status.model_status == 'Ready' else 'text-warning' }} mb-2"></i>
+                <h5 class="card-title">Model Status</h5>
+                <span class="status-badge status-{{ 'fresh' if status.model_status == 'Ready' else 'stale' }}">
+                    {{ status.model_status }}
+                </span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-clock fa-2x text-info mb-2"></i>
+                <h5 class="card-title">Last Update</h5>
+                <p class="mb-0">{{ status.last_update }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- File Status Details -->
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-file-alt me-2"></i>
+        Key Files Status
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>File Name</th>
+                        <th>Status</th>
+                        <th>Last Modified</th>
+                        <th>Size</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for file in status.files_status %}
+                    <tr>
+                        <td>
+                            <code>{{ file.name }}</code>
+                        </td>
+                        <td>
+                            {% if file.exists %}
+                                <span class="badge bg-success">
+                                    <i class="fas fa-check"></i> Exists
+                                </span>
+                            {% else %}
+                                <span class="badge bg-danger">
+                                    <i class="fas fa-times"></i> Missing
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if file.modified %}
+                                {{ file.modified }}
+                            {% else %}
+                                <span class="text-muted">N/A</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if file.exists %}
+                                <span class="text-muted">
+                                    <i class="fas fa-file"></i> Available
+                                </span>
+                            {% else %}
+                                <span class="text-muted">N/A</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <small class="text-muted">
+                                {% if 'historical_main_features' in file.name %}
+                                    Historical training data for model
+                                {% elif 'main_features_' in file.name %}
+                                    Today's processed features
+                                {% elif 'readable_win_predictions' in file.name %}
+                                    Today's game predictions
+                                {% else %}
+                                    Pipeline data file
+                                {% endif %}
+                            </small>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Pipeline Components -->
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-list-check me-2"></i>
+                Pipeline Steps
+            </div>
+            <div class="card-body">
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fas fa-download me-2 text-primary"></i>
+                            Data Scraping
+                        </div>
+                        <span class="badge bg-success rounded-pill">Active</span>
+                    </div>
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fas fa-wrench me-2 text-info"></i>
+                            Feature Engineering
+                        </div>
+                        <span class="badge bg-success rounded-pill">Active</span>
+                    </div>
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fas fa-brain me-2 text-warning"></i>
+                            Model Training
+                        </div>
+                        <span class="badge bg-success rounded-pill">Active</span>
+                    </div>
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fas fa-chart-line me-2 text-success"></i>
+                            Prediction Generation
+                        </div>
+                        <span class="badge bg-success rounded-pill">Active</span>
+                    </div>
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fas fa-calculator me-2 text-danger"></i>
+                            Kelly Sizing
+                        </div>
+                        <span class="badge bg-success rounded-pill">Active</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-info-circle me-2"></i>
+                System Information
+            </div>
+            <div class="card-body">
+                <h6 class="text-muted">Data Sources</h6>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-check-circle text-success me-2"></i>MLB Team Statistics</li>
+                    <li><i class="fas fa-check-circle text-success me-2"></i>Pitcher Performance Data</li>
+                    <li><i class="fas fa-check-circle text-success me-2"></i>Historical Game Results</li>
+                    <li><i class="fas fa-check-circle text-success me-2"></i>Probable Pitchers</li>
+                </ul>
+                
+                <h6 class="text-muted mt-3">Processing Schedule</h6>
+                <ul class="list-unstyled">
+                    <li><strong>Daily Update:</strong> 8:00 AM ET</li>
+                    <li><strong>Game Predictions:</strong> After lineup confirmation</li>
+                    <li><strong>Model Retraining:</strong> Weekly</li>
+                    <li><strong>Backup:</strong> Daily at midnight</li>
+                </ul>
+                
+                <h6 class="text-muted mt-3">Health Checks</h6>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-heart text-success me-2"></i>API Endpoints: Healthy</li>
+                    <li><i class="fas fa-heart text-success me-2"></i>Database: Connected</li>
+                    <li><i class="fas fa-heart text-success me-2"></i>File System: Normal</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Manual Actions -->
+<div class="card mt-4">
+    <div class="card-header">
+        <i class="fas fa-tools me-2"></i>
+        Manual Actions
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-3">
+                <button class="btn btn-outline-primary w-100 mb-2" onclick="triggerDataRefresh()">
+                    <i class="fas fa-sync-alt me-2"></i>
+                    Refresh Data
+                </button>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-outline-warning w-100 mb-2" onclick="retrain_model()">
+                    <i class="fas fa-brain me-2"></i>
+                    Retrain Model
+                </button>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-outline-info w-100 mb-2" onclick="generatePredictions()">
+                    <i class="fas fa-chart-line me-2"></i>
+                    Generate Predictions
+                </button>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-outline-success w-100 mb-2" onclick="runKellySizing()">
+                    <i class="fas fa-calculator me-2"></i>
+                    Run Kelly Sizing
+                </button>
+            </div>
+        </div>
+        
+        <div class="alert alert-info mt-3">
+            <i class="fas fa-info-circle me-2"></i>
+            <strong>Note:</strong> Manual actions are currently for display purposes. 
+            In a production environment, these would trigger actual pipeline processes.
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function triggerDataRefresh() {
+        alert('Data refresh would be triggered here in production environment');
+    }
+    
+    function retrain_model() {
+        if (confirm('Model retraining can take several minutes. Continue?')) {
+            alert('Model retraining would be started here in production environment');
+        }
+    }
+    
+    function generatePredictions() {
+        alert('Prediction generation would be triggered here in production environment');
+    }
+    
+    function runKellySizing() {
+        alert('Kelly sizing calculation would be run here in production environment');
+    }
+    
+    // Auto-refresh status every 2 minutes
+    setTimeout(function() {
+        location.reload();
+    }, 120000);
+</script>
+{% endblock %}

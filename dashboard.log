@@ -1,0 +1,275 @@
+
+    ⚾ MLB Predictions Dashboard Starting ⚾
+    
+    📊 Dashboard URL: http://localhost:5000
+    📁 Data Directory: /Users/karhin/Desktop/mlb-sports-betting-predictions-main/data
+    🔧 Models Directory: /Users/karhin/Desktop/mlb-sports-betting-predictions-main/modeling
+    
+    Available Pages:
+    - / : Home overview
+    - /predictions : Today's betting recommendations  
+    - /model-analytics : Model performance metrics
+    - /pipeline-status : Data pipeline monitoring
+    - /historical : Historical performance tracking
+    
+    Press Ctrl+C to stop the server
+    
+ * Serving Flask app 'app'
+ * Debug mode: on
+2025-08-31 14:28:41,211 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.76:5000
+2025-08-31 14:28:41,211 - INFO - [33mPress CTRL+C to quit[0m
+2025-08-31 14:28:41,216 - INFO -  * Restarting with watchdog (fsevents)
+2025-08-31 14:28:41,712 - WARNING -  * Debugger is active!
+2025-08-31 14:28:41,730 - INFO -  * Debugger PIN: 143-179-072
+2025-08-31 14:34:21,091 - INFO -  * Detected change in '/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/app.py.tmp.83778.1756665261070', reloading
+2025-08-31 14:34:21,091 - INFO -  * Detected change in '/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/app.py', reloading
+
+    ⚾ MLB Predictions Dashboard Starting ⚾
+    
+    📊 Dashboard URL: http://localhost:5000
+    📁 Data Directory: /Users/karhin/Desktop/mlb-sports-betting-predictions-main/data
+    🔧 Models Directory: /Users/karhin/Desktop/mlb-sports-betting-predictions-main/modeling
+    
+    Available Pages:
+    - / : Home overview
+    - /predictions : Today's betting recommendations  
+    - /model-analytics : Model performance metrics
+    - /pipeline-status : Data pipeline monitoring
+    - /historical : Historical performance tracking
+    
+    Press Ctrl+C to stop the server
+    
+2025-08-31 14:34:21,788 - INFO -  * Restarting with watchdog (fsevents)
+2025-08-31 14:34:22,373 - WARNING -  * Debugger is active!
+2025-08-31 14:34:22,382 - INFO -  * Debugger PIN: 143-179-072
+2025-08-31 14:34:39,314 - INFO -  * Detected change in '/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/app.py.tmp.83778.1756665279292', reloading
+2025-08-31 14:34:39,314 - INFO -  * Detected change in '/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/app.py', reloading
+
+    ⚾ MLB Predictions Dashboard Starting ⚾
+    
+    📊 Dashboard URL: http://localhost:5000
+    📁 Data Directory: /Users/karhin/Desktop/mlb-sports-betting-predictions-main/data
+    🔧 Models Directory: /Users/karhin/Desktop/mlb-sports-betting-predictions-main/modeling
+    
+    Available Pages:
+    - / : Home overview
+    - /predictions : Today's betting recommendations  
+    - /model-analytics : Model performance metrics
+    - /pipeline-status : Data pipeline monitoring
+    - /historical : Historical performance tracking
+    
+    Press Ctrl+C to stop the server
+    
+2025-08-31 14:34:39,557 - INFO -  * Restarting with watchdog (fsevents)
+2025-08-31 14:34:40,127 - WARNING -  * Debugger is active!
+2025-08-31 14:34:40,141 - INFO -  * Debugger PIN: 143-179-072
+2025-08-31 14:39:40,018 - INFO -  * Detected change in '/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/app.py.tmp.83778.1756665579980', reloading
+2025-08-31 14:39:40,018 - INFO -  * Detected change in '/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/app.py', reloading
+
+    ⚾ MLB Predictions Dashboard Starting ⚾
+    
+    📊 Dashboard URL: http://localhost:5000
+    📁 Data Directory: /Users/karhin/Desktop/mlb-sports-betting-predictions-main/data
+    🔧 Models Directory: /Users/karhin/Desktop/mlb-sports-betting-predictions-main/modeling
+    
+    Available Pages:
+    - / : Home overview
+    - /predictions : Today's betting recommendations  
+    - /model-analytics : Model performance metrics
+    - /pipeline-status : Data pipeline monitoring
+    - /historical : Historical performance tracking
+    
+    Press Ctrl+C to stop the server
+    
+2025-08-31 14:39:40,426 - INFO -  * Restarting with watchdog (fsevents)
+2025-08-31 14:39:41,078 - WARNING -  * Debugger is active!
+2025-08-31 14:39:41,088 - INFO -  * Debugger PIN: 143-179-072
+2025-08-31 14:40:14,316 - INFO - No Kelly predictions with today's games found (dates: ['2025-07-01']), fetching live games...
+2025-08-31 14:40:14,559 - INFO - Found 15 live games for today
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/app.py", line 1536, in __call__
+    return self.wsgi_app(environ, start_response)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/app.py", line 1514, in wsgi_app
+    response = self.handle_exception(e)
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/app.py", line 256, in predictions
+    return render_template('predictions.html', predictions=predictions_data)
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+  File "/opt/anaconda3/lib/python3.13/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/templates/predictions.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/templates/base.html", line 152, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^
+  File "/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/templates/predictions.html", line 180, in block 'content'
+    ${{ "%.2f"|format(max_bet) }}</p>
+    
+  File "/opt/anaconda3/lib/python3.13/site-packages/jinja2/filters.py", line 1043, in do_format
+    return soft_str(value) % (kwargs or args)
+           ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~
+jinja2.exceptions.UndefinedError: No aggregated item, sequence was empty.
+2025-08-31 14:40:22,222 - INFO - No Kelly predictions with today's games found (dates: ['2025-07-01']), fetching live games...
+2025-08-31 14:40:22,492 - INFO - Found 15 live games for today
+2025-08-31 14:40:55,400 - INFO - No Kelly predictions with today's games found (dates: ['2025-07-01']), fetching live games...
+2025-08-31 14:40:55,994 - INFO - Found 15 live games for today
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/app.py", line 1536, in __call__
+    return self.wsgi_app(environ, start_response)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/app.py", line 1514, in wsgi_app
+    response = self.handle_exception(e)
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/app.py", line 256, in predictions
+    return render_template('predictions.html', predictions=predictions_data)
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+  File "/opt/anaconda3/lib/python3.13/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/templates/predictions.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/templates/base.html", line 152, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^
+  File "/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/templates/predictions.html", line 183, in block 'content'
+    ${{ "%.2f"|format(max_bet) }}</p>
+    
+  File "/opt/anaconda3/lib/python3.13/site-packages/jinja2/filters.py", line 1043, in do_format
+    return soft_str(value) % (kwargs or args)
+           ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~
+jinja2.exceptions.UndefinedError: No aggregated item, sequence was empty.
+2025-08-31 14:42:41,613 - INFO - No Kelly predictions with today's games found (dates: ['2025-07-01']), fetching live games...
+2025-08-31 14:42:42,136 - INFO - Found 15 live games for today
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/app.py", line 1536, in __call__
+    return self.wsgi_app(environ, start_response)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/app.py", line 1514, in wsgi_app
+    response = self.handle_exception(e)
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/app.py", line 256, in predictions
+    return render_template('predictions.html', predictions=predictions_data)
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+  File "/opt/anaconda3/lib/python3.13/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/templates/predictions.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/templates/base.html", line 152, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^
+  File "/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/templates/predictions.html", line 183, in block 'content'
+    ${{ "%.2f"|format(max_bet) }}</p>
+    
+  File "/opt/anaconda3/lib/python3.13/site-packages/jinja2/filters.py", line 1043, in do_format
+    return soft_str(value) % (kwargs or args)
+           ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~
+jinja2.exceptions.UndefinedError: No aggregated item, sequence was empty.
+2025-08-31 14:43:01,353 - INFO - No Kelly predictions with today's games found (dates: ['2025-07-01']), fetching live games...
+2025-08-31 14:43:01,696 - INFO - Found 15 live games for today
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/app.py", line 1536, in __call__
+    return self.wsgi_app(environ, start_response)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/app.py", line 1514, in wsgi_app
+    response = self.handle_exception(e)
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/app.py", line 256, in predictions
+    return render_template('predictions.html', predictions=predictions_data)
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+  File "/opt/anaconda3/lib/python3.13/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+  File "/opt/anaconda3/lib/python3.13/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/templates/predictions.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/templates/base.html", line 152, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^
+  File "/Users/karhin/Desktop/mlb-sports-betting-predictions-main/dashboard/templates/predictions.html", line 183, in block 'content'
+    ${{ "%.2f"|format(max_bet) }}</p>
+    
+  File "/opt/anaconda3/lib/python3.13/site-packages/jinja2/filters.py", line 1043, in do_format
+    return soft_str(value) % (kwargs or args)
+           ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~
+jinja2.exceptions.UndefinedError: No aggregated item, sequence was empty.
+2025-08-31 17:20:10,534 - INFO - No Kelly predictions with today's games found (dates: ['2025-07-01']), fetching live games...
+2025-08-31 17:20:11,086 - INFO - Found 15 live games for today
+2025-08-31 17:20:13,680 - INFO - No Kelly predictions with today's games found (dates: ['2025-07-01']), fetching live games...
+2025-08-31 17:20:13,967 - INFO - Found 15 live games for today
+2025-08-31 17:20:33,053 - INFO - No Kelly predictions with today's games found (dates: ['2025-07-01']), fetching live games...
+2025-08-31 17:20:33,459 - INFO - Found 15 live games for today
+2025-08-31 17:20:34,293 - INFO - No Kelly predictions with today's games found (dates: ['2025-07-01']), fetching live games...
+2025-08-31 17:20:34,472 - INFO - Found 15 live games for today
+2025-08-31 17:20:39,901 - INFO - No Kelly predictions with today's games found (dates: ['2025-07-01']), fetching live games...
+2025-08-31 17:20:40,237 - INFO - Found 15 live games for today
+2025-08-31 17:22:46,989 - INFO - No Kelly predictions with today's games found (dates: ['2025-07-01']), fetching live games...
+2025-08-31 17:22:47,444 - INFO - Found 15 live games for today
+2025-08-31 17:27:48,414 - INFO - No Kelly predictions with today's games found (dates: ['2025-07-01']), fetching live games...
+2025-08-31 17:27:48,418 - WARNING - Could not fetch live games: HTTPConnectionPool(host='localhost', port=5001): Max retries exceeded with url: /api/games/today?date=2025-08-31 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x13eeb17b0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-08-31 17:32:49,395 - INFO - No Kelly predictions with today's games found (dates: ['2025-07-01']), fetching live games...
+2025-08-31 17:32:49,398 - WARNING - Could not fetch live games: HTTPConnectionPool(host='localhost', port=5001): Max retries exceeded with url: /api/games/today?date=2025-08-31 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x13eeb18c0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-08-31 17:37:50,417 - INFO - No Kelly predictions with today's games found (dates: ['2025-07-01']), fetching live games...
+2025-08-31 17:37:50,919 - INFO - Found 15 live games for today
+2025-08-31 17:42:51,422 - INFO - No Kelly predictions with today's games found (dates: ['2025-07-01']), fetching live games...
+2025-08-31 17:42:51,926 - INFO - Found 15 live games for today
+/opt/anaconda3/lib/python3.13/multiprocessing/resource_tracker.py:301: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown: {'/mp-aoh3xfl4'}
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/multiprocessing/resource_tracker.py:301: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown: {'/mp-o_i2k7ht'}
+  warnings.warn(

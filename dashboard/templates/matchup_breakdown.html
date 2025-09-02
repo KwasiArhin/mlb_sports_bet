@@ -1,0 +1,311 @@
+{% extends "base.html" %}
+
+{% block title %}Matchup Breakdown - MLB Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">
+        <i class="fas fa-analytics me-2 text-primary"></i>
+        Detailed Matchup Breakdown
+    </h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.reload()">
+                <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-primary" onclick="exportBreakdown()">
+                <i class="fas fa-download"></i> Export Analysis
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Summary Statistics Section -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Overall Statistics & Averages</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h4 class="text-primary mb-1">{{ summary.total_games }}</h4>
+                            <p class="text-muted mb-0">Total Games</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h4 class="text-success mb-1">{{ summary.recommended_bets }}</h4>
+                            <p class="text-muted mb-0">Recommended Bets</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h4 class="text-info mb-1">{{ "%.1f"|format(summary.avg_win_prob * 100) }}%</h4>
+                            <p class="text-muted mb-0">Avg Win Probability</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h4 class="text-warning mb-1">${{ "%.2f"|format(summary.avg_bet_size) }}</h4>
+                            <p class="text-muted mb-0">Avg Bet Size</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <h5 class="text-success mb-1">${{ "%.2f"|format(summary.total_expected_value) }}</h5>
+                            <p class="text-muted mb-0">Total Expected Value</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <h5 class="text-primary mb-1">{{ "%.2f"|format(summary.avg_odds) }}</h5>
+                            <p class="text-muted mb-0">Average Odds</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <h5 class="text-info mb-1">
+                                {{ "%.1f"|format(summary.win_prob_range.min * 100) }}% - {{ "%.1f"|format(summary.win_prob_range.max * 100) }}%
+                            </h5>
+                            <p class="text-muted mb-0">Win Prob Range</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Individual Matchup Breakdown -->
+{% if matchups %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-list-alt me-2"></i>Individual Matchup Analysis</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Matchup</th>
+                                <th>Model Probabilities</th>
+                                <th>Market Odds & Implied Probs</th>
+                                <th>Edges</th>
+                                <th>Recommendation</th>
+                                <th>Bet Analysis</th>
+                                <th>Confidence</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for matchup in matchups %}
+                            <tr class="{{ 'table-success' if matchup.kelly_edge else '' }}">
+                                <!-- Matchup Column -->
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="me-3">
+                                            <div class="d-flex align-items-center mb-1">
+                                                <img src="{{ matchup.away_team_logo }}" alt="{{ matchup.away_team }}" class="team-logo-small me-2">
+                                                <strong>{{ matchup.away_team }}</strong>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{ matchup.home_team_logo }}" alt="{{ matchup.home_team }}" class="team-logo-small me-2">
+                                                <strong>{{ matchup.home_team }}</strong>
+                                            </div>
+                                        </div>
+                                        <small class="text-muted">{{ matchup.game_date }}</small>
+                                    </div>
+                                </td>
+                                
+                                <!-- Model Probabilities Column -->
+                                <td>
+                                    <div class="mb-1">
+                                        <span class="badge bg-light text-dark">{{ matchup.away_team }}: {{ "%.1f"|format(matchup.away_win_prob * 100) }}%</span>
+                                    </div>
+                                    <div>
+                                        <span class="badge bg-primary">{{ matchup.home_team }}: {{ "%.1f"|format(matchup.home_win_prob * 100) }}%</span>
+                                    </div>
+                                </td>
+                                
+                                <!-- Market Odds & Implied Probs Column -->
+                                <td>
+                                    <div class="mb-2">
+                                        <strong class="text-muted">Market Odds:</strong>
+                                    </div>
+                                    <div class="mb-1">
+                                        <span class="badge bg-success">{{ matchup.away_team }}: {{ matchup.away_market_odds }}</span>
+                                        <small class="text-muted">({{ "%.1f"|format(matchup.away_market_implied_prob * 100) }}%)</small>
+                                    </div>
+                                    <div class="mb-1">
+                                        <span class="badge bg-info">{{ matchup.home_team }}: {{ matchup.home_market_odds }}</span>
+                                        <small class="text-muted">({{ "%.1f"|format(matchup.home_market_implied_prob * 100) }}%)</small>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted">{{ matchup.odds_source }}</small>
+                                        {% if matchup.market_odds.best_bookmaker %}
+                                        <br><small class="text-info">{{ matchup.market_odds.best_bookmaker }}</small>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                                
+                                <!-- Edges Column -->
+                                <td>
+                                    <div class="mb-1">
+                                        <span class="badge bg-{{ 'success' if matchup.away_edge > 0 else 'danger' if matchup.away_edge < -2 else 'secondary' }}">
+                                            {{ matchup.away_team }}: {{ "%.1f"|format(matchup.away_edge) }}%
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span class="badge bg-{{ 'success' if matchup.home_edge > 0 else 'danger' if matchup.home_edge < -2 else 'secondary' }}">
+                                            {{ matchup.home_team }}: {{ "%.1f"|format(matchup.home_edge) }}%
+                                        </span>
+                                    </div>
+                                    {% if matchup.away_edge > 5 or matchup.home_edge > 5 %}
+                                    <div class="mt-1">
+                                        <small class="text-success"><i class="fas fa-star"></i> Strong Edge</small>
+                                    </div>
+                                    {% endif %}
+                                </td>
+                                
+                                <!-- Recommendation Column -->
+                                <td>
+                                    {% if matchup.kelly_edge %}
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{ matchup.team_to_bet_logo }}" alt="{{ matchup.team_to_bet }}" class="team-logo-small me-2">
+                                            <div>
+                                                <strong class="text-success">{{ matchup.team_to_bet }}</strong>
+                                                <div><small class="text-success">BET RECOMMENDED</small></div>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <span class="text-muted">
+                                            <i class="fas fa-ban me-1"></i>No Bet
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                
+                                <!-- Bet Analysis Column -->
+                                <td>
+                                    {% if matchup.kelly_edge %}
+                                        <div><strong>${{ "%.2f"|format(matchup.bet_size) }}</strong></div>
+                                        <div class="text-{{ 'success' if matchup.expected_value > 0 else 'danger' }}">
+                                            EV: ${{ "%.2f"|format(matchup.expected_value) }}
+                                        </div>
+                                        <div><small>Kelly Edge: {{ "%.1f"|format(matchup.edge_percentage) }}%</small></div>
+                                        <div><small>Kelly Odds: {{ "%.2f"|format(matchup.kelly_odds) }}</small></div>
+                                    {% else %}
+                                        <span class="text-muted">-</span>
+                                    {% endif %}
+                                </td>
+                                
+                                <!-- Confidence Column -->
+                                <td>
+                                    <span class="badge bg-{{ 'success' if matchup.confidence == 'High' else 'warning' if matchup.confidence == 'Medium' else 'secondary' }}">
+                                        {{ matchup.confidence }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Team Analysis Section -->
+{% if summary.teams_analysis %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-users me-2"></i>Team Performance Analysis</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for team, stats in summary.teams_analysis.items() %}
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <div class="d-flex align-items-center justify-content-center mb-2">
+                                    <div class="team-logo me-2" style="width: 32px; height: 32px; background: #ccc; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7em;">
+                                        {{ team[:3] }}
+                                    </div>
+                                    <h6 class="mb-0">{{ team }}</h6>
+                                </div>
+                                <div class="row text-center">
+                                    <div class="col-6">
+                                        <small class="text-muted">Games</small>
+                                        <div><strong>{{ stats.games }}</strong></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted">Avg Win %</small>
+                                        <div><strong>{{ "%.1f"|format(stats.avg_win_prob * 100) }}%</strong></div>
+                                    </div>
+                                </div>
+                                <hr class="my-2">
+                                <div class="row text-center">
+                                    <div class="col-6">
+                                        <small class="text-muted">Rec. Bets</small>
+                                        <div><strong class="text-success">{{ stats.recommended_bets }}</strong></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted">Total EV</small>
+                                        <div><strong class="text-{{ 'success' if stats.total_expected_value > 0 else 'danger' }}">
+                                            ${{ "%.2f"|format(stats.total_expected_value) }}
+                                        </strong></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% else %}
+<div class="row">
+    <div class="col-12">
+        <div class="alert alert-info" role="alert">
+            <i class="fas fa-info-circle me-2"></i>
+            No matchup data available. Run the prediction pipeline to generate detailed analysis.
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<script>
+function exportBreakdown() {
+    // Create CSV export of the breakdown data
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "Game_Date,Away_Team,Home_Team,Away_Win_Prob,Home_Win_Prob,Away_Market_Odds,Home_Market_Odds,Away_Implied_Prob,Home_Implied_Prob,Away_Edge,Home_Edge,Team_To_Bet,Bet_Size,Expected_Value,Kelly_Odds,Confidence,Odds_Source\n";
+    
+    {% for matchup in matchups %}
+    csvContent += "{{ matchup.game_date }},{{ matchup.away_team }},{{ matchup.home_team }},{{ '%.3f'|format(matchup.away_win_prob) }},{{ '%.3f'|format(matchup.home_win_prob) }},{{ matchup.away_market_odds }},{{ matchup.home_market_odds }},{{ '%.3f'|format(matchup.away_market_implied_prob) }},{{ '%.3f'|format(matchup.home_market_implied_prob) }},{{ '%.2f'|format(matchup.away_edge) }},{{ '%.2f'|format(matchup.home_edge) }},{{ matchup.team_to_bet }},{{ '%.2f'|format(matchup.bet_size) }},{{ '%.2f'|format(matchup.expected_value) }},{{ '%.2f'|format(matchup.kelly_odds) }},{{ matchup.confidence }},{{ matchup.odds_source }}\n";
+    {% endfor %}
+    
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "mlb_matchup_breakdown.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+</script>
+
+{% endblock %}

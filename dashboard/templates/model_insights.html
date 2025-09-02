@@ -1,0 +1,347 @@
+{% extends "base.html" %}
+
+{% block title %}Model Insights - MLB Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">
+        <i class="fas fa-brain me-2 text-primary"></i>
+        Model Insights & Analysis
+    </h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.reload()">
+                <i class="fas fa-sync-alt"></i> Refresh Analysis
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Model Overview Section -->
+{% if insights.model_overview %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Model Overview</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h4 class="text-primary mb-1">{{ insights.model_overview.model_type }}</h4>
+                            <p class="text-muted mb-0">Model Type</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h4 class="text-success mb-1">{{ insights.model_overview.n_features }}</h4>
+                            <p class="text-muted mb-0">Features</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h4 class="text-info mb-1">{{ insights.model_overview.model_params.n_estimators or 'N/A' }}</h4>
+                            <p class="text-muted mb-0">Trees</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h4 class="text-warning mb-1">{{ insights.model_overview.model_params.max_depth or 'N/A' }}</h4>
+                            <p class="text-muted mb-0">Max Depth</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Feature Importance Analysis -->
+{% if feature_importance.feature_details %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Top Feature Importance</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Rank</th>
+                                <th>Feature</th>
+                                <th>Importance</th>
+                                <th>Category</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for feature in feature_importance.top_features %}
+                            <tr>
+                                <td><span class="badge bg-primary">{{ loop.index }}</span></td>
+                                <td>
+                                    <strong>{{ feature.feature.replace('_', ' ').title() }}</strong>
+                                </td>
+                                <td>
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar bg-success" role="progressbar" 
+                                             style="width: {{ (feature.importance * 1500)|round(1) }}%"
+                                             aria-valuenow="{{ (feature.importance * 100)|round(2) }}" 
+                                             aria-valuemin="0" aria-valuemax="100">
+                                            {{ (feature.importance * 100)|round(2) }}%
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    {% if 'pitcher' in feature.feature %}
+                                        {% if 'velocity' in feature.feature or 'spin' in feature.feature %}
+                                            <span class="badge bg-info">Pitcher Mechanics</span>
+                                        {% elif 'strikeouts' in feature.feature or 'whiffs' in feature.feature %}
+                                            <span class="badge bg-success">Pitcher Performance</span>
+                                        {% else %}
+                                            <span class="badge bg-warning">Batting vs Pitcher</span>
+                                        {% endif %}
+                                    {% elif 'wins' in feature.feature or 'losses' in feature.feature %}
+                                        <span class="badge bg-primary">Team Record</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">Other</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Feature Categories -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-pie-chart me-2"></i>Feature Categories</h5>
+            </div>
+            <div class="card-body">
+                {% if feature_importance.category_importance %}
+                    {% for category, importance in feature_importance.category_importance.items() %}
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <small><strong>{{ category }}</strong></small>
+                            <small>{{ (importance * 100)|round(1) }}%</small>
+                        </div>
+                        <div class="progress" style="height: 10px;">
+                            <div class="progress-bar 
+                                {% if loop.index == 1 %}bg-success{% elif loop.index == 2 %}bg-info{% elif loop.index == 3 %}bg-warning{% else %}bg-secondary{% endif %}" 
+                                role="progressbar" 
+                                style="width: {{ (importance * 100)|round(1) }}%"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Prediction Confidence Analysis -->
+{% if insights.prediction_analysis and not insights.prediction_analysis.get('error') %}
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-bullseye me-2"></i>Prediction Confidence</h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-4">
+                        <h4 class="text-success">{{ insights.prediction_analysis.confidence_distribution.high_confidence }}</h4>
+                        <small class="text-muted">High Confidence<br>(>65%)</small>
+                    </div>
+                    <div class="col-4">
+                        <h4 class="text-warning">{{ insights.prediction_analysis.confidence_distribution.medium_confidence }}</h4>
+                        <small class="text-muted">Medium Confidence<br>(55-65%)</small>
+                    </div>
+                    <div class="col-4">
+                        <h4 class="text-danger">{{ insights.prediction_analysis.confidence_distribution.low_confidence }}</h4>
+                        <small class="text-muted">Low Confidence<br>(<55%)</small>
+                    </div>
+                </div>
+                <hr>
+                <div class="text-center">
+                    <h5 class="text-primary">{{ "%.1f"|format(insights.prediction_analysis.avg_win_probability * 100) }}%</h5>
+                    <small class="text-muted">Average Win Probability</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Betting Performance -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-dollar-sign me-2"></i>Betting Analysis</h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-6">
+                        <h4 class="text-success">{{ insights.prediction_analysis.betting_recommendations.recommended_bets }}</h4>
+                        <small class="text-muted">Recommended<br>Bets</small>
+                    </div>
+                    <div class="col-6">
+                        <h4 class="text-info">${{ "%.0f"|format(insights.prediction_analysis.betting_recommendations.total_bet_amount) }}</h4>
+                        <small class="text-muted">Total Bet<br>Amount</small>
+                    </div>
+                </div>
+                <hr>
+                <div class="text-center">
+                    <h5 class="text-{{ 'success' if insights.prediction_analysis.betting_recommendations.total_expected_value > 0 else 'danger' }}">
+                        ${{ "%.2f"|format(insights.prediction_analysis.betting_recommendations.total_expected_value) }}
+                    </h5>
+                    <small class="text-muted">Total Expected Value</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Model Improvement Recommendations -->
+{% if insights.improvement_areas %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Improvement Recommendations</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <!-- Data Limitations -->
+                    <div class="col-md-6 mb-3">
+                        <h6 class="text-warning"><i class="fas fa-database me-1"></i>Data Limitations</h6>
+                        {% if insights.improvement_areas.data_limitations %}
+                            <ul class="list-unstyled">
+                                {% for limitation in insights.improvement_areas.data_limitations %}
+                                <li><i class="fas fa-exclamation-triangle text-warning me-2"></i>{{ limitation }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="text-success"><i class="fas fa-check me-1"></i>No major data limitations detected</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Missing Features -->
+                    <div class="col-md-6 mb-3">
+                        <h6 class="text-info"><i class="fas fa-plus-circle me-1"></i>Missing Features to Add</h6>
+                        {% if insights.improvement_areas.feature_gaps %}
+                            <ul class="small">
+                                {% for feature in insights.improvement_areas.feature_gaps[:8] %}
+                                <li>{{ feature }}</li>
+                                {% endfor %}
+                                {% if insights.improvement_areas.feature_gaps|length > 8 %}
+                                <li><em>...and {{ insights.improvement_areas.feature_gaps|length - 8 }} more</em></li>
+                                {% endif %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Top Recommendations -->
+                <div class="mt-3">
+                    <h6 class="text-success"><i class="fas fa-rocket me-1"></i>Priority Improvements</h6>
+                    <div class="row">
+                        {% for rec in insights.improvement_areas.recommendations[:6] %}
+                        <div class="col-md-6 mb-2">
+                            <div class="d-flex align-items-start">
+                                <span class="badge bg-success me-2 mt-1">{{ loop.index }}</span>
+                                <span class="small">{{ rec }}</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Most/Least Confident Predictions -->
+{% if insights.prediction_analysis and insights.prediction_analysis.get('most_confident') %}
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h6 class="mb-0"><i class="fas fa-thumbs-up me-2"></i>Most Confident Predictions</h6>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-sm mb-0">
+                        <tbody>
+                            {% for pred in insights.prediction_analysis.most_confident %}
+                            <tr>
+                                <td>
+                                    <strong>{{ pred['Away Team'] }} @ {{ pred['Home Team'] }}</strong>
+                                </td>
+                                <td class="text-end">
+                                    <span class="badge bg-success">{{ pred['Team_To_Bet'] }}</span>
+                                </td>
+                                <td class="text-end">
+                                    <strong>{{ "%.1f"|format(pred['Win Probability'] * 100) }}%</strong>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h6 class="mb-0"><i class="fas fa-question-circle me-2"></i>Least Confident Predictions</h6>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-sm mb-0">
+                        <tbody>
+                            {% for pred in insights.prediction_analysis.least_confident %}
+                            <tr>
+                                <td>
+                                    <strong>{{ pred['Away Team'] }} @ {{ pred['Home Team'] }}</strong>
+                                </td>
+                                <td class="text-end">
+                                    <span class="badge bg-warning">{{ pred['Team_To_Bet'] }}</span>
+                                </td>
+                                <td class="text-end">
+                                    <strong>{{ "%.1f"|format(pred['Win Probability'] * 100) }}%</strong>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Error Display -->
+{% if insights.get('error') %}
+<div class="row">
+    <div class="col-12">
+        <div class="alert alert-warning" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <strong>Analysis Error:</strong> {{ insights.error }}
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

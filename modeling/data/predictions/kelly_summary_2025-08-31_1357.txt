@@ -1,0 +1,51 @@
+Bankroll: $1,000.00
+Total Recommended Bets: $711.49
+Remaining Bankroll: $288.51
+Bankroll Utilization: 71.1%
+Number of Recommended Bets: 6
+
+BETTING RECOMMENDATIONS:
+----------------------------------------
+1. NYY @ TOR
+   Bet on: NYY
+   Win Probability: 66.0%
+   Bet Size: $250.00
+   Expected Value: $+65.15
+
+2. STL @ PIT
+   Bet on: STL
+   Win Probability: 57.0%
+   Bet Size: $73.10
+   Expected Value: $+6.48
+
+3. MIN @ MIA
+   Bet on: MIN
+   Win Probability: 57.0%
+   Bet Size: $65.98
+   Expected Value: $+5.85
+
+4. DET @ WSH
+   Bet on: DET
+   Win Probability: 60.0%
+   Bet Size: $98.02
+   Expected Value: $+14.31
+
+5. OAK @ TB
+   Bet on: TB
+   Win Probability: 69.0%
+   Bet Size: $128.22
+   Expected Value: $+40.76
+
+6. CIN @ BOS
+   Bet on: CIN
+   Win Probability: 65.0%
+   Bet Size: $96.17
+   Expected Value: $+23.23
+
+RISK METRICS:
+--------------------
+Largest Single Bet: $250.00 (25.0% of bankroll)
+Average Bet Size: $118.58
+Total Games with Predictions: 9
+Games with Kelly Edge: 6
+Kelly Hit Rate: 66.7%

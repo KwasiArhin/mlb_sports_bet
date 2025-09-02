@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Server Error - MLB Dashboard{% endblock %}
+
+{% block content %}
+<div class="text-center py-5">
+    <div class="card">
+        <div class="card-body">
+            <i class="fas fa-exclamation-circle fa-4x text-danger mb-4"></i>
+            <h1 class="display-4 text-muted">500</h1>
+            <h3>Internal Server Error</h3>
+            <p class="text-muted mb-4">
+                Something went wrong on our end. Please try again later.
+            </p>
+            
+            <div class="mt-4">
+                <button class="btn btn-primary me-2" onclick="location.reload()">
+                    <i class="fas fa-sync-alt"></i> Try Again
+                </button>
+                <a href="/" class="btn btn-outline-secondary">
+                    <i class="fas fa-home"></i> Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
