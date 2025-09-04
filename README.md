@@ -301,7 +301,7 @@ This is a personal sports betting analytics project. The codebase is organized w
 Machine Learning Engineer | Data Scientist 
 
 📧 **Email**: kwasiarhin@gmail.com 
-🔗 **LinkedIn**: https://www.linkedin.com/in/roman-esquibel-75b994223/
+🔗 **LinkedIn**: https://www.linkedin.com/in/kwasiarhin/
 
 ---
 
