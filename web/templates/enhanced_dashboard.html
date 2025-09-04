@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MLB Betting Analytics Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/enhanced_dashboard.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <h1><i class="fas fa-baseball-ball"></i> MLB Betting Analytics</h1>
+                <div class="header-info">
+                    <span class="date">{{ data.current_date if data else "Loading..." }}</span>
+                    <button class="refresh-btn" onclick="location.reload()">
+                        <i class="fas fa-sync"></i> Refresh
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="dashboard-nav">
+            <div class="nav-content">
+                <a href="/" class="nav-item active">
+                    <i class="fas fa-home"></i> Overview
+                </a>
+                <a href="/games" class="nav-item">
+                    <i class="fas fa-calendar-day"></i> Games & Odds
+                </a>
+                <a href="/pitchers" class="nav-item">
+                    <i class="fas fa-user-tie"></i> Pitchers
+                </a>
+                <a href="/hitters" class="nav-item">
+                    <i class="fas fa-user"></i> Hitters
+                </a>
+                <a href="/lineups" class="nav-item">
+                    <i class="fas fa-list-ol"></i> Lineups
+                </a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            {% if data %}
+            
+            <!-- Summary Cards -->
+            <section class="summary-section">
+                <h2>Today's Overview</h2>
+                <div class="summary-grid">
+                    <div class="summary-card games-card">
+                        <div class="card-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>{{ data.games|length }}</h3>
+                            <p>Games Today</p>
+                        </div>
+                    </div>
+
+                    <div class="summary-card pitchers-card">
+                        <div class="card-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>{{ data.pitcher_summary.total_pitchers or 0 }}</h3>
+                            <p>Pitchers Analyzed</p>
+                            {% if data.pitcher_summary.average_era %}
+                            <small>Avg ERA: {{ "%.2f"|format(data.pitcher_summary.average_era) }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="summary-card hitters-card">
+                        <div class="card-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>{{ data.hitter_summary.total_hitters or 0 }}</h3>
+                            <p>Hitters Analyzed</p>
+                            {% if data.hitter_summary.average_ops %}
+                            <small>Avg OPS: {{ "%.3f"|format(data.hitter_summary.average_ops) }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="summary-card odds-card">
+                        <div class="card-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>FanDuel</h3>
+                            <p>Live Odds</p>
+                            <small>Real-time updates</small>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Top Matchups -->
+            {% if data.top_matchups %}
+            <section class="matchups-section">
+                <h2>🔥 Top Betting Opportunities</h2>
+                <div class="matchups-grid">
+                    {% for matchup in data.top_matchups[:4] %}
+                    <div class="matchup-card {{ matchup.confidence.lower() }}-confidence">
+                        <div class="matchup-header">
+                            <span class="confidence-badge">{{ matchup.confidence }}</span>
+                            <span class="score-diff">+{{ "%.1f"|format(matchup.score_difference) }}</span>
+                        </div>
+                        <div class="matchup-teams">
+                            <div class="team away-team {{ 'advantage' if matchup.advantage == 'away' else '' }}">
+                                <strong>{{ matchup.away_team }}</strong>
+                                <div class="pitcher">{{ matchup.away_pitcher }}</div>
+                                <div class="odds">{{ matchup.away_ml }}</div>
+                                <div class="score">{{ "%.1f"|format(matchup.away_score) if matchup.away_score > 0 else 'N/A' }}</div>
+                            </div>
+                            <div class="vs">@</div>
+                            <div class="team home-team {{ 'advantage' if matchup.advantage == 'home' else '' }}">
+                                <strong>{{ matchup.home_team }}</strong>
+                                <div class="pitcher">{{ matchup.home_pitcher }}</div>
+                                <div class="odds">{{ matchup.home_ml }}</div>
+                                <div class="score">{{ "%.1f"|format(matchup.home_score) if matchup.home_score > 0 else 'N/A' }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+
+            <!-- Today's Games Preview -->
+            {% if data.games %}
+            <section class="games-preview">
+                <div class="section-header">
+                    <h2>Today's Games</h2>
+                    <a href="/games" class="view-all-btn">View All Games <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="games-table-container">
+                    <table class="games-table">
+                        <thead>
+                            <tr>
+                                <th>Matchup</th>
+                                <th>Time</th>
+                                <th>Moneyline</th>
+                                <th>Pitcher Advantage</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for game in data.games[:8] %}
+                            <tr>
+                                <td class="matchup-cell">
+                                    <div class="teams">
+                                        <span class="away">{{ game.away_team }}</span>
+                                        <span class="at">@</span>
+                                        <span class="home">{{ game.home_team }}</span>
+                                    </div>
+                                    <div class="pitchers">
+                                        <small>{{ game.away_pitcher }} vs {{ game.home_pitcher }}</small>
+                                    </div>
+                                </td>
+                                <td>{{ game.formatted_time }}</td>
+                                <td class="odds-cell">
+                                    <span class="away-odds">{{ game.away_moneyline }}</span>
+                                    <span class="home-odds">{{ game.home_moneyline }}</span>
+                                </td>
+                                <td class="advantage-cell">
+                                    {% if game.away_pitcher_score != 'N/A' and game.home_pitcher_score != 'N/A' %}
+                                        {% if game.away_pitcher_score > game.home_pitcher_score %}
+                                            <span class="advantage away">{{ game.away_team }} +{{ "%.1f"|format(game.away_pitcher_score - game.home_pitcher_score) }}</span>
+                                        {% elif game.home_pitcher_score > game.away_pitcher_score %}
+                                            <span class="advantage home">{{ game.home_team }} +{{ "%.1f"|format(game.home_pitcher_score - game.away_pitcher_score) }}</span>
+                                        {% else %}
+                                            <span class="even">Even</span>
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="no-data">No Data</span>
+                                    {% endif %}
+                                </td>
+                                <td class="total-cell">
+                                    {% if game.total != 'N/A' %}
+                                    <span class="total">{{ game.total }}</span>
+                                    <div class="ou-odds">
+                                        <small>O:{{ game.over_odds }} U:{{ game.under_odds }}</small>
+                                    </div>
+                                    {% else %}
+                                    <span class="no-odds">N/A</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            {% endif %}
+
+            <!-- Top Performers -->
+            <div class="performers-section">
+                <!-- Top Pitchers -->
+                {% if data.pitcher_summary.top_pitchers %}
+                <div class="performers-card">
+                    <div class="section-header">
+                        <h3>🏆 Top Pitchers</h3>
+                        <a href="/pitchers" class="view-all-btn">View All <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="performers-list">
+                        {% for pitcher in data.pitcher_summary.top_pitchers[:5] %}
+                        <div class="performer-item">
+                            <div class="performer-info">
+                                <strong>{{ pitcher.name }}</strong>
+                                <span class="team">{{ pitcher.team }}</span>
+                            </div>
+                            <div class="performer-stats">
+                                <span class="stat-value">WAR: {{ pitcher.war }}</span>
+                                <span class="stat-value">ERA: {{ pitcher.era }}</span>
+                                <span class="stat-value">WHIP: {{ pitcher.whip }}</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Top Hitters -->
+                {% if data.hitter_summary.top_hitters %}
+                <div class="performers-card">
+                    <div class="section-header">
+                        <h3>🏏 Top Hitters</h3>
+                        <a href="/hitters" class="view-all-btn">View All <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="performers-list">
+                        {% for hitter in data.hitter_summary.top_hitters[:5] %}
+                        <div class="performer-item">
+                            <div class="performer-info">
+                                <strong>{{ hitter.name }}</strong>
+                                <span class="team">{{ hitter.team }}</span>
+                            </div>
+                            <div class="performer-stats">
+                                <span class="stat-value">wRC+: {{ hitter.wrc_plus }}</span>
+                                <span class="stat-value">OPS: {{ hitter.ops }}</span>
+                                <span class="stat-value">wOBA: {{ hitter.woba }}</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            {% else %}
+            <!-- No Data State -->
+            <div class="no-data-state">
+                <div class="no-data-icon">
+                    <i class="fas fa-database"></i>
+                </div>
+                <h2>No Data Available</h2>
+                <p>Run the daily betting pipeline to collect today's data:</p>
+                <code>python scraping/daily_betting_pipeline.py</code>
+                <button class="refresh-btn" onclick="location.reload()">
+                    <i class="fas fa-sync"></i> Check Again
+                </button>
+            </div>
+            {% endif %}
+        </main>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <p>MLB Betting Analytics Dashboard | Data sources: Fangraphs, Baseball Savant, The Odds API</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/enhanced_dashboard.js') }}"></script>
+</body>
+</html>

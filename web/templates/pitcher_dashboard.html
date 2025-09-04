@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MLB Pitcher Evaluation Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <i class="fas fa-baseball-ball"></i>
+                    <h1>MLB Pitcher Analytics</h1>
+                </div>
+                <div class="date-info">
+                    <i class="fas fa-calendar"></i>
+                    <span>Data as of {{ current_date }}</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Summary Stats -->
+        <section class="summary-section">
+            <div class="summary-cards">
+                <div class="summary-card">
+                    <div class="card-icon elite">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>{{ summary.elite_count }}</h3>
+                        <p>Elite Pitchers</p>
+                        <small>Grade A+ to A</small>
+                    </div>
+                </div>
+                
+                <div class="summary-card">
+                    <div class="card-icon above-avg">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>{{ summary.above_average_count }}</h3>
+                        <p>Above Average</p>
+                        <small>Grade B+ to B-</small>
+                    </div>
+                </div>
+                
+                <div class="summary-card">
+                    <div class="card-icon average">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>{{ summary.average_count }}</h3>
+                        <p>Average</p>
+                        <small>Grade C+ to C-</small>
+                    </div>
+                </div>
+                
+                <div class="summary-card">
+                    <div class="card-icon poor">
+                        <i class="fas fa-chart-line-down"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>{{ summary.poor_count }}</h3>
+                        <p>Below Average</p>
+                        <small>Grade D+ and below</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filters -->
+        <section class="filters-section">
+            <div class="filters-container">
+                <div class="filter-group">
+                    <label for="tier-filter">Filter by Tier:</label>
+                    <select id="tier-filter">
+                        <option value="">All Tiers</option>
+                        <option value="Elite">Elite</option>
+                        <option value="Above Average">Above Average</option>
+                        <option value="Average">Average</option>
+                        <option value="Below Average">Below Average</option>
+                        <option value="Poor">Poor</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="team-filter">Filter by Team:</label>
+                    <select id="team-filter">
+                        <option value="">All Teams</option>
+                        {% for team in teams %}
+                        <option value="{{ team }}">{{ team }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="sort-by">Sort by:</label>
+                    <select id="sort-by">
+                        <option value="composite_score">Overall Score</option>
+                        <option value="whip">WHIP</option>
+                        <option value="fip">FIP</option>
+                        <option value="siera">SIERA</option>
+                        <option value="csw_rate">CSW%</option>
+                        <option value="stuff_plus">Stuff+</option>
+                    </select>
+                </div>
+                
+                <div class="search-group">
+                    <input type="text" id="pitcher-search" placeholder="Search pitchers...">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Performers -->
+            <section class="top-performers">
+                <h2><i class="fas fa-star"></i> Top Performers</h2>
+                <div class="top-performers-grid">
+                    {% for pitcher in top_performers %}
+                    <div class="performer-card {{ pitcher.tier.lower().replace(' ', '-') }}">
+                        <div class="performer-header">
+                            <div class="performer-name">
+                                <h3>{{ pitcher.pitcher_name }}</h3>
+                                <span class="team-badge">{{ pitcher.team }}</span>
+                            </div>
+                            <div class="grade-badge grade-{{ pitcher.grade.replace('+', 'plus').replace('-', 'minus') }}">
+                                {{ pitcher.grade }}
+                            </div>
+                        </div>
+                        <div class="performer-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Score</span>
+                                <span class="stat-value">{{ "%.1f"|format(pitcher.composite_score) }}</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">FIP</span>
+                                <span class="stat-value">{{ "%.2f"|format(pitcher.fip) if pitcher.fip != 'N/A' else 'N/A' }}</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">WHIP</span>
+                                <span class="stat-value">{{ "%.3f"|format(pitcher.whip) if pitcher.whip != 'N/A' else 'N/A' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- Pitcher Table -->
+            <section class="pitcher-table-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-table"></i> Complete Pitcher Analysis</h2>
+                    <div class="table-controls">
+                        <button id="export-btn" class="btn btn-secondary">
+                            <i class="fas fa-download"></i> Export CSV
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table id="pitcher-table" class="pitcher-table">
+                        <thead>
+                            <tr>
+                                <th data-sort="rank">Rank</th>
+                                <th data-sort="pitcher_name">Pitcher</th>
+                                <th data-sort="team">Team</th>
+                                <th data-sort="composite_score">Score</th>
+                                <th data-sort="grade">Grade</th>
+                                <th data-sort="tier">Tier</th>
+                                <th data-sort="whip">WHIP</th>
+                                <th data-sort="fip">FIP</th>
+                                <th data-sort="siera">SIERA</th>
+                                <th data-sort="csw_rate">CSW%</th>
+                                <th data-sort="xera">xERA</th>
+                                <th data-sort="xfip">xFIP</th>
+                                <th data-sort="xwoba">xwOBA</th>
+                                <th data-sort="xba">xBA</th>
+                                <th data-sort="xslg">xSLG</th>
+                                <th data-sort="stuff_plus">Stuff+</th>
+                                <th data-sort="innings_pitched">IP</th>
+                                <th>Strengths</th>
+                                <th>Weaknesses</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pitcher in pitchers %}
+                            <tr class="pitcher-row" data-tier="{{ pitcher.tier }}" data-team="{{ pitcher.team }}">
+                                <td class="rank-cell">{{ pitcher.rank }}</td>
+                                <td class="pitcher-name-cell">
+                                    <div class="pitcher-info">
+                                        <span class="name">{{ pitcher.pitcher_name }}</span>
+                                    </div>
+                                </td>
+                                <td><span class="team-badge">{{ pitcher.team }}</span></td>
+                                <td class="score-cell">
+                                    <span class="score-value">{{ "%.1f"|format(pitcher.composite_score) }}</span>
+                                </td>
+                                <td>
+                                    <span class="grade-badge grade-{{ pitcher.grade.replace('+', 'plus').replace('-', 'minus') }}">
+                                        {{ pitcher.grade }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="tier-badge tier-{{ pitcher.tier.lower().replace(' ', '-') }}">
+                                        {{ pitcher.tier }}
+                                    </span>
+                                </td>
+                                <td>{{ "%.3f"|format(pitcher.whip) if pitcher.whip != 'N/A' else 'N/A' }}</td>
+                                <td>{{ "%.2f"|format(pitcher.fip) if pitcher.fip != 'N/A' else 'N/A' }}</td>
+                                <td>{{ "%.2f"|format(pitcher.siera) if pitcher.siera != 'N/A' else 'N/A' }}</td>
+                                <td>{{ "%.1f"|format(pitcher.csw_rate) if pitcher.csw_rate != 'N/A' else 'N/A' }}</td>
+                                <td>{{ "%.2f"|format(pitcher.xera) if pitcher.xera != 'N/A' else 'N/A' }}</td>
+                                <td>{{ "%.2f"|format(pitcher.xfip) if pitcher.xfip != 'N/A' else 'N/A' }}</td>
+                                <td>{{ "%.3f"|format(pitcher.xwoba) if pitcher.xwoba != 'N/A' else 'N/A' }}</td>
+                                <td>{{ "%.3f"|format(pitcher.xba) if pitcher.xba != 'N/A' else 'N/A' }}</td>
+                                <td>{{ "%.3f"|format(pitcher.xslg) if pitcher.xslg != 'N/A' else 'N/A' }}</td>
+                                <td>{{ "%.0f"|format(pitcher.stuff_plus) if pitcher.stuff_plus != 'N/A' else 'N/A' }}</td>
+                                <td>{{ "%.1f"|format(pitcher.innings_pitched) if pitcher.innings_pitched != 'N/A' else 'N/A' }}</td>
+                                <td class="strengths-cell">{{ pitcher.strengths }}</td>
+                                <td class="weaknesses-cell">{{ pitcher.weaknesses }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <div class="footer-content">
+                <p>&copy; 2025 MLB Pitcher Analytics Dashboard | Data sourced from Fangraphs</p>
+                <p>Last updated: {{ current_date }}</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

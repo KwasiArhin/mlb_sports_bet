@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - MLB Pitcher Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <i class="fas fa-baseball-ball"></i>
+                    <h1>MLB Pitcher Analytics</h1>
+                </div>
+            </div>
+        </header>
+        
+        <main class="main-content" style="text-align: center; padding: 4rem 2rem;">
+            <div style="background: white; border-radius: 8px; padding: 3rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); max-width: 600px; margin: 0 auto;">
+                <i class="fas fa-exclamation-triangle" style="font-size: 4rem; color: #ef4444; margin-bottom: 2rem;"></i>
+                
+                <h2 style="color: #1a365d; margin-bottom: 1rem;">Oops! Something went wrong</h2>
+                
+                <p style="color: #64748b; margin-bottom: 2rem; line-height: 1.6;">
+                    {{ error }}
+                </p>
+                
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: #1a365d; margin-bottom: 1rem;">To fix this issue:</h3>
+                    <ol style="text-align: left; color: #64748b; line-height: 1.8;">
+                        <li>Run the pitcher data collector:<br>
+                            <code style="background: #f8fafc; padding: 0.25rem 0.5rem; border-radius: 4px; font-family: monospace;">
+                                python features/fangraphs_pitcher_collector.py --sample
+                            </code>
+                        </li>
+                        <li>Run the pitcher evaluator:<br>
+                            <code style="background: #f8fafc; padding: 0.25rem 0.5rem; border-radius: 4px; font-family: monospace;">
+                                python features/fangraphs_pitcher_evaluator.py
+                            </code>
+                        </li>
+                        <li>Refresh this page</li>
+                    </ol>
+                </div>
+                
+                <div>
+                    <a href="/" class="btn btn-secondary" style="text-decoration: none; color: white;">
+                        <i class="fas fa-refresh"></i> Try Again
+                    </a>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="dashboard-footer">
+            <div class="footer-content">
+                <p>&copy; 2025 MLB Pitcher Analytics Dashboard</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

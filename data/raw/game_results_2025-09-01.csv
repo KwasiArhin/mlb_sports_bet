@@ -1,0 +1,14 @@
+game_id,game_date,away_team,home_team,away_team_full,home_team_full,away_score,home_score,winner,loser,home_win,run_differential,total_runs,winning_score,losing_score,venue,innings_played,status,winning_pitcher,losing_pitcher,save_pitcher,collected_at
+776498,2025-09-01,MIA,WAS,Miami Marlins,Washington Nationals,0,2,WAS,MIA,1,2,2,2,0,Nationals Park,9,Final,Andrew Alvarez,Lake Bachar,Jose A. Ferrer,2025-09-02T14:43:24.296228
+776501,2025-09-01,NYM,DET,New York Mets,Detroit Tigers,10,8,NYM,DET,0,2,18,10,8,Comerica Park,9,Final,Ryne Stanek,Drew Sommers,Edwin Díaz,2025-09-02T14:43:24.296255
+776503,2025-09-01,TOR,CIN,Toronto Blue Jays,Cincinnati Reds,4,5,CIN,TOR,1,1,9,5,4,Great American Ball Park,9,Final,Yosver Zulueta,Brendon Little,,2025-09-02T14:43:24.296260
+776505,2025-09-01,CLE,BOS,Cleveland Guardians,Boston Red Sox,4,6,BOS,CLE,1,2,10,6,4,Fenway Park,9,Final,Brayan Bello,Erik Sabrowski,Aroldis Chapman,2025-09-02T14:43:24.296263
+776499,2025-09-01,LAA,HOU,Los Angeles Angels,Houston Astros,3,8,HOU,LAA,1,5,11,8,3,Daikin Park,9,Final,Luis Garcia,Yusei Kikuchi,,2025-09-02T14:43:24.296266
+776502,2025-09-01,CWS,MIN,Chicago White Sox,Minnesota Twins,6,5,CWS,MIN,0,1,11,6,5,Target Field,9,Final,Tyler Alexander,Justin Topa,Jordan Leasure,2025-09-02T14:43:24.296269
+776497,2025-09-01,Athletics,STL,Athletics,St. Louis Cardinals,11,3,Athletics,STL,0,8,14,11,3,Busch Stadium,9,Final,Luis Morales,Sonny Gray,,2025-09-02T14:43:24.296271
+776506,2025-09-01,ATL,CHC,Atlanta Braves,Chicago Cubs,6,7,CHC,ATL,1,1,13,7,6,Wrigley Field,9,Final,Andrew Kittredge,John Brebbia,,2025-09-02T14:43:24.296273
+776492,2025-09-01,SF,COL,San Francisco Giants,Colorado Rockies,8,2,SF,COL,0,6,10,8,2,Coors Field,9,Final,Kai-Wei Teng,Chase Dollander,,2025-09-02T14:43:24.296276
+776500,2025-09-01,PHI,MIL,Philadelphia Phillies,Milwaukee Brewers,10,8,PHI,MIL,0,2,18,10,8,American Family Field,9,Final,David Robertson,Abner Uribe,Jhoan Duran,2025-09-02T14:43:24.296279
+776494,2025-09-01,BAL,SD,Baltimore Orioles,San Diego Padres,4,3,BAL,SD,0,1,7,4,3,Petco Park,9,Final,Dietrich Enns,Jason Adam,Keegan Akin,2025-09-02T14:43:24.296281
+776504,2025-09-01,SEA,TB,Seattle Mariners,Tampa Bay Rays,2,10,TB,SEA,1,8,12,10,2,George M. Steinbrenner Field,9,Final,Shane Baz,Luis Castillo,,2025-09-02T14:43:24.296284
+776495,2025-09-02,TEX,ARI,Texas Rangers,Arizona Diamondbacks,7,5,TEX,ARI,0,2,12,7,5,Chase Field,9,Final,Chris Martin,Juan Burgos,Shawn Armstrong,2025-09-02T14:43:24.296286

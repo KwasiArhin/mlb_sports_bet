@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hitter Analysis - MLB Betting Analytics</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/enhanced_dashboard.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Additional styles for hitter page */
+        .hitter-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .stat-category {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid #e5e7eb;
+        }
+        
+        .stat-category h3 {
+            margin: 0 0 15px 0;
+            color: #1f2937;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-bottom: 2px solid #3b82f6;
+            padding-bottom: 8px;
+        }
+        
+        .top-player {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .top-player:last-child {
+            border-bottom: none;
+        }
+        
+        .player-rank {
+            font-weight: 600;
+            color: #6b7280;
+            width: 20px;
+        }
+        
+        .player-info {
+            flex: 1;
+            margin: 0 10px;
+        }
+        
+        .player-name {
+            font-weight: 500;
+            color: #1f2937;
+        }
+        
+        .player-team {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+        
+        .player-value {
+            font-weight: 600;
+            color: #059669;
+        }
+        
+        .hitters-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .hitters-table th {
+            background: #f8fafc;
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.9rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.2s;
+        }
+        
+        .hitters-table th:hover {
+            background: #e2e8f0;
+        }
+        
+        .hitters-table th.sortable::after {
+            content: ' ↕';
+            color: #9ca3af;
+            font-size: 0.8rem;
+        }
+        
+        .hitters-table th.sort-asc::after {
+            content: ' ↑';
+            color: #3b82f6;
+            font-weight: bold;
+        }
+        
+        .hitters-table th.sort-desc::after {
+            content: ' ↓';
+            color: #3b82f6;
+            font-weight: bold;
+        }
+        
+        .hitters-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 0.9rem;
+            color: #1f2937;
+            background: white;
+        }
+        
+        .hitters-table tr {
+            background: white;
+        }
+        
+        .hitters-table tr:hover {
+            background: #f8fafc !important;
+        }
+        
+        .hitters-table tr:hover td {
+            color: #1f2937 !important;
+        }
+        
+        .hitter-name {
+            font-weight: 500;
+            color: #1f2937 !important;
+        }
+        
+        /* Ensure all table text is visible */
+        .hitters-table tbody tr td {
+            color: #1f2937 !important;
+            background: white !important;
+        }
+        
+        .hitters-table tbody tr:nth-child(even) td {
+            background: #f9fafb !important;
+            color: #1f2937 !important;
+        }
+        
+        .hitters-table tbody tr:hover td {
+            background: #e5e7eb !important;
+            color: #1f2937 !important;
+        }
+        
+        .grade {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-align: center;
+            min-width: 30px;
+            display: inline-block;
+        }
+        
+        .grade-aplus { background: #10b981; color: white; }
+        .grade-a { background: #34d399; color: white; }
+        .grade-aminus { background: #6ee7b7; color: #065f46; }
+        .grade-bplus { background: #60a5fa; color: white; }
+        .grade-b { background: #93c5fd; color: #1e40af; }
+        .grade-bminus { background: #ddd6fe; color: #5b21b6; }
+        .grade-cplus { background: #fbbf24; color: #92400e; }
+        .grade-c { background: #fcd34d; color: #92400e; }
+        .grade-cminus { background: #fde68a; color: #92400e; }
+        .grade-dplus { background: #fb7185; color: white; }
+        .grade-d { background: #f87171; color: white; }
+        .grade-f { background: #ef4444; color: white; }
+        
+        .team-badge {
+            background: #3b82f6;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .score {
+            font-weight: 600;
+            color: #059669;
+        }
+        
+        .table-container {
+            max-height: 600px;
+            overflow-y: auto;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .controls-bar {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .search-input, .filter-select {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .search-input {
+            min-width: 200px;
+        }
+        
+        .view-toggle {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .view-btn {
+            padding: 8px 16px;
+            border: 1px solid #d1d5db;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        
+        .view-btn.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        
+        .view-btn:hover {
+            background: #f3f4f6;
+        }
+        
+        .view-btn.active:hover {
+            background: #2563eb;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        #top10-view { display: none; }
+        #table-view { display: block; }
+        
+        .view-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <h1><i class="fas fa-baseball-ball"></i> Comprehensive Hitter Analysis</h1>
+                <div class="header-info">
+                    <span class="date">{{ data.current_date if data else "Loading..." }}</span>
+                    <button class="refresh-btn" onclick="location.reload()">
+                        <i class="fas fa-sync"></i> Refresh
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="dashboard-nav">
+            <div class="nav-content">
+                <a href="/" class="nav-item">
+                    <i class="fas fa-home"></i> Overview
+                </a>
+                <a href="/games" class="nav-item">
+                    <i class="fas fa-calendar-day"></i> Games & Odds
+                </a>
+                <a href="/pitchers" class="nav-item">
+                    <i class="fas fa-user-tie"></i> Pitchers
+                </a>
+                <a href="/hitters" class="nav-item active">
+                    <i class="fas fa-baseball-ball"></i> Hitters
+                </a>
+                <a href="/lineups" class="nav-item">
+                    <i class="fas fa-list-ol"></i> Lineups
+                </a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Summary Stats -->
+            <section class="summary-section" id="summary-section">
+                <h2>Hitter Overview</h2>
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <div class="card-icon"><i class="fas fa-users"></i></div>
+                        <div class="card-content">
+                            <h3 id="total-hitters">Loading...</h3>
+                            <p>Total Hitters Analyzed</p>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="card-icon"><i class="fas fa-star"></i></div>
+                        <div class="card-content">
+                            <h3 id="elite-hitters">Loading...</h3>
+                            <p>Elite Performers (A+ Grade)</p>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+                        <div class="card-content">
+                            <h3 id="avg-ops">Loading...</h3>
+                            <p>Average OPS</p>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="card-icon"><i class="fas fa-download"></i></div>
+                        <div class="card-content">
+                            <a href="/export/hitters" style="color: inherit; text-decoration: none;">
+                                <h3><i class="fas fa-file-csv"></i></h3>
+                                <p>Export Data</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- View Controls -->
+            <section class="controls-section">
+                <div class="controls-bar">
+                    <div class="view-toggle">
+                        <span style="font-weight: 500; color: #374151;">View:</span>
+                        <button class="view-btn active" id="top10-btn" onclick="showTop10View()">
+                            <i class="fas fa-trophy"></i> Top 10 Categories
+                        </button>
+                        <button class="view-btn" id="table-btn" onclick="showTableView()">
+                            <i class="fas fa-table"></i> All Hitters Table
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Top 10 Categories View -->
+            <section id="top10-view" class="view-section">
+                <h2>🏆 Top 10 in Key Categories</h2>
+                <div class="hitter-stats-grid" id="top10-grid">
+                    <div class="loading-spinner"></div>
+                    <p>Loading top performers...</p>
+                </div>
+            </section>
+
+            <!-- All Hitters Table View -->
+            <section id="table-view" class="view-section" style="display: none;">
+                <h2>📊 Complete Hitter Analysis</h2>
+                
+                <!-- Table Controls -->
+                <div class="controls-bar">
+                    <input type="text" id="hitter-search" placeholder="Search hitters or teams..." class="search-input">
+                    <select id="grade-filter" class="filter-select">
+                        <option value="">All Grades</option>
+                        <option value="A+">A+</option>
+                        <option value="A">A</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B">B</option>
+                        <option value="B-">B-</option>
+                        <option value="C+">C+</option>
+                        <option value="C">C</option>
+                        <option value="C-">C-</option>
+                        <option value="D+">D+</option>
+                        <option value="D">D</option>
+                        <option value="F">F</option>
+                    </select>
+                    <select id="team-filter" class="filter-select">
+                        <option value="">All Teams</option>
+                    </select>
+                    <span id="results-count" style="color: #6b7280; font-size: 0.9rem;"></span>
+                </div>
+                
+                <!-- Hitters Table -->
+                <div class="table-container" id="hitters-table-container">
+                    <div class="loading-state">
+                        <div class="loading-spinner"></div>
+                        <p>Loading comprehensive hitter data...</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <p>MLB Hitter Analytics | Data from Fangraphs & Baseball Savant | Advanced Sabermetrics</p>
+        </footer>
+    </div>
+
+    <script>
+        class ComprehensiveHitterDashboard {
+            constructor() {
+                this.hitters = [];
+                this.filteredHitters = [];
+                this.top10Data = {};
+                this.currentView = 'top10';
+                this.sortColumn = null;
+                this.sortDirection = 'desc';
+                this.init();
+            }
+
+            async init() {
+                await this.loadData();
+                this.setupEventListeners();
+                this.showTop10View();
+            }
+
+            async loadData() {
+                try {
+                    // Load both hitter data and top 10 categories
+                    const [hittersResponse, top10Response] = await Promise.all([
+                        fetch('/api/hitters'),
+                        fetch('/api/hitters/top10')
+                    ]);
+
+                    this.hitters = await hittersResponse.json();
+                    this.top10Data = await top10Response.json();
+                    this.filteredHitters = [...this.hitters];
+
+                    console.log('Loaded', this.hitters.length, 'hitters');
+                    this.updateSummaryStats();
+                    
+                } catch (error) {
+                    console.error('Error loading data:', error);
+                    this.showError();
+                }
+            }
+
+            updateSummaryStats() {
+                document.getElementById('total-hitters').textContent = this.hitters.length;
+                
+                const eliteHitters = this.hitters.filter(h => h.grade === 'A+').length;
+                document.getElementById('elite-hitters').textContent = eliteHitters;
+                
+                const avgOps = this.hitters.length > 0 ? 
+                    (this.hitters.reduce((sum, h) => sum + (h.ops || 0), 0) / this.hitters.length).toFixed(3) : 
+                    '0.000';
+                document.getElementById('avg-ops').textContent = avgOps;
+            }
+
+            setupEventListeners() {
+                // Search and filters
+                document.getElementById('hitter-search')?.addEventListener('input', () => this.applyFilters());
+                document.getElementById('grade-filter')?.addEventListener('change', () => this.applyFilters());
+                document.getElementById('team-filter')?.addEventListener('change', () => this.applyFilters());
+
+                // Populate team filter
+                const teams = [...new Set(this.hitters.map(h => h.team))].sort();
+                const teamFilter = document.getElementById('team-filter');
+                if (teamFilter) {
+                    teams.forEach(team => {
+                        const option = document.createElement('option');
+                        option.value = team;
+                        option.textContent = team;
+                        teamFilter.appendChild(option);
+                    });
+                }
+            }
+
+            showTop10View() {
+                this.currentView = 'top10';
+                document.getElementById('top10-view').style.display = 'block';
+                document.getElementById('table-view').style.display = 'none';
+                document.getElementById('top10-btn').classList.add('active');
+                document.getElementById('table-btn').classList.remove('active');
+                this.renderTop10();
+            }
+
+            showTableView() {
+                this.currentView = 'table';
+                document.getElementById('top10-view').style.display = 'none';
+                document.getElementById('table-view').style.display = 'block';
+                document.getElementById('top10-btn').classList.remove('active');
+                document.getElementById('table-btn').classList.add('active');
+                this.renderTable();
+            }
+
+            renderTop10() {
+                const container = document.getElementById('top10-grid');
+                if (!this.top10Data || Object.keys(this.top10Data).length === 0) {
+                    container.innerHTML = '<p>Loading top 10 categories...</p>';
+                    return;
+                }
+
+                let html = '';
+                Object.entries(this.top10Data).forEach(([key, category]) => {
+                    html += `
+                        <div class="stat-category">
+                            <h3><i class="fas fa-trophy"></i> ${category.title}</h3>
+                            ${category.players.map(player => `
+                                <div class="top-player">
+                                    <span class="player-rank">${player.rank}</span>
+                                    <div class="player-info">
+                                        <div class="player-name">${player.name}</div>
+                                        <div class="player-team">${player.team}</div>
+                                    </div>
+                                    <span class="player-value">${player.value}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                });
+
+                container.innerHTML = html;
+            }
+
+            applyFilters() {
+                if (this.currentView !== 'table') return;
+
+                const search = document.getElementById('hitter-search')?.value.toLowerCase() || '';
+                const gradeFilter = document.getElementById('grade-filter')?.value || '';
+                const teamFilter = document.getElementById('team-filter')?.value || '';
+
+                this.filteredHitters = this.hitters.filter(hitter => {
+                    const matchesSearch = !search || 
+                        hitter.hitter_name?.toLowerCase().includes(search) ||
+                        hitter.team?.toLowerCase().includes(search);
+                    
+                    const matchesGrade = !gradeFilter || hitter.grade === gradeFilter;
+                    const matchesTeam = !teamFilter || hitter.team === teamFilter;
+
+                    return matchesSearch && matchesGrade && matchesTeam;
+                });
+
+                document.getElementById('results-count').textContent = 
+                    `Showing ${this.filteredHitters.length} of ${this.hitters.length} hitters`;
+
+                this.renderTable();
+            }
+
+            sortData(column) {
+                // Toggle sort direction if clicking same column
+                if (this.sortColumn === column) {
+                    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+                } else {
+                    this.sortColumn = column;
+                    this.sortDirection = 'desc'; // Default to descending for most stats
+                }
+
+                // Map column names to data properties
+                const columnMap = {
+                    'Name': 'hitter_name',
+                    'Team': 'team', 
+                    'Grade': 'grade',
+                    'Score': 'composite_score',
+                    'PA': 'plate_appearances',
+                    'AVG': 'avg',
+                    'OBP': 'obp',
+                    'SLG': 'slg',
+                    'OPS': 'ops',
+                    'wOBA': 'woba',
+                    'wRC+': 'wrc_plus',
+                    'xBA': 'xba',
+                    'xSLG': 'xslg',
+                    'xwOBA': 'xwoba',
+                    'HardHit%': 'hard_hit_pct',
+                    'Barrel%': 'barrel_pct',
+                    'K%': 'k_pct',
+                    'BB%': 'bb_pct',
+                    'K:BB': 'k_bb_ratio',
+                    'HR': 'home_runs',
+                    'R': 'runs',
+                    'RBI': 'rbi',
+                    'SB': 'stolen_bases'
+                };
+
+                const prop = columnMap[column];
+                if (!prop) return;
+
+                this.filteredHitters.sort((a, b) => {
+                    let aVal = a[prop];
+                    let bVal = b[prop];
+
+                    // Handle null/undefined values
+                    if (aVal === null || aVal === undefined) aVal = -999999;
+                    if (bVal === null || bVal === undefined) bVal = -999999;
+
+                    // Handle string vs number comparison
+                    if (typeof aVal === 'string' && typeof bVal === 'string') {
+                        aVal = aVal.toLowerCase();
+                        bVal = bVal.toLowerCase();
+                    }
+
+                    if (this.sortDirection === 'asc') {
+                        return aVal > bVal ? 1 : aVal < bVal ? -1 : 0;
+                    } else {
+                        return aVal < bVal ? 1 : aVal > bVal ? -1 : 0;
+                    }
+                });
+
+                this.renderTable();
+            }
+
+            renderTable() {
+                const container = document.getElementById('hitters-table-container');
+                
+                if (!this.hitters.length) {
+                    container.innerHTML = '<div class="no-data-state"><p>No hitter data available</p></div>';
+                    return;
+                }
+
+                const formatValue = (value) => {
+                    if (value === null || value === undefined) return '--';
+                    if (typeof value === 'number') {
+                        return value < 1 && value > 0 ? value.toFixed(3) : value.toString();
+                    }
+                    return value;
+                };
+
+                const getSortClass = (columnName) => {
+                    if (this.sortColumn === columnName) {
+                        return `sort-${this.sortDirection}`;
+                    }
+                    return 'sortable';
+                };
+
+                const table = `
+                    <table class="hitters-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th class="${getSortClass('Name')}" onclick="window.dashboard.sortData('Name')">Name</th>
+                                <th class="${getSortClass('Team')}" onclick="window.dashboard.sortData('Team')">Team</th>
+                                <th class="${getSortClass('Grade')}" onclick="window.dashboard.sortData('Grade')">Grade</th>
+                                <th class="${getSortClass('Score')}" onclick="window.dashboard.sortData('Score')">Score</th>
+                                <th class="${getSortClass('PA')}" onclick="window.dashboard.sortData('PA')">PA</th>
+                                <th class="${getSortClass('AVG')}" onclick="window.dashboard.sortData('AVG')">AVG</th>
+                                <th class="${getSortClass('OBP')}" onclick="window.dashboard.sortData('OBP')">OBP</th>
+                                <th class="${getSortClass('SLG')}" onclick="window.dashboard.sortData('SLG')">SLG</th>
+                                <th class="${getSortClass('OPS')}" onclick="window.dashboard.sortData('OPS')">OPS</th>
+                                <th class="${getSortClass('wOBA')}" onclick="window.dashboard.sortData('wOBA')">wOBA</th>
+                                <th class="${getSortClass('wRC+')}" onclick="window.dashboard.sortData('wRC+')">wRC+</th>
+                                <th class="${getSortClass('xBA')}" onclick="window.dashboard.sortData('xBA')">xBA</th>
+                                <th class="${getSortClass('xSLG')}" onclick="window.dashboard.sortData('xSLG')">xSLG</th>
+                                <th class="${getSortClass('xwOBA')}" onclick="window.dashboard.sortData('xwOBA')">xwOBA</th>
+                                <th class="${getSortClass('HardHit%')}" onclick="window.dashboard.sortData('HardHit%')">HardHit%</th>
+                                <th class="${getSortClass('Barrel%')}" onclick="window.dashboard.sortData('Barrel%')">Barrel%</th>
+                                <th class="${getSortClass('K%')}" onclick="window.dashboard.sortData('K%')">K%</th>
+                                <th class="${getSortClass('BB%')}" onclick="window.dashboard.sortData('BB%')">BB%</th>
+                                <th class="${getSortClass('K:BB')}" onclick="window.dashboard.sortData('K:BB')">K:BB</th>
+                                <th class="${getSortClass('HR')}" onclick="window.dashboard.sortData('HR')">HR</th>
+                                <th class="${getSortClass('R')}" onclick="window.dashboard.sortData('R')">R</th>
+                                <th class="${getSortClass('RBI')}" onclick="window.dashboard.sortData('RBI')">RBI</th>
+                                <th class="${getSortClass('SB')}" onclick="window.dashboard.sortData('SB')">SB</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${this.filteredHitters.map((hitter, index) => `
+                                <tr>
+                                    <td>${index + 1}</td>
+                                    <td class="hitter-name">${hitter.hitter_name}</td>
+                                    <td><span class="team-badge">${hitter.team}</span></td>
+                                    <td>
+                                        <span class="grade grade-${(hitter.grade || '').replace('+', 'plus').replace('-', 'minus').toLowerCase()}">
+                                            ${hitter.grade}
+                                        </span>
+                                    </td>
+                                    <td class="score">${hitter.composite_score}</td>
+                                    <td>${hitter.plate_appearances}</td>
+                                    <td>${formatValue(hitter.avg)}</td>
+                                    <td>${formatValue(hitter.obp)}</td>
+                                    <td>${formatValue(hitter.slg)}</td>
+                                    <td>${formatValue(hitter.ops)}</td>
+                                    <td>${formatValue(hitter.woba)}</td>
+                                    <td>${formatValue(hitter.wrc_plus)}</td>
+                                    <td>${formatValue(hitter.xba)}</td>
+                                    <td>${formatValue(hitter.xslg)}</td>
+                                    <td>${formatValue(hitter.xwoba)}</td>
+                                    <td>${hitter.hard_hit_pct ? hitter.hard_hit_pct + '%' : '--'}</td>
+                                    <td>${hitter.barrel_pct ? hitter.barrel_pct + '%' : '--'}</td>
+                                    <td>${hitter.k_pct ? hitter.k_pct + '%' : '--'}</td>
+                                    <td>${hitter.bb_pct ? hitter.bb_pct + '%' : '--'}</td>
+                                    <td>${formatValue(hitter.k_bb_ratio)}</td>
+                                    <td>${hitter.home_runs}</td>
+                                    <td>${hitter.runs}</td>
+                                    <td>${hitter.rbi}</td>
+                                    <td>${hitter.stolen_bases}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+
+                container.innerHTML = table;
+            }
+
+            showError() {
+                document.getElementById('hitters-table-container').innerHTML = `
+                    <div class="error-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Error loading hitter data</p>
+                        <button onclick="location.reload()" class="refresh-btn">Retry</button>
+                    </div>
+                `;
+            }
+        }
+
+        // Global functions for view switching
+        function showTop10View() {
+            window.dashboard.showTop10View();
+        }
+
+        function showTableView() {
+            window.dashboard.showTableView();
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            window.dashboard = new ComprehensiveHitterDashboard();
+        });
+    </script>
+</body>
+</html>

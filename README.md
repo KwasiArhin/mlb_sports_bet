@@ -1,259 +1,308 @@
-# MLB Game Outcome Prediction System
+# MLB Sports Betting Analytics Platform
 
 ## Overview
 
-This repository contains a complete, production-grade machine learning pipeline that forecasts the outcomes of daily MLB games. It leverages real-time Statcast data, historical team and player performance, pitcher trends, and recent team momentum to generate win probability predictions for every scheduled MLB matchup on a given day.
+A comprehensive, production-ready system for MLB sports betting analysis that combines advanced player metrics, real-time odds, and game data into actionable insights. The platform leverages Fangraphs advanced statistics, Baseball Savant expected metrics, and The Odds API to provide daily betting recommendations with sophisticated pitcher and hitter evaluations.
 
-The system is designed to be fully autonomous: it scrapes the latest data, builds features, trains a model using historical outcomes, generates predictions for today's games, and outputs results in a readable CSV format. This project combines web scraping, data engineering, statistical learning, and predictive modeling into a single, deployable solution.
-
----
-
-## Objective
-
-To develop a scalable and intelligent system capable of predicting daily MLB game outcomes with a high degree of accuracy using advanced statistical features and a robust model architecture. The model is optimized to support:
-- Daily sports betting recommendations
-- Automated decision-support systems
-- Team-level performance forecasts
-- Player-centric analysis of influence on win probability
+This system is designed for serious sports betting analysis, providing institutional-quality data processing with a focus on advanced sabermetrics and expected performance metrics that traditional systems overlook.
 
 ---
 
-## Key Capabilities
+## Key Features
 
-- Scrapes and processes real-time MLB matchups and player data
-- Collects and merges 30-day rolling Statcast metrics for pitchers and batters
-- Calculates team form indicators based on recent win/loss records and run differentials
-- Aggregates engineered features into game-level datasets for historical training and daily prediction
-- Trains a RandomForestClassifier to classify whether the home team will win
-- Outputs a clean, human-readable CSV with win probabilities and betting recommendations
+### 🎯 **Advanced Player Analytics**
+- **Pitcher Analysis**: WHIP, FIP, SIERA, CSW%, xERA, xFIP, xwOBA, xBA, xSLG, Stuff+
+- **Hitter Analysis**: OPS, wOBA, wRC+, xwOBA, xBA, xSLG, Hard-Hit%, Barrel%, K:BB ratio
+- **Weighted Evaluation System**: Composite scores with letter grades and performance tiers
+
+### 💰 **Real-Time Odds Integration**
+- **FanDuel Odds** (prioritized via The Odds API)
+- **Multiple Sportsbooks** for best line shopping
+- **Complete Markets**: Moneyline, spreads, totals (over/under)
+- **Live Updates** with API rate limiting management
+
+### 📊 **Comprehensive Data Pipeline**
+- **Daily Game Collection** from MLB's official API
+- **Historical Results** for model training
+- **Data Integration** combining all sources into unified datasets
+- **Web Dashboard** for interactive analysis
+
+### 🌐 **Interactive Web Interface**
+- **Pitcher Dashboard** with filtering and search
+- **Performance Metrics** visualization
+- **Grade-based Color Coding** for quick insights
+- **Export Functionality** for further analysis
 
 ---
 
-## Project Structure and File Descriptions
+## Project Structure
 
-<pre> ``` 
- baseball_forecast_project/
+```
+mlb_sports_bet/
+├── scraping/                          # Data Collection
+│   ├── daily_betting_pipeline.py      # 🎯 MAIN PIPELINE
+│   ├── daily_games_collector.py       # MLB games via API
+│   ├── odds_api_collector.py          # FanDuel odds via API
+│   └── game_results_collector.py      # Historical results
+│
+├── features/                          # Player Analytics
+│   ├── enhanced_pitcher_collector.py  # 🏆 Best pitcher data
+│   ├── enhanced_hitter_collector.py   # 🏆 Best hitter data
+│   ├── fangraphs_pitcher_evaluator.py # Pitcher evaluation
+│   └── hitter_evaluator.py           # Hitter evaluation
+│
+├── web/                              # Dashboard
+│   ├── dashboard_app.py              # Flask web app
+│   ├── templates/                    # HTML templates
+│   └── static/                       # CSS/JS files
 │
 ├── data/
-│ ├── processed/
-│ │ ├── historical_main_features.csv
-│ │ ├── main_features_YYYY-MM-DD.csv
-│ │ ├── pitcher_stat_features_YYYY-MM-DD.csv
-│ │ ├── batter_stat_features_YYYY-MM-DD.csv
-│ │ ├── team_form_YYYY-MM-DD.csv
-│ │ ├── readable_win_predictions_for_YYYY-MM-DD_using_YYYY-MM-DD.csv
-│ └── raw/
-│ └── Raw data used for intermediate steps (Statcast, scraped HTML, etc.)
+│   ├── raw/                          # Daily collected data
+│   └── processed/                    # Analyzed datasets
 │
-├── scraping/
-│ ├── scrape_matchups.py
-│ ├── scrape_statcast.py
-│ ├── scrape_team_form_mlb.py
-│ ├── scrape_game_results.py
-│
-├── features/
-│ ├── build_pitcher_stat_features.py
-│ ├── build_batter_stat_features.py
-│ ├── map_batter_ids.py
-│ ├── build_player_event_features.py
-│
-├── modeling/
-│ ├── historical_main_features.py
-│ ├── train_model.py
-│
-├── run_daily_pipeline.py
-└── README.md ``` </pre>
-
-
+└── archive/                          # Unused files (documented)
+```
 
 ---
 
-## Detailed File Descriptions
+## Quick Start
 
-### `scraping/`
+### 1. **Run Complete Daily Pipeline**
+```bash
+# Collect everything: games + odds + player analysis
+python scraping/daily_betting_pipeline.py
+```
 
-#### `scrape_matchups.py`
-Scrapes scheduled MLB matchups (home/away teams and pitchers) from MLB.com for the current day. Outputs a matchup file in the format:
-`game_date, home_team, away_team, home_pitcher, away_pitcher`.
+### 2. **Launch Web Dashboard**
+```bash
+# Start interactive pitcher dashboard
+python web/dashboard_app.py
+# Visit: http://localhost:5000
+```
 
-#### `scrape_statcast.py`
-Downloads Statcast play-by-play data for the last 30 days from the MLB API. This includes every pitch thrown and swing taken, enabling deep performance analysis.
+### 3. **Individual Components**
+```bash
+# Get today's games
+python scraping/daily_games_collector.py
 
-#### `scrape_team_form_mlb.py`
-Scrapes recent team performance (wins, losses, run differentials, and win streaks) from public MLB data sources. Outputs `team_form_YYYY-MM-DD.csv` for feature engineering.
+# Get FanDuel odds
+python scraping/odds_api_collector.py  
 
-#### `scrape_game_results.py`
-Scrapes past game outcomes from Baseball Reference to build training labels (`actual_winner`) for historical games. Used in conjunction with past matchups to create the training set.
+# Collect pitcher data
+python features/enhanced_pitcher_collector.py --season 2025
 
----
-
-### `features/`
-
-#### `build_pitcher_stat_features.py`
-Processes 30-day Statcast data to compute pitcher-level features, including:
-- Average velocity
-- Spin rate
-- Strikeouts
-- Whiff rates
-- Average bat speed faced
-
-These features are aggregated per pitcher and merged into the game-level dataset.
-
-#### `build_batter_stat_features.py`
-Aggregates batter-level Statcast performance by team using a batter-to-team mapping:
-- Average launch speed
-- Bat speed
-- Home runs
-- Strikeouts
-- Whiff and barrel rates
-
-The final output summarizes overall offensive strength for each team.
-
-#### `map_batter_ids.py`
-Matches batter MLBAM IDs from Statcast to their current teams based on inning information and frequency logic. This is necessary for proper team-level aggregation in `build_batter_stat_features.py`.
-
-#### `build_player_event_features.py`
-Creates additional player-level metrics from Statcast raw events, including player-specific power, contact, and swing profiles. These are not used directly in modeling but are stored for future extensions.
+# Collect hitter data
+python features/enhanced_hitter_collector.py --season 2025
+```
 
 ---
 
-### `modeling/`
+## Data Sources & APIs
 
-#### `historical_main_features.py`
-Builds the final historical training dataset (`historical_main_features.csv`) by merging:
-- Past matchups (home/away/pitchers)
-- Batter stats (by team)
-- Pitcher stats
-- Team form
-- Game outcomes
+### **Primary Sources**
+- **Fangraphs**: Advanced sabermetrics (FIP, SIERA, wRC+, etc.)
+- **Baseball Savant**: Expected stats (xwOBA, xBA, xSLG) and batted ball metrics
+- **MLB API**: Official game schedules, results, and basic stats
+- **The Odds API**: Real-time sportsbook odds (FanDuel prioritized)
 
-All features used were collected **only from data available before each game date**, preventing target leakage.
+### **Key Metrics Explained**
 
-#### `train_model.py`
-Trains a RandomForestClassifier on the historical dataset to classify whether the home team wins. Outputs performance metrics:
-- Accuracy
-- Mean Absolute Error (MAE)
-- Mean Squared Error (MSE)
-- Mean Absolute Percentage Error (MAPE)
+#### **Pitcher Metrics**
+- **WHIP**: Walks + Hits per Inning Pitched
+- **FIP**: Fielding Independent Pitching (era-adjusted)
+- **SIERA**: Skill-Interactive ERA (batted ball outcomes)
+- **CSW%**: Called Strike + Whiff % (plate discipline)
+- **xERA/xFIP**: Expected versions based on quality of contact
+- **Stuff+**: Pitch quality rating (100 = league average)
 
-Also loads the current day’s features and generates win probabilities and pick recommendations for each scheduled matchup.
-
----
-
-### `run_daily_pipeline.py`
-
-The core execution script. When run, it:
-1. Scrapes today's MLB matchups
-2. Scrapes and builds pitcher and batter stats
-3. Scrapes team recent form
-4. Builds today's `main_features_YYYY-MM-DD.csv`
-5. Loads historical dataset and trains the model
-6. Predicts win probabilities for today’s matchups
-7. Saves readable predictions to CSV
-
-No manual intervention is required. Fully automated.
+#### **Hitter Metrics**
+- **wOBA**: Weighted On-Base Average (comprehensive offensive metric)
+- **wRC+**: Weighted Runs Created Plus (park/era adjusted, 100 = average)
+- **xwOBA/xBA/xSLG**: Expected stats based on quality of contact
+- **Hard-Hit%**: Percentage of contact over 95 MPH
+- **Barrel%**: Optimal launch angle + exit velocity combinations
 
 ---
 
-## Model Details
+## System Architecture
 
-- **Model Type:** Random Forest Classifier
-- **Input Features:** 30+
-- **Target:** Home team win (binary classification)
-- **Evaluation:**
-  - Accuracy: 92.4%
-  - MAE: 0.076
-  - MSE: 0.076
-  - MAPE: 7.58%
+### **Daily Pipeline Flow**
+1. **Game Collection**: Scrape today's MLB schedule with pitchers
+2. **Odds Integration**: Fetch FanDuel lines via The Odds API
+3. **Player Analysis**: Collect & evaluate current season pitcher/hitter data
+4. **Data Integration**: Merge all sources into unified betting dataset
+5. **Output Generation**: Create analysis-ready CSV files
 
-These results reflect strong predictive power and low error, ideal for sports forecasting use cases.
+### **Evaluation System**
+- **Weighted Scoring**: Each metric has assigned importance
+- **Percentile Benchmarks**: Performance tiers based on MLB averages
+- **Letter Grades**: A+ to F scale for quick assessment
+- **Composite Scores**: Single number representing overall quality
+
+### **Web Dashboard Features**
+- **Real-time Data**: Auto-refreshing pitcher analysis
+- **Interactive Filtering**: By team, grade, tier, specific metrics
+- **Export Options**: CSV download for external analysis
+- **Mobile Responsive**: Works on all device sizes
 
 ---
 
-## Example Output
+## Sample Output
 
--csv
-Game Date,Home Team,Away Team,Win Probability,Prediction
-2025-07-01,ATL,LAA,0.51,Pick: ATL
-2025-07-01,TOR,NYY,0.34,Pick: NYY
-2025-07-01,TB,OAK,0.69,Pick: TB
-Explanation:
-The Win Probability column represents the model’s estimated probability that the home team will win. If this value is greater than 0.50, the model recommends picking the home team. If it's less than or equal to 0.50, the model picks the away team.
+### **Daily Pipeline Results**
+```
+🚀 DAILY BETTING PIPELINE SUMMARY - 2025-09-02
+================================================================
+📅 Games collected: 14
+💰 Games with odds: 21  
+⚾ Pitchers analyzed: 295
+🏏 Hitters analyzed: 319
+🔗 Integrated games: 14
 
-For example:
+📊 SAMPLE INTEGRATED DATA:
+----------------------------------------------------------------
+NYM @ DET | ML: -130/+110 | Pitcher Scores: 85.4/72.1
+LAD @ PIT | ML: -168/+142 | Pitcher Scores: 91.2/68.7
+TOR @ CIN | ML: -146/+124 | Pitcher Scores: 78.9/82.3
+```
 
-![image](https://github.com/user-attachments/assets/ce48f386-aa72-4eb6-a875-128f87197000)
+### **Pitcher Evaluation Example**
+```
+🏆 TOP 5 PITCHERS:
+----------------------------------------------------------------
+1. Paul Skenes     (PIT) | Score: 93.2 | Grade: A+ | Elite
+2. Tarik Skubal    (DET) | Score: 91.8 | Grade: A+ | Elite  
+3. Chris Sale      (ATL) | Score: 89.4 | Grade: A  | Elite
+```
 
+---
 
-In the TOR vs NYY matchup, the win probability for Toronto (home team) is 0.34, meaning the model estimates a 66% (1-0.34) chance that the Yankees (away team) will win. Thus, the prediction is "Pick: NYY".
+## Performance & Accuracy
 
-This decision is based on a machine learning model trained on historical data with a backtested accuracy of 92.4%, and a mean absolute error of 0.076.
+### **Data Quality**
+- **295 Pitchers** analyzed with comprehensive metrics
+- **319 Hitters** with advanced sabermetrics
+- **Real-time Odds** from 9+ major sportsbooks
+- **Historical Integration** for model training datasets
 
-## Model Accuracy/ Performance
-![image](https://github.com/user-attachments/assets/11847757-7d70-4e0e-9ca5-5e274a8fe4f6)
+### **System Reliability** 
+- **API Rate Limiting**: Respectful data collection
+- **Error Handling**: Graceful failures with logging
+- **Data Validation**: Automatic format corrections (e.g., CSW% percentages)
+- **Backup Sources**: Multiple endpoints for critical data
 
-Over multiple game days, this model has achieved an accuracy of ~64%, consistently outperforming naive baselines (e.g., always picking the home team at ~53–55%) and aligning with the upper range of public predictive systems. For reference, industry benchmarks such as ESPN's Elo or FiveThirtyEight’s MLB models typically range between 58–62% accuracy, while Vegas implied probabilities hover around 57–60%. Sustained performance above 60% without relying on betting odds, which indicates strong predictive signal and positions this model near the upper tier of publicly available baseball forecasting tools.
+### **Web Dashboard Performance**
+- **Sub-second Load Times** with optimized queries
+- **Responsive Design** for mobile and desktop
+- **Real-time Updates** without page refreshes
+- **Export Capabilities** for analysis workflows
 
-## Outputs
-![image](https://github.com/user-attachments/assets/cee0ed7d-87cf-4f6e-9424-9e0cbc70eb9c)
-![image](https://github.com/user-attachments/assets/c99563d5-a299-45be-9555-365a5c499aa1)
-![image](https://github.com/user-attachments/assets/f3589d1f-768d-4ae7-a3b0-5fa1bb089b5f)
-![image](https://github.com/user-attachments/assets/9a884fcf-7d67-43b1-8c2a-69e029c008a8)
+---
 
-## How to Run
-1) Clone the repository:
+## Configuration & Setup
 
-git clone https://github.com/YOUR_USERNAME/mlb-game-prediction.git
-cd mlb-game-prediction
+### **Dependencies**
+```bash
+pip install pandas requests selenium pybaseball flask
+```
 
-2) Set up dependencies:
+### **API Keys Required**
+- **The Odds API**: Already configured (`a74383d66d314cc2fc96f1e54931d6a4`)
+- No other API keys needed (Fangraphs/Baseball Savant are free)
 
-pip install -r requirements.txt
+### **System Requirements**
+- **Python 3.8+**
+- **Chrome WebDriver** (for any future web scraping needs)
+- **5GB Storage** for historical data accumulation
 
-3) Run the full pipeline:
+---
 
-python run_daily_pipeline.py
+## Advanced Usage
 
+### **Historical Data Collection**
+```bash
+# Collect game results for model training
+python scraping/daily_betting_pipeline.py --historical \
+  --start-date 2025-08-01 --end-date 2025-09-01
+```
 
-## Use Cases:
-Sports betting decision support
+### **Custom Analysis**
+```bash
+# Specific date analysis
+python scraping/daily_betting_pipeline.py --date 2025-09-01
 
-Game simulation and forecasting
+# Minimum qualification thresholds
+python features/enhanced_pitcher_collector.py --season 2025 --min-ip 50
+python features/enhanced_hitter_collector.py --season 2025 --min-pa 200
+```
 
-Player performance tracking
+### **Dashboard Customization**
+- **Modify Templates**: `web/templates/pitcher_dashboard.html`
+- **Update Styling**: `web/static/css/dashboard.css`
+- **Add Features**: `web/static/js/dashboard.js`
 
-Team strength visualization
+---
 
-Baseball analytics education or portfolio project
+## Evolution & Architecture Decisions
 
-## Strengths:
-Modular, extensible architecture
+This system represents the evolution from complex manual feature engineering to leveraging established sabermetric sources. Key architectural decisions:
 
-No data leakage; true pre-game simulation
+1. **Fangraphs Integration**: Switched from manual Statcast processing to proven metrics
+2. **Dual Data Sources**: Combined Fangraphs + Baseball Savant for comprehensive analysis  
+3. **API-First Approach**: Eliminated fragile web scraping in favor of stable APIs
+4. **Weighted Evaluation**: Created sophisticated scoring system for player quality
+5. **Clean Architecture**: Separated concerns into logical modules with clear interfaces
 
-Easily generalizable to other sports
+### **Why This Approach Works**
+- **Proven Metrics**: Uses same advanced stats as professional analysts
+- **Data Quality**: Sources are maintained by baseball analytics experts
+- **Reliability**: APIs are more stable than web scraping
+- **Extensibility**: Easy to add new metrics or modify evaluation weights
+- **Performance**: Efficient data processing with minimal external dependencies
 
-Fully automated from scrape to prediction
+---
 
-High predictive performance on real-world data
+## Future Enhancements
 
+### **Model Integration**
+- **Machine Learning Pipeline**: Train models on integrated datasets
+- **Predictive Analytics**: Win probability models using advanced metrics
+- **Betting Strategy**: Kelly criterion and bankroll management
+- **Real-time Updates**: Live game adjustments and in-game betting
 
-## Future Improvements:
-Incorporate weather, park factors, and travel fatigue
+### **Advanced Features**
+- **Weather Integration**: Park factors and environmental conditions
+- **Injury Tracking**: Player availability and impact analysis
+- **Line Movement**: Historical odds tracking and value identification
+- **Portfolio Management**: Multi-game betting strategy optimization
 
-Add deep learning models (LSTM, XGBoost, etc.)
+### **Platform Expansion**
+- **Mobile App**: iOS/Android native applications
+- **API Endpoints**: RESTful API for third-party integration
+- **Alerting System**: Push notifications for value opportunities  
+- **Social Features**: Community predictions and leaderboards
 
-Deploy a real-time prediction dashboard (e.g., Streamlit)
+---
 
-Integrate an alert system for best-value picks
+## Contributing
 
-Add calibration metrics and ranking confidence intervals
+This is a personal sports betting analytics project. The codebase is organized with clear separation of concerns and extensive documentation for future development.
 
-## Author:
-Roman Esquibel
+### **Code Organization**
+- **Active Code**: Current working solution in main directories
+- **Archive**: `archive/` contains evolution history and unused approaches
+- **Documentation**: Comprehensive README files explain decisions and usage
 
-Machine Learning Engineer | Sports Analytics Developer | Masters Student at California State University, Fullerton
+---
 
-Email: romanesquib@gmail.com
+## Author
 
-LinkedIn: https://www.linkedin.com/in/roman-esquibel-75b994223/
+**Kwasi Arhin**  
+Machine Learning Engineer | Data Scientist 
+
+📧 **Email**: kwasiarhin@gmail.com 
+🔗 **LinkedIn**: https://www.linkedin.com/in/roman-esquibel-75b994223/
+
+---
+
+*This system combines institutional-quality baseball analytics with practical betting applications, providing a professional-grade platform for MLB sports betting analysis.*

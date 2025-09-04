@@ -1,0 +1,28 @@
+game_id,commence_time,home_team,away_team,home_team_full,away_team_full,fd_home_moneyline,fd_away_moneyline,fd_home_spread,fd_away_spread,fd_home_spread_odds,fd_away_spread_odds,fd_total_points,fd_over_odds,fd_under_odds,best_home_moneyline,best_away_moneyline,best_home_spread,best_away_spread,best_home_spread_odds,best_away_spread_odds,best_total_points,best_over_odds,best_under_odds,bookmakers_count,scraped_at
+2bbf43ad7a1fe7067dcd3b3728425e98,2025-09-02T22:40:00Z,CIN,TOR,Cincinnati Reds,Toronto Blue Jays,114,-134,1.5,-1.5,-152,126,9.0,-115,-105,,115,,,,,,,,9,2025-09-02T14:52:49.903205
+2c767ef594017c47ddb39db9fff6cad1,2025-09-02T22:40:00Z,DET,NYM,Detroit Tigers,New York Mets,110,-130,1.5,-1.5,-146,122,8.5,-114,-106,,114,,,,,,,,9,2025-09-02T14:52:49.903236
+7b4b156056b04735fc31ded0725eae59,2025-09-02T22:40:00Z,PIT,LAD,Pittsburgh Pirates,Los Angeles Dodgers,142,-168,1.5,-1.5,-118,-102,8.5,-102,-120,,150,,,,,,,,9,2025-09-02T14:52:49.903251
+d4f6db241bf0695bddeb41b866c9ad44,2025-09-02T22:45:00Z,BOS,CLE,Boston Red Sox,Cleveland Guardians,-270,220,-1.5,1.5,-120,100,7.5,-120,-102,,227,,,,,,,,9,2025-09-02T14:52:49.903263
+f621fc5f0a4dfac6bd1d512166476077,2025-09-02T22:45:00Z,WAS,MIA,Washington Nationals,Miami Marlins,-116,-102,1.5,-1.5,-182,150,9.0,-105,-115,,100,,,,,,,,9,2025-09-02T14:52:49.903274
+7682db2580d92ca0599b2662034e3d34,2025-09-02T23:35:00Z,TB,SEA,Tampa Bay Rays,Seattle Mariners,-102,-116,1.5,-1.5,-170,140,7.5,-115,-105,,105,,,,,,,,9,2025-09-02T14:52:49.903284
+8b4a824fec9e3617984b2b0157714c2a,2025-09-02T23:40:00Z,CHC,ATL,Chicago Cubs,Atlanta Braves,-178,150,-1.5,1.5,115,-138,8.5,-105,-115,,155,,,,,,,,9,2025-09-02T14:52:49.903295
+e45794bab8d98d9673433f6c4e1fa0d2,2025-09-02T23:40:00Z,MIN,CWS,Minnesota Twins,Chicago White Sox,-142,120,-1.5,1.5,146,-176,9.5,100,-122,,130,,,,,,,,9,2025-09-02T14:52:49.903305
+ecb405e4833d13c414900c7951338782,2025-09-02T23:40:00Z,KC,LAA,Kansas City Royals,Los Angeles Angels,-156,132,-1.5,1.5,128,-154,9.0,-105,-115,,140,,,,,,,,9,2025-09-02T14:52:49.903320
+4b95706262e6c81cc98c15758c5cc894,2025-09-02T23:45:00Z,STL,OAK,St. Louis Cardinals,Oakland Athletics,-106,-110,1.5,-1.5,-176,146,8.5,-105,-115,,-104,,,,,,,,9,2025-09-02T14:52:49.903330
+3cc97b21bc18c733eda6c0e69ea9227a,2025-09-03T00:10:00Z,HOU,NYY,Houston Astros,New York Yankees,-102,-116,1.5,-1.5,-182,150,7.5,-122,100,,100,,,,,,,,9,2025-09-02T14:52:49.903340
+dc89d3551c9b12cf9d320560865e0743,2025-09-03T00:40:00Z,COL,SF,Colorado Rockies,San Francisco Giants,190,-230,1.5,-1.5,118,-142,10.5,-106,-114,,195,,,,,,,,9,2025-09-02T14:52:49.903349
+7b5fd499e9d26f6ace75ed8937afdf67,2025-09-03T01:40:00Z,ARI,TEX,Arizona Diamondbacks,Texas Rangers,-110,-106,1.5,-1.5,-176,146,9.5,-102,-120,,-103,,,,,,,,9,2025-09-02T14:52:49.903359
+1ed42e941f50f08be2d12b0fe6bacb6b,2025-09-03T01:40:00Z,SD,BAL,San Diego Padres,Baltimore Orioles,-172,144,-1.5,1.5,126,-152,8.5,100,-122,,150,,,,,,,,9,2025-09-02T14:52:49.903370
+c5501cda04a57cf4bd3cdf63f9f392f4,2025-09-03T17:06:00Z,WAS,MIA,Washington Nationals,Miami Marlins,116,-136,1.5,-1.5,-134,114,9.0,-105,-115,,116,,,,,,,,3,2025-09-02T14:52:49.903380
+127004771a4550387628f174bf781903,2025-09-03T17:11:00Z,DET,NYM,Detroit Tigers,New York Mets,-104,-112,1.5,-1.5,-166,138,8.5,-104,-118,,100,,,,,,,,3,2025-09-02T14:52:49.903387
+e402397f110cd43758541da6dda1a976,2025-09-03T19:41:00Z,ARI,TEX,Arizona Diamondbacks,Texas Rangers,-136,116,-1.5,1.5,140,-170,9.0,100,-122,,122,,,,,,,,3,2025-09-02T14:52:49.903394
+5f3dc24c45ffd0ec6a39b09f9eaa0a63,2025-09-03T20:11:00Z,SD,BAL,San Diego Padres,Baltimore Orioles,-164,138,-1.5,1.5,125,-150,8.5,100,-122,,143,,,,,,,,3,2025-09-02T14:52:49.903401
+624d8d2fc3bf17f1d74befdb3de377a8,2025-09-03T22:41:00Z,CIN,TOR,Cincinnati Reds,Toronto Blue Jays,138,-164,1.5,-1.5,-126,105,9.0,100,-122,,138,,,,,,,,4,2025-09-02T14:52:49.903408
+ba35cb2d6e20aa0ae96626fdeeb7092c,2025-09-03T22:41:00Z,PIT,LAD,Pittsburgh Pirates,Los Angeles Dodgers,136,-162,1.5,-1.5,-122,102,8.0,-110,-110,,136,,,,,,,,1,2025-09-02T14:52:49.903416
+2fedb600d4cfb8619b0ac1efc0706b04,2025-09-03T23:36:00Z,TB,SEA,Tampa Bay Rays,Seattle Mariners,124,-146,1.5,-1.5,-125,104,8.0,-122,100,,124,,,,,,,,3,2025-09-02T14:52:49.903422
+736cef1c2354a1787f9ecc489a943c5b,2025-09-03T23:41:00Z,CHC,ATL,Chicago Cubs,Atlanta Braves,-178,150,-1.5,1.5,114,-137,8.5,-122,100,,150,,,,,,,,1,2025-09-02T14:52:49.903428
+a327ec590ce42c9e0c4c87fc3d1bbd96,2025-09-03T23:41:00Z,MIN,CWS,Minnesota Twins,Chicago White Sox,-196,164,-1.5,1.5,105,-126,8.5,-115,-105,,164,,,,,,,,1,2025-09-02T14:52:49.903433
+76a55e11c83dbd803c27da1cd99d30ed,2025-09-03T23:41:00Z,MIL,PHI,Milwaukee Brewers,Philadelphia Phillies,-116,-102,1.5,-1.5,-184,152,8.5,-105,-115,,-102,,,,,,,,1,2025-09-02T14:52:49.903438
+1262c39695997d62883d944a962f8757,2025-09-03T23:46:00Z,STL,OAK,St. Louis Cardinals,Oakland Athletics,-122,104,-1.5,1.5,158,-192,8.5,-115,-105,,104,,,,,,,,3,2025-09-02T14:52:49.903443
+ea0e62162289197e6b0692920d34aa05,2025-09-04T00:11:00Z,HOU,NYY,Houston Astros,New York Yankees,108,-126,1.5,-1.5,-146,122,8.5,-110,-110,,108,,,,,,,,3,2025-09-02T14:52:49.903449
+e91efb80e1498e3dc745665baeeb1754,2025-09-04T00:41:00Z,COL,SF,Colorado Rockies,San Francisco Giants,176,-210,1.5,-1.5,106,-128,11.0,-105,-115,,176,,,,,,,,1,2025-09-02T14:52:49.903454

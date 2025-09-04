@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games & Odds - MLB Betting Analytics</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/enhanced_dashboard.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <h1><i class="fas fa-calendar-day"></i> Games & Odds</h1>
+                <div class="header-info">
+                    <span class="date">{{ data.current_date if data else "Loading..." }}</span>
+                    <button class="refresh-btn" onclick="location.reload()">
+                        <i class="fas fa-sync"></i> Refresh
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="dashboard-nav">
+            <div class="nav-content">
+                <a href="/" class="nav-item">
+                    <i class="fas fa-home"></i> Overview
+                </a>
+                <a href="/games" class="nav-item active">
+                    <i class="fas fa-calendar-day"></i> Games & Odds
+                </a>
+                <a href="/pitchers" class="nav-item">
+                    <i class="fas fa-user-tie"></i> Pitchers
+                </a>
+                <a href="/hitters" class="nav-item">
+                    <i class="fas fa-user"></i> Hitters
+                </a>
+                <a href="/lineups" class="nav-item">
+                    <i class="fas fa-list-ol"></i> Lineups
+                </a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            {% if data and data.games %}
+            
+            <!-- Games Summary -->
+            <section class="summary-section">
+                <h2>Today's MLB Games</h2>
+                <div class="summary-grid">
+                    <div class="summary-card games-card">
+                        <div class="card-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>{{ data.games|length }}</h3>
+                            <p>Total Games</p>
+                        </div>
+                    </div>
+
+                    <div class="summary-card odds-card">
+                        <div class="card-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>{{ data.games|selectattr('away_moneyline', '!=', 'N/A')|list|length }}</h3>
+                            <p>Games with Odds</p>
+                        </div>
+                    </div>
+
+                    <div class="summary-card pitchers-card">
+                        <div class="card-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>{{ data.games|selectattr('away_pitcher_score', '!=', 'N/A')|list|length }}</h3>
+                            <p>Pitcher Matchups</p>
+                        </div>
+                    </div>
+
+                    <div class="summary-card hitters-card">
+                        <div class="card-icon">
+                            <i class="fas fa-download"></i>
+                        </div>
+                        <div class="card-content">
+                            <a href="/export/games" style="color: inherit; text-decoration: none;">
+                                <h3><i class="fas fa-file-csv"></i></h3>
+                                <p>Export Data</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Detailed Games Table -->
+            <section class="games-detail-section">
+                <h2>Game Details & Analysis</h2>
+                <div class="games-table-container">
+                    <table class="games-table detailed-games">
+                        <thead>
+                            <tr>
+                                <th>Game</th>
+                                <th>Time</th>
+                                <th>Venue</th>
+                                <th>Moneyline</th>
+                                <th>Spread</th>
+                                <th>Total</th>
+                                <th>Pitcher Edge</th>
+                                <th>Team Offense</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for game in data.games %}
+                            <tr class="game-row">
+                                <td class="matchup-cell">
+                                    <div class="teams">
+                                        <div class="team-row">
+                                            <span class="team-name away">{{ game.away_team }}</span>
+                                            <span class="pitcher">{{ game.away_pitcher }}</span>
+                                        </div>
+                                        <div class="at-symbol">@</div>
+                                        <div class="team-row">
+                                            <span class="team-name home">{{ game.home_team }}</span>
+                                            <span class="pitcher">{{ game.home_pitcher }}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="time-cell">
+                                    <div class="time">{{ game.formatted_time }}</div>
+                                </td>
+                                <td class="venue-cell">
+                                    <div class="venue">{{ game.venue if game.venue != 'N/A' else 'TBD' }}</div>
+                                </td>
+                                <td class="moneyline-cell">
+                                    {% if game.away_moneyline != 'N/A' and game.home_moneyline != 'N/A' %}
+                                    <div class="odds-pair">
+                                        <span class="away-ml">{{ game.away_moneyline }}</span>
+                                        <span class="home-ml">{{ game.home_moneyline }}</span>
+                                    </div>
+                                    {% else %}
+                                    <span class="no-odds">No Odds</span>
+                                    {% endif %}
+                                </td>
+                                <td class="spread-cell">
+                                    {% if game.away_spread != 'N/A' and game.home_spread != 'N/A' %}
+                                    <div class="spread-pair">
+                                        <span class="away-spread">{{ game.away_spread }}</span>
+                                        <span class="home-spread">{{ game.home_spread }}</span>
+                                    </div>
+                                    {% else %}
+                                    <span class="no-odds">No Spread</span>
+                                    {% endif %}
+                                </td>
+                                <td class="total-cell">
+                                    {% if game.total != 'N/A' %}
+                                    <div class="total-info">
+                                        <span class="total-number">{{ game.total }}</span>
+                                        <div class="ou-odds">
+                                            <small>O:{{ game.over_odds }} U:{{ game.under_odds }}</small>
+                                        </div>
+                                    </div>
+                                    {% else %}
+                                    <span class="no-odds">No Total</span>
+                                    {% endif %}
+                                </td>
+                                <td class="pitcher-edge-cell">
+                                    {% if game.away_pitcher_score != 'N/A' and game.home_pitcher_score != 'N/A' %}
+                                        {% set away_score = game.away_pitcher_score|float %}
+                                        {% set home_score = game.home_pitcher_score|float %}
+                                        {% if away_score > home_score %}
+                                            <div class="advantage away">
+                                                <span class="team">{{ game.away_team }}</span>
+                                                <span class="edge">+{{ "%.1f"|format(away_score - home_score) }}</span>
+                                                <div class="grades">
+                                                    <small>{{ game.away_pitcher_grade }} vs {{ game.home_pitcher_grade }}</small>
+                                                </div>
+                                            </div>
+                                        {% elif home_score > away_score %}
+                                            <div class="advantage home">
+                                                <span class="team">{{ game.home_team }}</span>
+                                                <span class="edge">+{{ "%.1f"|format(home_score - away_score) }}</span>
+                                                <div class="grades">
+                                                    <small>{{ game.away_pitcher_grade }} vs {{ game.home_pitcher_grade }}</small>
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            <div class="even">
+                                                <span class="team">Even</span>
+                                                <div class="grades">
+                                                    <small>{{ game.away_pitcher_grade }} vs {{ game.home_pitcher_grade }}</small>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% else %}
+                                    <span class="no-data">No Analysis</span>
+                                    {% endif %}
+                                </td>
+                                <td class="offense-cell">
+                                    <div class="team-offense">
+                                        {% if game.away_team_wrc_plus != 'N/A' %}
+                                        <div class="away-offense">
+                                            <span class="team">{{ game.away_team }}</span>
+                                            <span class="wrc">{{ "%.0f"|format(game.away_team_wrc_plus) }}wRC+</span>
+                                        </div>
+                                        {% endif %}
+                                        {% if game.home_team_wrc_plus != 'N/A' %}
+                                        <div class="home-offense">
+                                            <span class="team">{{ game.home_team }}</span>
+                                            <span class="wrc">{{ "%.0f"|format(game.home_team_wrc_plus) }}wRC+</span>
+                                        </div>
+                                        {% endif %}
+                                        {% if game.away_team_wrc_plus == 'N/A' and game.home_team_wrc_plus == 'N/A' %}
+                                        <span class="no-data">No Data</span>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            {% else %}
+            <!-- No Data State -->
+            <div class="no-data-state">
+                <div class="no-data-icon">
+                    <i class="fas fa-calendar-times"></i>
+                </div>
+                <h2>No Games Data Available</h2>
+                <p>Run the daily betting pipeline to collect today's games and odds:</p>
+                <code>python scraping/daily_betting_pipeline.py</code>
+                <button class="refresh-btn" onclick="location.reload()">
+                    <i class="fas fa-sync"></i> Check Again
+                </button>
+            </div>
+            {% endif %}
+        </main>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <p>MLB Betting Analytics Dashboard | Odds from FanDuel via The Odds API</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/enhanced_dashboard.js') }}"></script>
+</body>
+</html>

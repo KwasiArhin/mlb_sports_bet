@@ -18,16 +18,16 @@ def main():
     This will start the Flask web server and open your browser.
     """)
     
-    # Change to dashboard directory
-    dashboard_dir = Path(__file__).parent / 'dashboard'
+    # Change to web directory for enhanced dashboard
+    dashboard_dir = Path(__file__).parent / 'web'
     os.chdir(dashboard_dir)
     
     print(f"📁 Working directory: {dashboard_dir}")
-    print("🚀 Starting Flask server...")
+    print("🚀 Starting Enhanced Flask server...")
     
     try:
-        # Start the Flask server
-        subprocess.Popen([sys.executable, 'app.py'])
+        # Start the Enhanced Flask server
+        subprocess.Popen([sys.executable, 'enhanced_dashboard_app.py'])
         
         print("✅ Dashboard server started successfully!")
         print(f"📊 Dashboard URL: http://localhost:5000")

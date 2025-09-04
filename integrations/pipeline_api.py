@@ -21,7 +21,7 @@ import time
 # Add project root to path
 sys.path.append(str(Path(__file__).parent.parent))
 
-from integrations.daily_pipeline_orchestrator import DailyPipelineOrchestrator
+from scraping.daily_betting_pipeline import DailyBettingPipeline
 from modeling.prediction_service import MLBPredictionService
 
 # Setup logging
@@ -62,15 +62,20 @@ class ThreadedPipelineRunner:
             
             logger.info(f"Starting background pipeline for {date}")
             
-            orchestrator = DailyPipelineOrchestrator(date, bankroll)
-            self.current_orchestrator = orchestrator
+            pipeline = DailyBettingPipeline()
+            self.current_orchestrator = pipeline
             
-            result = orchestrator.run_complete_pipeline()
+            result = pipeline.collect_daily_data(date)
             
             # Update pipeline state with results
-            pipeline_state['current_run']['status'] = result['status']
+            status = 'completed' if result['integrated_data'] is not None else 'failed'
+            pipeline_state['current_run']['status'] = status
             pipeline_state['current_run']['completed_at'] = datetime.now().isoformat()
-            pipeline_state['current_run']['result'] = result
+            pipeline_state['current_run']['result'] = {
+                'status': status,
+                'files_created': [str(f) for f in result['files_created'] if f],
+                'total_games': len(result['games_data']) if result['games_data'] else 0
+            }
             
             # Move to history
             pipeline_state['last_run'] = pipeline_state['current_run'].copy()
@@ -83,7 +88,7 @@ class ThreadedPipelineRunner:
             pipeline_state['current_run'] = None
             pipeline_state['is_running'] = False
             
-            logger.info(f"Background pipeline completed with status: {result['status']}")
+            logger.info(f"Background pipeline completed with status: {status}")
             
         except Exception as e:
             logger.error(f"Background pipeline failed: {e}")
@@ -100,9 +105,7 @@ class ThreadedPipelineRunner:
     
     def get_current_status(self) -> Optional[Dict]:
         """Get status of currently running pipeline."""
-        if self.current_orchestrator:
-            return self.current_orchestrator.get_status()
-        return None
+        return pipeline_state.get('current_run')
 
 
 runner = ThreadedPipelineRunner()

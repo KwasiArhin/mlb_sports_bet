@@ -1,0 +1,55 @@
+game_id,away_team,home_team,batting_order,away_player,away_position,home_player,home_position,lineups_available
+776459,PHI,MIL,1,Trea Turner,SS,Jackson Chourio,LF,True
+776459,PHI,MIL,2,Kyle Schwarber,DH,Isaac Collins,RF,True
+776459,PHI,MIL,3,Bryce Harper,1B,William Contreras,DH,True
+776459,PHI,MIL,4,J.T. Realmuto,C,Andrew Vaughn,1B,True
+776459,PHI,MIL,5,Brandon Marsh,LF,Caleb Durbin,3B,True
+776459,PHI,MIL,6,Harrison Bader,CF,Danny Jansen,C,True
+776459,PHI,MIL,7,Max Kepler,RF,Andruw Monasterio,2B,True
+776459,PHI,MIL,8,Alec Bohm,3B,Blake Perkins,CF,True
+776459,PHI,MIL,9,Bryson Stott,2B,Joey Ortiz,SS,True
+776461,LAD,PIT,1,Shohei Ohtani,DH,Jared Triolo,SS,True
+776461,LAD,PIT,2,Mookie Betts,SS,Nick Gonzales,2B,True
+776461,LAD,PIT,3,Freddie Freeman,1B,Bryan Reynolds,RF,True
+776461,LAD,PIT,4,Teoscar Hernández,RF,Tommy Pham,LF,True
+776461,LAD,PIT,5,Michael Conforto,LF,Andrew McCutchen,DH,True
+776461,LAD,PIT,6,Andy Pages,CF,Nick Yorke,1B,True
+776461,LAD,PIT,7,Hyeseong Kim,2B,Alexander Canario,CF,True
+776461,LAD,PIT,8,Miguel Rojas,3B,Henry Davis,C,True
+776461,LAD,PIT,9,Dalton Rushing,C,Cam Devanney,3B,True
+776458,CLE,TB,1,Steven Kwan,DH,Chandler Simpson,LF,True
+776458,CLE,TB,2,Daniel Schneemann,CF,Yandy Díaz,1B,True
+776458,CLE,TB,3,José Ramírez,3B,Junior Caminero,3B,True
+776458,CLE,TB,4,Kyle Manzardo,1B,Brandon Lowe,2B,True
+776458,CLE,TB,5,Bo Naylor,C,Christopher Morel,DH,True
+776458,CLE,TB,6,Nolan Jones,LF,Jake Mangum,RF,True
+776458,CLE,TB,7,Gabriel Arias,SS,Everson Pereira,CF,True
+776458,CLE,TB,8,C.J. Kayfus,RF,Nick Fortes,C,True
+776458,CLE,TB,9,Brayan Rocchio,2B,Carson Williams,SS,True
+776463,LAA,KC,1,Zach Neto,SS,Mike Yastrzemski,RF,True
+776463,LAA,KC,2,Mike Trout,DH,Bobby Witt Jr.,SS,True
+776463,LAA,KC,3,Taylor Ward,LF,Vinnie Pasquantino,1B,True
+776463,LAA,KC,4,Jo Adell,RF,Maikel Garcia,3B,True
+776463,LAA,KC,5,Luis Rengifo,3B,Salvador Perez,C,True
+776463,LAA,KC,6,Chris Taylor,2B,Adam Frazier,LF,True
+776463,LAA,KC,7,Oswald Peraza,1B,Michael Massey,2B,True
+776463,LAA,KC,8,Logan O'Hoppe,C,Carter Jensen,DH,True
+776463,LAA,KC,9,Bryce Teodosio,CF,Kyle Isbel,CF,True
+776462,CWS,MIN,1,,,Luke Keaschall,2B,True
+776462,CWS,MIN,2,,,Trevor Larnach,DH,True
+776462,CWS,MIN,3,,,Ryan Jeffers,C,True
+776462,CWS,MIN,4,,,Kody Clemens,1B,True
+776462,CWS,MIN,5,,,Royce Lewis,3B,True
+776462,CWS,MIN,6,,,Matt Wallner,RF,True
+776462,CWS,MIN,7,,,Austin Martin,LF,True
+776462,CWS,MIN,8,,,James Outman,CF,True
+776462,CWS,MIN,9,,,Ryan Fitzgerald,SS,True
+776464,NYY,HOU,1,Trent Grisham,CF,Jeremy Peña,SS,True
+776464,NYY,HOU,2,Ben Rice,1B,Yordan Alvarez,LF,True
+776464,NYY,HOU,3,Aaron Judge,DH,Jose Altuve,DH,True
+776464,NYY,HOU,4,Cody Bellinger,RF,Carlos Correa,3B,True
+776464,NYY,HOU,5,Giancarlo Stanton,LF,Christian Walker,1B,True
+776464,NYY,HOU,6,Jazz Chisholm Jr.,2B,Yainer Diaz,C,True
+776464,NYY,HOU,7,Austin Wells,C,Cam Smith,RF,True
+776464,NYY,HOU,8,Anthony Volpe,SS,Ramón Urías,2B,True
+776464,NYY,HOU,9,Ryan McMahon,3B,Mauricio Dubón,CF,True

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Lineups - MLB Betting Analytics</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/enhanced_dashboard.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .last-refresh {
+            font-size: 0.8em;
+            color: #666;
+            margin-right: 10px;
+        }
+        .refresh-btn {
+            transition: all 0.3s ease;
+        }
+        .refresh-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        .limited-data {
+            color: #999;
+            font-style: italic;
+            font-size: 0.9em;
+        }
+        .stats {
+            margin-right: 8px;
+            font-size: 0.85em;
+        }
+        .team-logo {
+            width: 24px;
+            height: 24px;
+            margin: 0 8px;
+            vertical-align: middle;
+        }
+        .team-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .team-name {
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        .vs-indicator {
+            color: #666;
+            margin: 0 4px;
+        }
+        .lineup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .player-stats {
+            margin-top: 4px;
+        }
+        .stat-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-bottom: 2px;
+        }
+        .expected-stats {
+            opacity: 0.8;
+            font-style: italic;
+        }
+        .expected-stats .stats {
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <h1><i class="fas fa-list-ol"></i> Daily Lineups</h1>
+                <div class="header-info">
+                    <span class="date">{{ data.current_date if data else "Loading..." }}</span>
+                    <span id="last-refresh" class="last-refresh"></span>
+                    <button class="refresh-btn" onclick="refreshLineups()" id="refresh-btn">
+                        <i class="fas fa-sync" id="refresh-icon"></i> Refresh Lineups
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="dashboard-nav">
+            <div class="nav-content">
+                <a href="/" class="nav-item">
+                    <i class="fas fa-home"></i> Overview
+                </a>
+                <a href="/games" class="nav-item">
+                    <i class="fas fa-calendar-day"></i> Games & Odds
+                </a>
+                <a href="/pitchers" class="nav-item">
+                    <i class="fas fa-user-tie"></i> Pitchers
+                </a>
+                <a href="/hitters" class="nav-item">
+                    <i class="fas fa-user"></i> Hitters
+                </a>
+                <a href="/lineups" class="nav-item active">
+                    <i class="fas fa-list-ol"></i> Lineups
+                </a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            {% if lineups and lineups|length > 0 %}
+            
+            <!-- Lineup Summary -->
+            <section class="summary-section">
+                <h2>Today's Lineup Status</h2>
+                <div class="summary-grid">
+                    <div class="summary-card games-card">
+                        <div class="card-icon">
+                            <i class="fas fa-calendar-day"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>{{ lineups|length }}</h3>
+                            <p>Games Today</p>
+                            <small>{{ data.current_date if data else "Today" }}</small>
+                        </div>
+                    </div>
+
+                    <div class="summary-card hitters-card">
+                        <div class="card-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>{{ lineups | selectattr('lineups_available', 'equalto', true) | list | length }}</h3>
+                            <p>Lineups Available</p>
+                            <small>Released lineups</small>
+                        </div>
+                    </div>
+
+                    <div class="summary-card pitchers-card">
+                        <div class="card-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>{{ lineups | selectattr('lineups_available', 'equalto', false) | list | length }}</h3>
+                            <p>Pending Lineups</p>
+                            <small>Not yet released</small>
+                        </div>
+                    </div>
+
+                    <div class="summary-card odds-card">
+                        <div class="card-icon">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3><i class="fas fa-question"></i></h3>
+                            <p>Lineup Info</p>
+                            <small>Released 2-3 hours before game</small>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Game Lineups -->
+            <section class="lineups-section">
+                <h2>Game Lineups</h2>
+                <div class="lineups-grid">
+                    {% for lineup in lineups %}
+                    <div class="lineup-card">
+                        <div class="lineup-header">
+                            <div class="team-info">
+                                {% if lineup.away_team_logo %}
+                                <img src="{{ lineup.away_team_logo }}" alt="{{ lineup.away_team }}" class="team-logo">
+                                {% endif %}
+                                <span class="team-name">{{ lineup.away_team }}</span>
+                                <span class="vs-indicator">@</span>
+                                <span class="team-name">{{ lineup.home_team }}</span>
+                                {% if lineup.home_team_logo %}
+                                <img src="{{ lineup.home_team_logo }}" alt="{{ lineup.home_team }}" class="team-logo">
+                                {% endif %}
+                            </div>
+                            <div class="lineup-status">
+                                {% if lineup.lineups_available %}
+                                <span class="status-available">
+                                    <i class="fas fa-check-circle"></i> Available
+                                </span>
+                                {% else %}
+                                <span class="status-pending">
+                                    <i class="fas fa-clock"></i> Not Available
+                                </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="game-info">
+                            {% if lineup.venue %}
+                            <p><i class="fas fa-map-marker-alt"></i> {{ lineup.venue }}</p>
+                            {% endif %}
+                            {% if lineup.game_time and lineup.game_time != 'TBD' %}
+                            <p><i class="fas fa-clock"></i> {{ lineup.game_time }}</p>
+                            {% endif %}
+                        </div>
+
+                        {% if lineup.lineups_available %}
+                        <div class="lineup-display">
+                            <div class="team-lineup">
+                                <h4>{{ lineup.away_team }} Lineup</h4>
+                                {% if lineup.away_pitcher %}
+                                <div class="starting-pitcher">
+                                    <strong>SP:</strong> {{ lineup.away_pitcher }}
+                                </div>
+                                {% endif %}
+                                <ol class="batting-order">
+                                    {% for batter in lineup.away_lineup %}
+                                    <li>
+                                        <span class="player-name">{{ batter.name }}</span>
+                                        <span class="position">{{ batter.position }}</span>
+                                        <div class="player-stats">
+                                            {% if batter.avg and batter.avg not in ['N/A', 'Limited'] %}
+                                            <div class="stat-row">
+                                                <span class="stats">AVG: {{ batter.avg }}</span>
+                                                {% if batter.ops and batter.ops not in ['N/A', 'Limited'] %}
+                                                <span class="stats">OPS: {{ batter.ops }}</span>
+                                                {% endif %}
+                                                {% if batter.woba and batter.woba not in ['N/A', 'Limited'] %}
+                                                <span class="stats">wOBA: {{ batter.woba }}</span>
+                                                {% endif %}
+                                            </div>
+                                            {% if batter.xba and batter.xba not in ['N/A', 'Limited'] %}
+                                            <div class="stat-row expected-stats">
+                                                <span class="stats">xAVG: {{ batter.xba }}</span>
+                                                {% if batter.xslg and batter.xslg not in ['N/A', 'Limited'] %}
+                                                <span class="stats">xSLG: {{ batter.xslg }}</span>
+                                                {% endif %}
+                                                {% if batter.xwoba and batter.xwoba not in ['N/A', 'Limited'] %}
+                                                <span class="stats">xwOBA: {{ batter.xwoba }}</span>
+                                                {% endif %}
+                                            </div>
+                                            {% endif %}
+                                            {% elif batter.avg == 'Limited' %}
+                                            <span class="stats limited-data">Limited Data</span>
+                                            {% endif %}
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+                                </ol>
+                            </div>
+
+                            <div class="team-lineup">
+                                <h4>{{ lineup.home_team }} Lineup</h4>
+                                {% if lineup.home_pitcher %}
+                                <div class="starting-pitcher">
+                                    <strong>SP:</strong> {{ lineup.home_pitcher }}
+                                </div>
+                                {% endif %}
+                                <ol class="batting-order">
+                                    {% for batter in lineup.home_lineup %}
+                                    <li>
+                                        <span class="player-name">{{ batter.name }}</span>
+                                        <span class="position">{{ batter.position }}</span>
+                                        <div class="player-stats">
+                                            {% if batter.avg and batter.avg not in ['N/A', 'Limited'] %}
+                                            <div class="stat-row">
+                                                <span class="stats">AVG: {{ batter.avg }}</span>
+                                                {% if batter.ops and batter.ops not in ['N/A', 'Limited'] %}
+                                                <span class="stats">OPS: {{ batter.ops }}</span>
+                                                {% endif %}
+                                                {% if batter.woba and batter.woba not in ['N/A', 'Limited'] %}
+                                                <span class="stats">wOBA: {{ batter.woba }}</span>
+                                                {% endif %}
+                                            </div>
+                                            {% if batter.xba and batter.xba not in ['N/A', 'Limited'] %}
+                                            <div class="stat-row expected-stats">
+                                                <span class="stats">xAVG: {{ batter.xba }}</span>
+                                                {% if batter.xslg and batter.xslg not in ['N/A', 'Limited'] %}
+                                                <span class="stats">xSLG: {{ batter.xslg }}</span>
+                                                {% endif %}
+                                                {% if batter.xwoba and batter.xwoba not in ['N/A', 'Limited'] %}
+                                                <span class="stats">xwOBA: {{ batter.xwoba }}</span>
+                                                {% endif %}
+                                            </div>
+                                            {% endif %}
+                                            {% elif batter.avg == 'Limited' %}
+                                            <span class="stats limited-data">Limited Data</span>
+                                            {% endif %}
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+                                </ol>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="lineup-unavailable">
+                            <i class="fas fa-info-circle"></i>
+                            <p>Lineups typically released 2-3 hours before game time</p>
+                            {% if lineup.status %}
+                            <small>{{ lineup.status }}</small>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            {% else %}
+            <!-- No Data State -->
+            <div class="no-data-state">
+                <div class="no-data-icon">
+                    <i class="fas fa-list-ol"></i>
+                </div>
+                <h2>No Games Scheduled</h2>
+                <p>No MLB games found for today. Check back during the regular season.</p>
+                <button class="refresh-btn" onclick="location.reload()">
+                    <i class="fas fa-sync"></i> Check Again
+                </button>
+            </div>
+            {% endif %}
+        </main>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <p>MLB Lineup Data | Source: MLB.com Official API</p>
+        </footer>
+    </div>
+
+    <script>
+        // Global lineup refresh functionality
+        async function refreshLineups() {
+            const refreshBtn = document.getElementById('refresh-btn');
+            const refreshIcon = document.getElementById('refresh-icon');
+            const lastRefresh = document.getElementById('last-refresh');
+            
+            // Show loading state
+            refreshBtn.disabled = true;
+            refreshIcon.classList.add('fa-spin');
+            refreshBtn.innerHTML = '<i class="fas fa-sync fa-spin"></i> Refreshing...';
+            
+            try {
+                const response = await fetch('/api/lineups?refresh=true');
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Update timestamp (now comes pre-formatted from backend)
+                    lastRefresh.textContent = `Last updated: ${data.timestamp}`;
+                    
+                    // Reload page to show fresh data
+                    setTimeout(() => {
+                        location.reload();
+                    }, 500);
+                    
+                    console.log('✅ Lineups refreshed successfully');
+                } else {
+                    throw new Error(data.error || 'Failed to refresh lineups');
+                }
+            } catch (error) {
+                console.error('❌ Error refreshing lineups:', error);
+                alert('Failed to refresh lineups. Please try again.');
+            } finally {
+                // Reset button state
+                setTimeout(() => {
+                    refreshBtn.disabled = false;
+                    refreshIcon.classList.remove('fa-spin');
+                    refreshBtn.innerHTML = '<i class="fas fa-sync"></i> Refresh Lineups';
+                }, 1000);
+            }
+        }
+        
+        // Auto-refresh lineups every 20 minutes during active hours
+        function autoRefreshLineups() {
+            const now = new Date();
+            const hour = now.getHours();
+            
+            // Only auto-refresh during typical game hours (10 AM - 11 PM ET)
+            if (hour >= 10 && hour <= 23) {
+                setTimeout(() => {
+                    refreshLineups();
+                }, 20 * 60 * 1000); // 20 minutes
+            }
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set initial last refresh time with Eastern timezone  
+            const lastRefresh = document.getElementById('last-refresh');
+            const now = new Date().toLocaleString('en-US', {
+                timeZone: 'America/New_York',
+                year: 'numeric',
+                month: '2-digit', 
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            }) + ' ET';
+            lastRefresh.textContent = `Last updated: ${now}`;
+            
+            // Start auto-refresh
+            autoRefreshLineups();
+            
+            console.log('🔄 Lineup refresh system initialized');
+        });
+    </script>
+    <script src="{{ url_for('static', filename='js/enhanced_dashboard.js') }}"></script>
+</body>
+</html>

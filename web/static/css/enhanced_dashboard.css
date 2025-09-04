@@ -1,0 +1,1174 @@
+/* Enhanced MLB Betting Dashboard Styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #f8fafc;
+    min-height: 100vh;
+    line-height: 1.5;
+}
+
+.dashboard-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header */
+.dashboard-header {
+    padding: 20px 0;
+    border-bottom: 1px solid #334155;
+    margin-bottom: 30px;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dashboard-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #f59e0b;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.dashboard-header h1 i {
+    color: #ef4444;
+}
+
+.header-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.date {
+    font-size: 1rem;
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+.refresh-btn {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.refresh-btn:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+}
+
+/* Navigation */
+.dashboard-nav {
+    margin-bottom: 30px;
+    background: rgba(30, 41, 59, 0.5);
+    border-radius: 12px;
+    padding: 4px;
+}
+
+.nav-content {
+    display: flex;
+    gap: 4px;
+}
+
+.nav-item {
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #94a3b8;
+    font-weight: 500;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-item:hover {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+.nav-item.active {
+    background: #3b82f6;
+    color: white;
+}
+
+/* Summary Section */
+.summary-section {
+    margin-bottom: 40px;
+}
+
+.summary-section h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #f1f5f9;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.summary-card {
+    background: rgba(30, 41, 59, 0.6);
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid #334155;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.summary-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border-color: #3b82f6;
+}
+
+.card-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.games-card .card-icon {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.pitchers-card .card-icon {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.hitters-card .card-icon {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.odds-card .card-icon {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.card-content h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+}
+
+.card-content p {
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+.card-content small {
+    color: #64748b;
+    font-size: 0.8rem;
+}
+
+/* Matchups Section */
+.matchups-section {
+    margin-bottom: 40px;
+}
+
+.matchups-section h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #f1f5f9;
+}
+
+.matchups-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.matchup-card {
+    background: rgba(30, 41, 59, 0.6);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid #334155;
+    transition: all 0.3s;
+}
+
+.matchup-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.high-confidence {
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.05);
+}
+
+.medium-confidence {
+    border-color: #f59e0b;
+    background: rgba(245, 158, 11, 0.05);
+}
+
+.low-confidence {
+    border-color: #6b7280;
+    background: rgba(107, 114, 128, 0.05);
+}
+
+.matchup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.confidence-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.high-confidence .confidence-badge {
+    background: #10b981;
+    color: white;
+}
+
+.medium-confidence .confidence-badge {
+    background: #f59e0b;
+    color: white;
+}
+
+.low-confidence .confidence-badge {
+    background: #6b7280;
+    color: white;
+}
+
+.score-diff {
+    font-weight: 700;
+    color: #10b981;
+}
+
+.matchup-teams {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.team {
+    flex: 1;
+    text-align: center;
+    padding: 12px;
+    border-radius: 8px;
+    background: rgba(51, 65, 85, 0.3);
+}
+
+.team.advantage {
+    background: rgba(16, 185, 129, 0.2);
+    border: 1px solid #10b981;
+}
+
+.team strong {
+    display: block;
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+}
+
+.team .pitcher {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    margin-bottom: 4px;
+}
+
+.team .odds {
+    font-weight: 600;
+    color: #f59e0b;
+    margin-bottom: 4px;
+}
+
+.team .score {
+    font-weight: 700;
+    color: #10b981;
+}
+
+.vs {
+    font-weight: 700;
+    color: #94a3b8;
+    font-size: 1.2rem;
+}
+
+/* Games Preview */
+.games-preview {
+    margin-bottom: 40px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-header h2,
+.section-header h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #f1f5f9;
+}
+
+.view-all-btn {
+    color: #3b82f6;
+    text-decoration: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.view-all-btn:hover {
+    color: #2563eb;
+    transform: translateX(4px);
+}
+
+.games-table-container {
+    background: rgba(30, 41, 59, 0.6);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid #334155;
+    overflow-x: auto;
+}
+
+.games-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.games-table th {
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    color: #94a3b8;
+    border-bottom: 1px solid #334155;
+}
+
+.games-table td {
+    padding: 16px 12px;
+    border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+}
+
+.games-table tr:hover {
+    background: rgba(59, 130, 246, 0.05);
+}
+
+.matchup-cell .teams {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.matchup-cell .at {
+    color: #94a3b8;
+    margin: 0 8px;
+}
+
+.matchup-cell .pitchers {
+    color: #94a3b8;
+}
+
+.odds-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.away-odds,
+.home-odds {
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: rgba(51, 65, 85, 0.5);
+    font-weight: 500;
+}
+
+.advantage-cell .advantage {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.advantage.away {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+}
+
+.advantage.home {
+    background: rgba(59, 130, 246, 0.2);
+    color: #3b82f6;
+}
+
+.even,
+.no-data {
+    color: #94a3b8;
+    font-style: italic;
+}
+
+.total-cell .total {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.total-cell .ou-odds {
+    color: #94a3b8;
+}
+
+/* Performers Section */
+.performers-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.performers-card {
+    background: rgba(30, 41, 59, 0.6);
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid #334155;
+}
+
+.performers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.performer-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: rgba(51, 65, 85, 0.3);
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.performer-item:hover {
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.performer-info strong {
+    display: block;
+    margin-bottom: 2px;
+}
+
+.performer-info .team {
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.performer-stats {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.grade {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+/* Grade Colors */
+.grade-aplus { background: #10b981; color: white; }
+.grade-a { background: #059669; color: white; }
+.grade-aminus { background: #047857; color: white; }
+.grade-bplus { background: #3b82f6; color: white; }
+.grade-b { background: #2563eb; color: white; }
+.grade-bminus { background: #1d4ed8; color: white; }
+.grade-cplus { background: #f59e0b; color: white; }
+.grade-c { background: #d97706; color: white; }
+.grade-cminus { background: #b45309; color: white; }
+.grade-dplus { background: #ef4444; color: white; }
+.grade-d { background: #dc2626; color: white; }
+.grade-f { background: #b91c1c; color: white; }
+
+.score {
+    font-weight: 700;
+    color: #f1f5f9;
+}
+
+/* No Data State */
+.no-data-state {
+    text-align: center;
+    padding: 80px 40px;
+    background: rgba(30, 41, 59, 0.6);
+    border-radius: 16px;
+    border: 1px solid #334155;
+}
+
+.no-data-icon {
+    font-size: 4rem;
+    color: #6b7280;
+    margin-bottom: 24px;
+}
+
+.no-data-state h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #f1f5f9;
+}
+
+.no-data-state p {
+    color: #94a3b8;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+
+.no-data-state code {
+    background: rgba(51, 65, 85, 0.5);
+    padding: 12px 20px;
+    border-radius: 8px;
+    display: inline-block;
+    margin: 20px 0;
+    color: #f59e0b;
+    font-family: 'Monaco', 'Menlo', monospace;
+}
+
+/* Footer */
+.dashboard-footer {
+    padding: 30px 0;
+    text-align: center;
+    border-top: 1px solid #334155;
+    margin-top: 60px;
+}
+
+.dashboard-footer p {
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+/* Additional Styles for New Pages */
+
+/* Grade Distribution */
+.distribution-section {
+    margin-bottom: 40px;
+}
+
+.grade-distribution {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: rgba(30, 41, 59, 0.6);
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid #334155;
+}
+
+.grade-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.grade-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 100px;
+}
+
+.grade-label .count {
+    color: #94a3b8;
+    font-weight: 500;
+    min-width: 30px;
+}
+
+.bar-container {
+    flex: 1;
+    height: 20px;
+    background: rgba(51, 65, 85, 0.5);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.bar {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #10b981);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+/* Top Players Grid */
+.top-pitchers-grid,
+.top-hitters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.pitcher-card,
+.hitter-card {
+    background: rgba(30, 41, 59, 0.6);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid #334155;
+    transition: all 0.3s;
+}
+
+.pitcher-card:hover,
+.hitter-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    border-color: #3b82f6;
+}
+
+.pitcher-header,
+.hitter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.pitcher-header h3,
+.hitter-header h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #f1f5f9;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.team-badge {
+    background: #3b82f6;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.pitcher-grade,
+.hitter-grade {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.score {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #10b981;
+}
+
+.pitcher-stats,
+.hitter-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.stat {
+    text-align: center;
+    padding: 8px;
+    background: rgba(51, 65, 85, 0.3);
+    border-radius: 8px;
+}
+
+.stat label {
+    display: block;
+    font-size: 0.8rem;
+    color: #94a3b8;
+    margin-bottom: 4px;
+}
+
+.stat value {
+    font-weight: 600;
+    color: #f1f5f9;
+}
+
+/* Table Controls */
+.table-controls {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.search-input,
+.filter-select {
+    padding: 8px 12px;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    background: rgba(30, 41, 59, 0.8);
+    color: #f1f5f9;
+    font-size: 0.9rem;
+}
+
+.search-input {
+    min-width: 200px;
+}
+
+.search-input:focus,
+.filter-select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.filter-select option {
+    background: #1e293b;
+    color: #f1f5f9;
+}
+
+/* Table Styles */
+.table-container {
+    background: rgba(30, 41, 59, 0.6);
+    border-radius: 16px;
+    border: 1px solid #334155;
+    overflow: hidden;
+}
+
+.pitchers-table,
+.hitters-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.pitchers-table th,
+.hitters-table th {
+    padding: 16px 12px;
+    text-align: left;
+    font-weight: 600;
+    color: #94a3b8;
+    background: rgba(51, 65, 85, 0.5);
+    border-bottom: 1px solid #334155;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.pitchers-table td,
+.hitters-table td {
+    padding: 16px 12px;
+    border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+    font-size: 0.9rem;
+}
+
+.pitchers-table tr:hover,
+.hitters-table tr:hover {
+    background: rgba(59, 130, 246, 0.05);
+}
+
+.pitcher-name,
+.hitter-name {
+    font-weight: 600;
+    color: #f1f5f9;
+}
+
+/* Detailed Games Table */
+.detailed-games {
+    font-size: 0.85rem;
+}
+
+.detailed-games .matchup-cell {
+    min-width: 200px;
+}
+
+.detailed-games .team-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+}
+
+.detailed-games .team-name {
+    font-weight: 600;
+}
+
+.detailed-games .pitcher {
+    font-size: 0.8rem;
+    color: #94a3b8;
+}
+
+.detailed-games .at-symbol {
+    text-align: center;
+    color: #6b7280;
+    font-weight: 500;
+    padding: 4px 0;
+}
+
+.odds-pair,
+.spread-pair {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.away-ml,
+.away-spread,
+.away-odds {
+    padding: 2px 6px;
+    background: rgba(239, 68, 68, 0.2);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+.home-ml,
+.home-spread,
+.home-odds {
+    padding: 2px 6px;
+    background: rgba(59, 130, 246, 0.2);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+.pitcher-edge-cell .advantage {
+    padding: 6px 12px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.pitcher-edge-cell .advantage .team {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.pitcher-edge-cell .advantage .edge {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.pitcher-edge-cell .grades {
+    margin-top: 4px;
+    color: #94a3b8;
+}
+
+.offense-cell .team-offense {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.offense-cell .away-offense,
+.offense-cell .home-offense {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 8px;
+    background: rgba(51, 65, 85, 0.3);
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+.offense-cell .wrc {
+    font-weight: 600;
+    color: #10b981;
+}
+
+/* Loading and Error States */
+.loading-state,
+.error-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #94a3b8;
+}
+
+.loading-state i,
+.error-state i {
+    font-size: 2rem;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.error-state {
+    color: #ef4444;
+}
+
+.error-state .refresh-btn {
+    margin-top: 16px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 0 16px;
+    }
+    
+    .header-content {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+    }
+    
+    .dashboard-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .nav-content {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .matchups-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .performers-section {
+        grid-template-columns: 1fr;
+    }
+    
+    .games-table-container {
+        padding: 12px;
+    }
+    
+    .games-table {
+        font-size: 0.9rem;
+    }
+    
+    .matchup-teams {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .vs {
+        transform: rotate(90deg);
+    }
+}
+
+/* Lineup Page Styles */
+.lineups-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.lineup-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.lineup-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border-color: #f59e0b;
+}
+
+.lineup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #475569;
+}
+
+.lineup-header h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #f8fafc;
+}
+
+.lineup-status .status-available {
+    background: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.lineup-status .status-pending {
+    background: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.game-info {
+    margin-bottom: 15px;
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.game-info p {
+    margin-bottom: 5px;
+}
+
+.lineup-display {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.team-lineup h4 {
+    color: #f59e0b;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.starting-pitcher {
+    background: rgba(239, 68, 68, 0.1);
+    color: #f87171;
+    padding: 8px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.batting-order {
+    list-style: none;
+    padding: 0;
+}
+
+.batting-order li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    margin-bottom: 4px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
+    border-left: 3px solid #f59e0b;
+    transition: background 0.2s ease;
+}
+
+.batting-order li:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.batting-order li:before {
+    content: counter(item) ".";
+    counter-increment: item;
+    font-weight: 600;
+    color: #f59e0b;
+    margin-right: 8px;
+    min-width: 20px;
+}
+
+.batting-order {
+    counter-reset: item;
+}
+
+.player-name {
+    font-weight: 500;
+    color: #f8fafc;
+    flex-grow: 1;
+}
+
+.position {
+    background: rgba(99, 102, 241, 0.2);
+    color: #a5b4fc;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    min-width: 35px;
+    text-align: center;
+    margin: 0 8px;
+}
+
+.stats {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.lineup-unavailable {
+    text-align: center;
+    padding: 40px 20px;
+    color: #94a3b8;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+    border: 1px dashed #475569;
+}
+
+.lineup-unavailable i {
+    font-size: 2rem;
+    color: #f59e0b;
+    margin-bottom: 15px;
+}
+
+.lineup-unavailable p {
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.lineup-unavailable small {
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+/* Mobile responsiveness for lineups */
+@media (max-width: 768px) {
+    .lineups-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .lineup-display {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .lineup-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .batting-order li {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+    
+    .position {
+        align-self: flex-end;
+        margin: 0;
+    }
+}

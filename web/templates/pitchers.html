@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pitcher Analysis - MLB Betting Analytics</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/enhanced_dashboard.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Additional styles for pitcher page */
+        .pitcher-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .stat-category {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid #e5e7eb;
+        }
+        
+        .stat-category h3 {
+            margin: 0 0 15px 0;
+            color: #1f2937;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-bottom: 2px solid #dc2626;
+            padding-bottom: 8px;
+        }
+        
+        .top-player {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .top-player:last-child {
+            border-bottom: none;
+        }
+        
+        .player-rank {
+            font-weight: 600;
+            color: #6b7280;
+            width: 20px;
+        }
+        
+        .player-info {
+            flex: 1;
+            margin: 0 10px;
+        }
+        
+        .player-name {
+            font-weight: 500;
+            color: #1f2937;
+        }
+        
+        .player-team {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+        
+        .player-value {
+            font-weight: 600;
+            color: #dc2626;
+        }
+        
+        .pitchers-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .pitchers-table th {
+            background: #f8fafc;
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.9rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.2s;
+        }
+        
+        .pitchers-table th:hover {
+            background: #e2e8f0;
+        }
+        
+        .pitchers-table th.sortable::after {
+            content: ' ↕';
+            color: #9ca3af;
+            font-size: 0.8rem;
+        }
+        
+        .pitchers-table th.sort-asc::after {
+            content: ' ↑';
+            color: #dc2626;
+            font-weight: bold;
+        }
+        
+        .pitchers-table th.sort-desc::after {
+            content: ' ↓';
+            color: #dc2626;
+            font-weight: bold;
+        }
+        
+        .pitchers-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 0.9rem;
+            color: #1f2937;
+            background: white;
+        }
+        
+        .pitchers-table tr {
+            background: white;
+        }
+        
+        .pitchers-table tr:hover {
+            background: #f8fafc !important;
+        }
+        
+        .pitchers-table tr:hover td {
+            color: #1f2937 !important;
+        }
+        
+        .pitcher-name {
+            font-weight: 500;
+            color: #1f2937 !important;
+        }
+        
+        /* Ensure all table text is visible */
+        .pitchers-table tbody tr td {
+            color: #1f2937 !important;
+            background: white !important;
+        }
+        
+        .pitchers-table tbody tr:nth-child(even) td {
+            background: #f9fafb !important;
+            color: #1f2937 !important;
+        }
+        
+        .pitchers-table tbody tr:hover td {
+            background: #e5e7eb !important;
+            color: #1f2937 !important;
+        }
+        
+        .grade {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-align: center;
+            min-width: 30px;
+            display: inline-block;
+        }
+        
+        .grade-aplus { background: #10b981; color: white; }
+        .grade-a { background: #34d399; color: white; }
+        .grade-aminus { background: #6ee7b7; color: #065f46; }
+        .grade-bplus { background: #60a5fa; color: white; }
+        .grade-b { background: #93c5fd; color: #1e40af; }
+        .grade-bminus { background: #ddd6fe; color: #5b21b6; }
+        .grade-cplus { background: #fbbf24; color: #92400e; }
+        .grade-c { background: #fcd34d; color: #92400e; }
+        .grade-cminus { background: #fde68a; color: #92400e; }
+        .grade-dplus { background: #fb7185; color: white; }
+        .grade-d { background: #f87171; color: white; }
+        .grade-f { background: #ef4444; color: white; }
+        
+        .team-badge {
+            background: #dc2626;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .score {
+            font-weight: 600;
+            color: #dc2626;
+        }
+        
+        .table-container {
+            max-height: 600px;
+            overflow-y: auto;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .controls-bar {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .search-input, .filter-select {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .search-input {
+            min-width: 200px;
+        }
+        
+        .view-toggle {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .view-btn {
+            padding: 8px 16px;
+            border: 1px solid #d1d5db;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        
+        .view-btn.active {
+            background: #dc2626;
+            color: white;
+            border-color: #dc2626;
+        }
+        
+        .view-btn:hover {
+            background: #f3f4f6;
+        }
+        
+        .view-btn.active:hover {
+            background: #b91c1c;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #dc2626;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        #top10-view { display: none; }
+        #table-view { display: block; }
+        
+        .view-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <h1><i class="fas fa-user-tie"></i> Comprehensive Pitcher Analysis</h1>
+                <div class="header-info">
+                    <span class="date">{{ data.current_date if data else "Loading..." }}</span>
+                    <button class="refresh-btn" onclick="location.reload()">
+                        <i class="fas fa-sync"></i> Refresh
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="dashboard-nav">
+            <div class="nav-content">
+                <a href="/" class="nav-item">
+                    <i class="fas fa-home"></i> Overview
+                </a>
+                <a href="/games" class="nav-item">
+                    <i class="fas fa-calendar-day"></i> Games & Odds
+                </a>
+                <a href="/pitchers" class="nav-item active">
+                    <i class="fas fa-user-tie"></i> Pitchers
+                </a>
+                <a href="/hitters" class="nav-item">
+                    <i class="fas fa-baseball-ball"></i> Hitters
+                </a>
+                <a href="/lineups" class="nav-item">
+                    <i class="fas fa-list-ol"></i> Lineups
+                </a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Summary Stats -->
+            <section class="summary-section" id="summary-section">
+                <h2>Pitcher Overview</h2>
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <div class="card-icon"><i class="fas fa-users"></i></div>
+                        <div class="card-content">
+                            <h3 id="total-pitchers">Loading...</h3>
+                            <p>Total Pitchers Analyzed</p>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="card-icon"><i class="fas fa-star"></i></div>
+                        <div class="card-content">
+                            <h3 id="elite-pitchers">Loading...</h3>
+                            <p>Elite Performers (A+ Grade)</p>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+                        <div class="card-content">
+                            <h3 id="avg-era">Loading...</h3>
+                            <p>Average ERA</p>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="card-icon"><i class="fas fa-download"></i></div>
+                        <div class="card-content">
+                            <a href="/export/pitchers" style="color: inherit; text-decoration: none;">
+                                <h3><i class="fas fa-file-csv"></i></h3>
+                                <p>Export Data</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- View Controls -->
+            <section class="controls-section">
+                <div class="controls-bar">
+                    <div class="view-toggle">
+                        <span style="font-weight: 500; color: #374151;">View:</span>
+                        <button class="view-btn active" id="top10-btn" onclick="showTop10View()">
+                            <i class="fas fa-trophy"></i> Top 10 Categories
+                        </button>
+                        <button class="view-btn" id="table-btn" onclick="showTableView()">
+                            <i class="fas fa-table"></i> All Pitchers Table
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Top 10 Categories View -->
+            <section id="top10-view" class="view-section">
+                <h2>🏆 Top 10 in Key Categories</h2>
+                <div class="pitcher-stats-grid" id="top10-grid">
+                    <div class="loading-spinner"></div>
+                    <p>Loading top performers...</p>
+                </div>
+            </section>
+
+            <!-- All Pitchers Table View -->
+            <section id="table-view" class="view-section" style="display: none;">
+                <h2>📊 Complete Pitcher Analysis</h2>
+                
+                <!-- Table Controls -->
+                <div class="controls-bar">
+                    <input type="text" id="pitcher-search" placeholder="Search pitchers or teams..." class="search-input">
+                    <select id="grade-filter" class="filter-select">
+                        <option value="">All Grades</option>
+                        <option value="A+">A+</option>
+                        <option value="A">A</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B">B</option>
+                        <option value="B-">B-</option>
+                        <option value="C+">C+</option>
+                        <option value="C">C</option>
+                        <option value="C-">C-</option>
+                        <option value="D+">D+</option>
+                        <option value="D">D</option>
+                        <option value="F">F</option>
+                    </select>
+                    <select id="team-filter" class="filter-select">
+                        <option value="">All Teams</option>
+                    </select>
+                    <span id="results-count" style="color: #6b7280; font-size: 0.9rem;"></span>
+                </div>
+                
+                <!-- Pitchers Table -->
+                <div class="table-container" id="pitchers-table-container">
+                    <div class="loading-state">
+                        <div class="loading-spinner"></div>
+                        <p>Loading comprehensive pitcher data...</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <p>MLB Pitcher Analytics | Data from Fangraphs & Baseball Savant | Advanced Sabermetrics</p>
+        </footer>
+    </div>
+
+    <script>
+        class ComprehensivePitcherDashboard {
+            constructor() {
+                this.pitchers = [];
+                this.filteredPitchers = [];
+                this.top10Data = {};
+                this.currentView = 'top10';
+                this.sortColumn = null;
+                this.sortDirection = 'desc';
+                this.init();
+            }
+
+            async init() {
+                await this.loadData();
+                this.setupEventListeners();
+                this.showTop10View();
+            }
+
+            async loadData() {
+                try {
+                    // Load both pitcher data and top 10 categories
+                    const [pitchersResponse, top10Response] = await Promise.all([
+                        fetch('/api/pitchers'),
+                        fetch('/api/pitchers/top10')
+                    ]);
+
+                    this.pitchers = await pitchersResponse.json();
+                    this.top10Data = await top10Response.json();
+                    this.filteredPitchers = [...this.pitchers];
+
+                    console.log('Loaded', this.pitchers.length, 'pitchers');
+                    this.updateSummaryStats();
+                    
+                } catch (error) {
+                    console.error('Error loading data:', error);
+                    this.showError();
+                }
+            }
+
+            updateSummaryStats() {
+                document.getElementById('total-pitchers').textContent = this.pitchers.length;
+                
+                const elitePitchers = this.pitchers.filter(p => p.grade === 'A+').length;
+                document.getElementById('elite-pitchers').textContent = elitePitchers;
+                
+                const avgEra = this.pitchers.length > 0 ? 
+                    (this.pitchers.reduce((sum, p) => sum + (p.era || 0), 0) / this.pitchers.length).toFixed(2) : 
+                    '0.00';
+                document.getElementById('avg-era').textContent = avgEra;
+            }
+
+            setupEventListeners() {
+                // Search and filters
+                document.getElementById('pitcher-search')?.addEventListener('input', () => this.applyFilters());
+                document.getElementById('grade-filter')?.addEventListener('change', () => this.applyFilters());
+                document.getElementById('team-filter')?.addEventListener('change', () => this.applyFilters());
+
+                // Populate team filter
+                const teams = [...new Set(this.pitchers.map(p => p.team))].sort();
+                const teamFilter = document.getElementById('team-filter');
+                if (teamFilter) {
+                    teams.forEach(team => {
+                        const option = document.createElement('option');
+                        option.value = team;
+                        option.textContent = team;
+                        teamFilter.appendChild(option);
+                    });
+                }
+            }
+
+            showTop10View() {
+                this.currentView = 'top10';
+                document.getElementById('top10-view').style.display = 'block';
+                document.getElementById('table-view').style.display = 'none';
+                document.getElementById('top10-btn').classList.add('active');
+                document.getElementById('table-btn').classList.remove('active');
+                this.renderTop10();
+            }
+
+            showTableView() {
+                this.currentView = 'table';
+                document.getElementById('top10-view').style.display = 'none';
+                document.getElementById('table-view').style.display = 'block';
+                document.getElementById('top10-btn').classList.remove('active');
+                document.getElementById('table-btn').classList.add('active');
+                this.renderTable();
+            }
+
+            renderTop10() {
+                const container = document.getElementById('top10-grid');
+                if (!this.top10Data || Object.keys(this.top10Data).length === 0) {
+                    container.innerHTML = '<p>Loading top 10 categories...</p>';
+                    return;
+                }
+
+                let html = '';
+                Object.entries(this.top10Data).forEach(([key, category]) => {
+                    html += `
+                        <div class="stat-category">
+                            <h3><i class="fas fa-trophy"></i> ${category.title}</h3>
+                            ${category.players.map(player => `
+                                <div class="top-player">
+                                    <span class="player-rank">${player.rank}</span>
+                                    <div class="player-info">
+                                        <div class="player-name">${player.name}</div>
+                                        <div class="player-team">${player.team}</div>
+                                    </div>
+                                    <span class="player-value">${player.value}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                });
+
+                container.innerHTML = html;
+            }
+
+            applyFilters() {
+                if (this.currentView !== 'table') return;
+
+                const search = document.getElementById('pitcher-search')?.value.toLowerCase() || '';
+                const gradeFilter = document.getElementById('grade-filter')?.value || '';
+                const teamFilter = document.getElementById('team-filter')?.value || '';
+
+                this.filteredPitchers = this.pitchers.filter(pitcher => {
+                    const matchesSearch = !search || 
+                        pitcher.pitcher_name?.toLowerCase().includes(search) ||
+                        pitcher.team?.toLowerCase().includes(search);
+                    
+                    const matchesGrade = !gradeFilter || pitcher.grade === gradeFilter;
+                    const matchesTeam = !teamFilter || pitcher.team === teamFilter;
+
+                    return matchesSearch && matchesGrade && matchesTeam;
+                });
+
+                document.getElementById('results-count').textContent = 
+                    `Showing ${this.filteredPitchers.length} of ${this.pitchers.length} pitchers`;
+
+                this.renderTable();
+            }
+
+            sortData(column) {
+                // Toggle sort direction if clicking same column
+                if (this.sortColumn === column) {
+                    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+                } else {
+                    this.sortColumn = column;
+                    this.sortDirection = 'desc'; // Default to descending for most stats
+                }
+
+                // Map column names to data properties
+                const columnMap = {
+                    'Name': 'pitcher_name',
+                    'Team': 'team', 
+                    'Grade': 'grade',
+                    'Score': 'composite_score',
+                    'IP': 'innings_pitched',
+                    'ERA': 'era',
+                    'FIP': 'fip',
+                    'WHIP': 'whip',
+                    'SIERA': 'siera',
+                    'xERA': 'xera',
+                    'xFIP': 'xfip',
+                    'xwOBA': 'xwoba_against',
+                    'xBA': 'xba_against',
+                    'K/9': 'k_9',
+                    'BB/9': 'bb_9',
+                    'H/9': 'h_9',
+                    'HR/9': 'hr_9',
+                    'CSW%': 'csw_pct',
+                    'K%': 'k_pct',
+                    'BB%': 'bb_pct',
+                    'K:BB': 'k_bb',
+                    'GB%': 'gb_pct',
+                    'FB%': 'fb_pct',
+                    'HardHit%': 'hard_hit_pct_against',
+                    'Barrel%': 'barrel_pct_against',
+                    'GS': 'games_started',
+                    'G': 'games'
+                };
+
+                const prop = columnMap[column];
+                if (!prop) return;
+
+                this.filteredPitchers.sort((a, b) => {
+                    let aVal = a[prop];
+                    let bVal = b[prop];
+
+                    // Handle null/undefined values
+                    if (aVal === null || aVal === undefined) aVal = -999999;
+                    if (bVal === null || bVal === undefined) bVal = -999999;
+
+                    // Handle string vs number comparison
+                    if (typeof aVal === 'string' && typeof bVal === 'string') {
+                        aVal = aVal.toLowerCase();
+                        bVal = bVal.toLowerCase();
+                    }
+
+                    if (this.sortDirection === 'asc') {
+                        return aVal > bVal ? 1 : aVal < bVal ? -1 : 0;
+                    } else {
+                        return aVal < bVal ? 1 : aVal > bVal ? -1 : 0;
+                    }
+                });
+
+                this.renderTable();
+            }
+
+            renderTable() {
+                const container = document.getElementById('pitchers-table-container');
+                
+                if (!this.pitchers.length) {
+                    container.innerHTML = '<div class="no-data-state"><p>No pitcher data available</p></div>';
+                    return;
+                }
+
+                const formatValue = (value) => {
+                    if (value === null || value === undefined) return '--';
+                    if (typeof value === 'number') {
+                        return value < 1 && value > 0 ? value.toFixed(3) : value.toString();
+                    }
+                    return value;
+                };
+
+                const getSortClass = (columnName) => {
+                    if (this.sortColumn === columnName) {
+                        return `sort-${this.sortDirection}`;
+                    }
+                    return 'sortable';
+                };
+
+                const table = `
+                    <table class="pitchers-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th class="${getSortClass('Name')}" onclick="window.dashboard.sortData('Name')">Name</th>
+                                <th class="${getSortClass('Team')}" onclick="window.dashboard.sortData('Team')">Team</th>
+                                <th class="${getSortClass('Grade')}" onclick="window.dashboard.sortData('Grade')">Grade</th>
+                                <th class="${getSortClass('Score')}" onclick="window.dashboard.sortData('Score')">Score</th>
+                                <th class="${getSortClass('IP')}" onclick="window.dashboard.sortData('IP')">IP</th>
+                                <th class="${getSortClass('ERA')}" onclick="window.dashboard.sortData('ERA')">ERA</th>
+                                <th class="${getSortClass('FIP')}" onclick="window.dashboard.sortData('FIP')">FIP</th>
+                                <th class="${getSortClass('WHIP')}" onclick="window.dashboard.sortData('WHIP')">WHIP</th>
+                                <th class="${getSortClass('SIERA')}" onclick="window.dashboard.sortData('SIERA')">SIERA</th>
+                                <th class="${getSortClass('xERA')}" onclick="window.dashboard.sortData('xERA')">xERA</th>
+                                <th class="${getSortClass('xFIP')}" onclick="window.dashboard.sortData('xFIP')">xFIP</th>
+                                <th class="${getSortClass('xwOBA')}" onclick="window.dashboard.sortData('xwOBA')">xwOBA</th>
+                                <th class="${getSortClass('xBA')}" onclick="window.dashboard.sortData('xBA')">xBA</th>
+                                <th class="${getSortClass('K/9')}" onclick="window.dashboard.sortData('K/9')">K/9</th>
+                                <th class="${getSortClass('BB/9')}" onclick="window.dashboard.sortData('BB/9')">BB/9</th>
+                                <th class="${getSortClass('H/9')}" onclick="window.dashboard.sortData('H/9')">H/9</th>
+                                <th class="${getSortClass('HR/9')}" onclick="window.dashboard.sortData('HR/9')">HR/9</th>
+                                <th class="${getSortClass('CSW%')}" onclick="window.dashboard.sortData('CSW%')">CSW%</th>
+                                <th class="${getSortClass('K%')}" onclick="window.dashboard.sortData('K%')">K%</th>
+                                <th class="${getSortClass('BB%')}" onclick="window.dashboard.sortData('BB%')">BB%</th>
+                                <th class="${getSortClass('K:BB')}" onclick="window.dashboard.sortData('K:BB')">K:BB</th>
+                                <th class="${getSortClass('GB%')}" onclick="window.dashboard.sortData('GB%')">GB%</th>
+                                <th class="${getSortClass('FB%')}" onclick="window.dashboard.sortData('FB%')">FB%</th>
+                                <th class="${getSortClass('HardHit%')}" onclick="window.dashboard.sortData('HardHit%')">HardHit%</th>
+                                <th class="${getSortClass('Barrel%')}" onclick="window.dashboard.sortData('Barrel%')">Barrel%</th>
+                                <th class="${getSortClass('GS')}" onclick="window.dashboard.sortData('GS')">GS</th>
+                                <th class="${getSortClass('G')}" onclick="window.dashboard.sortData('G')">G</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${this.filteredPitchers.map((pitcher, index) => `
+                                <tr>
+                                    <td>${index + 1}</td>
+                                    <td class="pitcher-name">${pitcher.pitcher_name}</td>
+                                    <td><span class="team-badge">${pitcher.team}</span></td>
+                                    <td>
+                                        <span class="grade grade-${(pitcher.grade || '').replace('+', 'plus').replace('-', 'minus').toLowerCase()}">
+                                            ${pitcher.grade}
+                                        </span>
+                                    </td>
+                                    <td class="score">${pitcher.composite_score}</td>
+                                    <td>${formatValue(pitcher.innings_pitched)}</td>
+                                    <td>${formatValue(pitcher.era)}</td>
+                                    <td>${formatValue(pitcher.fip)}</td>
+                                    <td>${formatValue(pitcher.whip)}</td>
+                                    <td>${formatValue(pitcher.siera)}</td>
+                                    <td>${formatValue(pitcher.xera)}</td>
+                                    <td>${formatValue(pitcher.xfip)}</td>
+                                    <td>${formatValue(pitcher.xwoba_against)}</td>
+                                    <td>${formatValue(pitcher.xba_against)}</td>
+                                    <td>${formatValue(pitcher.k_9)}</td>
+                                    <td>${formatValue(pitcher.bb_9)}</td>
+                                    <td>${formatValue(pitcher.h_9)}</td>
+                                    <td>${formatValue(pitcher.hr_9)}</td>
+                                    <td>${pitcher.csw_pct ? pitcher.csw_pct + '%' : '--'}</td>
+                                    <td>${pitcher.k_pct !== null && pitcher.k_pct !== undefined ? (pitcher.k_pct * 100).toFixed(1) + '%' : '--'}</td>
+                                    <td>${pitcher.bb_pct !== null && pitcher.bb_pct !== undefined ? (pitcher.bb_pct * 100).toFixed(1) + '%' : '--'}</td>
+                                    <td>${formatValue(pitcher.k_bb)}</td>
+                                    <td>${pitcher.gb_pct !== null && pitcher.gb_pct !== undefined ? (pitcher.gb_pct * 100).toFixed(1) + '%' : '--'}</td>
+                                    <td>${pitcher.fb_pct !== null && pitcher.fb_pct !== undefined ? (pitcher.fb_pct * 100).toFixed(1) + '%' : '--'}</td>
+                                    <td>${pitcher.hard_hit_pct_against !== null && pitcher.hard_hit_pct_against !== undefined ? (pitcher.hard_hit_pct_against * 100).toFixed(1) + '%' : '--'}</td>
+                                    <td>${pitcher.barrel_pct_against !== null && pitcher.barrel_pct_against !== undefined ? (pitcher.barrel_pct_against * 100).toFixed(1) + '%' : '--'}</td>
+                                    <td>${pitcher.games_started || 0}</td>
+                                    <td>${pitcher.games || 0}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+
+                container.innerHTML = table;
+            }
+
+            showError() {
+                document.getElementById('pitchers-table-container').innerHTML = `
+                    <div class="error-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Error loading pitcher data</p>
+                        <button onclick="location.reload()" class="refresh-btn">Retry</button>
+                    </div>
+                `;
+            }
+        }
+
+        // Global functions for view switching
+        function showTop10View() {
+            window.dashboard.showTop10View();
+        }
+
+        function showTableView() {
+            window.dashboard.showTableView();
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            window.dashboard = new ComprehensivePitcherDashboard();
+        });
+    </script>
+</body>
+</html>

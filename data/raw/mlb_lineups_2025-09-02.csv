@@ -1,0 +1,127 @@
+game_id,away_team,home_team,batting_order,away_player,away_position,home_player,home_position,lineups_available
+776490,NYM,DET,1,Ronny Mauricio,3B,Colt Keith,DH,True
+776490,NYM,DET,2,Juan Soto,RF,Andy Ibáñez,2B,True
+776490,NYM,DET,3,Jared Young,1B,Kerry Carpenter,RF,True
+776490,NYM,DET,4,Brandon Nimmo,LF,Jahmai Jones,LF,True
+776490,NYM,DET,5,Luisangel Acuña,SS,Justyn-Henry Malloy,1B,True
+776490,NYM,DET,6,Jeff McNeil,DH,Wenceel Pérez,CF,True
+776490,NYM,DET,7,Cedric Mullins,CF,Zach McKinstry,3B,True
+776490,NYM,DET,8,Luis Torrens,C,Dillon Dingler,C,True
+776490,NYM,DET,9,Brett Baty,2B,Trey Sweeney,SS,True
+776496,LAD,PIT,1,Shohei Ohtani,DH,Jared Triolo,SS,True
+776496,LAD,PIT,2,Mookie Betts,SS,Nick Gonzales,2B,True
+776496,LAD,PIT,3,Freddie Freeman,1B,Bryan Reynolds,RF,True
+776496,LAD,PIT,4,Will Smith,C,Tommy Pham,LF,True
+776496,LAD,PIT,5,Teoscar Hernández,RF,Andrew McCutchen,DH,True
+776496,LAD,PIT,6,Michael Conforto,LF,Oneil Cruz,CF,True
+776496,LAD,PIT,7,Andy Pages,CF,Spencer Horwitz,1B,True
+776496,LAD,PIT,8,Alex Freeland,3B,Henry Davis,C,True
+776496,LAD,PIT,9,Hyeseong Kim,PR,Cam Devanney,3B,True
+776491,TOR,CIN,1,George Springer,DH,TJ Friedl,CF,True
+776491,TOR,CIN,2,Myles Straw,RF,Noelvi Marte,RF,True
+776491,TOR,CIN,3,Vladimir Guerrero Jr.,1B,Elly De La Cruz,SS,True
+776491,TOR,CIN,4,Bo Bichette,SS,Austin Hays,LF,True
+776491,TOR,CIN,5,Daulton Varsho,CF,Gavin Lux,DH,True
+776491,TOR,CIN,6,Alejandro Kirk,C,Sal Stewart,1B,True
+776491,TOR,CIN,7,Addison Barger,PH,Ke'Bryan Hayes,3B,True
+776491,TOR,CIN,8,Ernie Clement,2B,Jose Trevino,C,True
+776491,TOR,CIN,9,Isiah Kiner-Falefa,3B,Matt McLain,2B,True
+776493,CLE,BOS,1,Steven Kwan,LF,Nate Eaton,RF,True
+776493,CLE,BOS,2,Angel Martínez,2B,Alex Bregman,3B,True
+776493,CLE,BOS,3,José Ramírez,3B,Jarren Duran,LF,True
+776493,CLE,BOS,4,David Fry,DH,Trevor Story,SS,True
+776493,CLE,BOS,5,Kyle Manzardo,1B,Brennan Bernardino,P,True
+776493,CLE,BOS,6,Jhonkensy Noel,RF,Romy Gonzalez,1B,True
+776493,CLE,BOS,7,Brayan Rocchio,SS,David Hamilton,2B,True
+776493,CLE,BOS,8,Nolan Jones,CF,Ceddanne Rafaela,CF,True
+776493,CLE,BOS,9,Austin Hedges,C,Carlos Narváez,C,True
+776482,MIA,WAS,1,Xavier Edwards,2B,James Wood,LF,True
+776482,MIA,WAS,2,Jakob Marsee,CF,CJ Abrams,SS,True
+776482,MIA,WAS,3,Agustín Ramírez,DH,Andrés Chaparro,1B,True
+776482,MIA,WAS,4,Liam Hicks,C,Luis García Jr.,2B,True
+776482,MIA,WAS,5,Otto Lopez,SS,Daylen Lile,DH,True
+776482,MIA,WAS,6,Connor Norby,3B,Riley Adams,C,True
+776482,MIA,WAS,7,Javier Sanoja,PH,Dylan Crews,RF,True
+776482,MIA,WAS,8,Heriberto Hernández,LF,Paul DeJong,3B,True
+776482,MIA,WAS,9,Eric Wagaman,PH,Robert Hassell III,CF,True
+776485,SEA,TB,1,Randy Arozarena,LF,Chandler Simpson,LF,True
+776485,SEA,TB,2,Cal Raleigh,C,Yandy Díaz,1B,True
+776485,SEA,TB,3,Julio Rodríguez,CF,Brandon Lowe,2B,True
+776485,SEA,TB,4,Josh Naylor,1B,Junior Caminero,3B,True
+776485,SEA,TB,5,Eugenio Suárez,3B,Josh Lowe,RF,True
+776485,SEA,TB,6,Jorge Polanco,DH,Jake Mangum,CF,True
+776485,SEA,TB,7,Luke Raley,RF,Christopher Morel,DH,True
+776485,SEA,TB,8,J.P. Crawford,SS,Tristan Gray,SS,True
+776485,SEA,TB,9,Cole Young,2B,Hunter Feduccia,C,True
+776488,LAA,KC,1,Zach Neto,SS,Maikel Garcia,3B,True
+776488,LAA,KC,2,Luis Rengifo,2B,Bobby Witt Jr.,SS,True
+776488,LAA,KC,3,Yoán Moncada,3B,Vinnie Pasquantino,1B,True
+776488,LAA,KC,4,Jo Adell,DH,Salvador Perez,C,True
+776488,LAA,KC,5,Logan O'Hoppe,C,Mike Yastrzemski,RF,True
+776488,LAA,KC,6,Chris Taylor,RF,Randal Grichuk,DH,True
+776488,LAA,KC,7,Matthew Lugo,LF,Adam Frazier,2B,True
+776488,LAA,KC,8,Oswald Peraza,1B,Nick Loftin,LF,True
+776488,LAA,KC,9,Bryce Teodosio,CF,Kyle Isbel,CF,True
+776487,ATL,CHC,1,Ronald Acuña Jr.,RF,Nico Hoerner,2B,True
+776487,ATL,CHC,2,Matt Olson,1B,Willi Castro,RF,True
+776487,ATL,CHC,3,Ozzie Albies,2B,Seiya Suzuki,DH,True
+776487,ATL,CHC,4,Marcell Ozuna,DH,Carson Kelly,C,True
+776487,ATL,CHC,5,Michael Harris II,CF,Michael Busch,1B,True
+776487,ATL,CHC,6,Ha-Seong Kim,SS,Ian Happ,LF,True
+776487,ATL,CHC,7,Eli White,LF,Dansby Swanson,SS,True
+776487,ATL,CHC,8,Sean Murphy,C,Matt Shaw,3B,True
+776487,ATL,CHC,9,Nacho Alvarez Jr.,3B,Kevin Alcántara,CF,True
+776484,CWS,MIN,1,Mike Tauchman,DH,Byron Buxton,CF,True
+776484,CWS,MIN,2,Kyle Teel,C,Trevor Larnach,DH,True
+776484,CWS,MIN,3,Lenyn Sosa,2B,Brooks Lee,SS,True
+776484,CWS,MIN,4,Colson Montgomery,SS,Matt Wallner,RF,True
+776484,CWS,MIN,5,Curtis Mead,1B,Kody Clemens,1B,True
+776484,CWS,MIN,6,Andrew Benintendi,LF,Austin Martin,2B,True
+776484,CWS,MIN,7,Brooks Baldwin,CF,James Outman,LF,True
+776484,CWS,MIN,8,Will Robertson,RF,Mickey Gasper,C,True
+776484,CWS,MIN,9,Bryan Ramos,3B,Ryan Fitzgerald,3B,True
+776483,Unknown,STL,1,Nick Kurtz,1B,Lars Nootbaar,LF,True
+776483,Unknown,STL,2,Max Schuemann,SS,Iván Herrera,DH,True
+776483,Unknown,STL,3,Brent Rooker,DH,Willson Contreras,1B,True
+776483,Unknown,STL,4,Tyler Soderstrom,LF,Nolan Gorman,3B,True
+776483,Unknown,STL,5,Shea Langeliers,C,Masyn Winn,SS,True
+776483,Unknown,STL,6,Lawrence Butler,CF,Jimmy Crooks,C,True
+776483,Unknown,STL,7,Zack Gelof,2B,José Fermín,2B,True
+776483,Unknown,STL,8,JJ Bleday,RF,Victor Scott II,CF,True
+776483,Unknown,STL,9,Brett Harris,3B,Nathan Church,RF,True
+776489,NYY,HOU,1,Paul Goldschmidt,1B,Jeremy Peña,SS,True
+776489,NYY,HOU,2,Cody Bellinger,RF,Carlos Correa,3B,True
+776489,NYY,HOU,3,Aaron Judge,DH,Jose Altuve,LF,True
+776489,NYY,HOU,4,Giancarlo Stanton,LF,Christian Walker,1B,True
+776489,NYY,HOU,5,Trent Grisham,CF,Yainer Diaz,DH,True
+776489,NYY,HOU,6,Anthony Volpe,SS,Ramón Urías,2B,True
+776489,NYY,HOU,7,Jazz Chisholm Jr.,2B,Cam Smith,RF,True
+776489,NYY,HOU,8,Ryan McMahon,3B,Mauricio Dubón,CF,True
+776489,NYY,HOU,9,Austin Wells,C,César Salazar,C,True
+776486,SF,COL,1,Heliot Ramos,LF,Tyler Freeman,RF,True
+776486,SF,COL,2,Rafael Devers,3B,Mickey Moniak,LF,True
+776486,SF,COL,3,Casey Schmitt,2B,Hunter Goodman,C,True
+776486,SF,COL,4,Dominic Smith,1B,Brenton Doyle,CF,True
+776486,SF,COL,5,Wilmer Flores,DH,Ezequiel Tovar,SS,True
+776486,SF,COL,6,Luis Matos,RF,Kyle Karros,3B,True
+776486,SF,COL,7,Jung Hoo Lee,CF,Yanquiel Fernández,DH,True
+776486,SF,COL,8,Christian Koss,SS,Kyle Farmer,1B,True
+776486,SF,COL,9,Patrick Bailey,C,Ryan Ritter,2B,True
+776480,BAL,SD,1,Jackson Holliday,2B,Fernando Tatis Jr.,RF,True
+776480,BAL,SD,2,Jeremiah Jackson,RF,Luis Arraez,1B,True
+776480,BAL,SD,3,Gunnar Henderson,SS,Manny Machado,3B,True
+776480,BAL,SD,4,Ryan Mountcastle,DH,Gavin Sheets,DH,True
+776480,BAL,SD,5,Colton Cowser,CF,Ramón Laureano,LF,True
+776480,BAL,SD,6,Samuel Basallo,C,Jackson Merrill,CF,True
+776480,BAL,SD,7,Emmanuel Rivera,3B,Jake Cronenworth,2B,True
+776480,BAL,SD,8,Dylan Beavers,LF,Mason McCoy,SS,True
+776480,BAL,SD,9,Coby Mayo,1B,Freddy Fermin,C,True
+776481,TEX,ARI,1,Josh Smith,SS,Ketel Marte,DH,True
+776481,TEX,ARI,2,Wyatt Langford,LF,Geraldo Perdomo,SS,True
+776481,TEX,ARI,3,Joc Pederson,DH,Corbin Carroll,RF,True
+776481,TEX,ARI,4,Rowdy Tellez,1B,Gabriel Moreno,C,True
+776481,TEX,ARI,5,Josh Jung,3B,Blaze Alexander,CF,True
+776481,TEX,ARI,6,Cody Freeman,2B,Ildemaro Vargas,2B,True
+776481,TEX,ARI,7,Alejandro Osuna,RF,Tyler Locklear,1B,True
+776481,TEX,ARI,8,Jonah Heim,C,Jorge Barrosa,LF,True
+776481,TEX,ARI,9,Michael Helman,CF,Jordan Lawlar,3B,True

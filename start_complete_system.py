@@ -34,11 +34,11 @@ def main():
     # Wait a moment for API to start
     time.sleep(3)
     
-    # Start Dashboard (port 5000)
-    print("📊 Starting Dashboard server...")
+    # Start Enhanced Dashboard (port 5000)
+    print("📊 Starting Enhanced Dashboard server...")
     dashboard_process = subprocess.Popen([
         sys.executable,
-        str(base_dir / 'dashboard' / 'app.py')
+        str(base_dir / 'web' / 'enhanced_dashboard_app.py')
     ])
     
     # Wait for servers to start

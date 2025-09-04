@@ -30,25 +30,25 @@ def main():
     today_str = datetime.today().strftime('%Y-%m-%d')
     base_dir = Path(__file__).parent
     
-    # Step 1: Run the original daily pipeline
-    logger.info("📊 Step 1: Running original prediction pipeline...")
+    # Step 1: Run the working daily pipeline
+    logger.info("📊 Step 1: Running daily betting pipeline...")
     try:
         result = subprocess.run([
             sys.executable, 
-            str(base_dir / 'run_daily_pipeline.py')
+            str(base_dir / 'scraping' / 'daily_betting_pipeline.py')
         ], capture_output=True, text=True, timeout=300)
         
         if result.returncode != 0:
-            logger.error(f"Original pipeline failed: {result.stderr}")
+            logger.error(f"Daily pipeline failed: {result.stderr}")
             return 1
         else:
-            logger.info("✅ Original pipeline completed successfully")
+            logger.info("✅ Daily pipeline completed successfully")
     
     except subprocess.TimeoutExpired:
-        logger.error("❌ Original pipeline timed out (5 minutes)")
+        logger.error("❌ Daily pipeline timed out (5 minutes)")
         return 1
     except Exception as e:
-        logger.error(f"❌ Error running original pipeline: {e}")
+        logger.error(f"❌ Error running daily pipeline: {e}")
         return 1
     
     # Step 2: Find the latest prediction file
